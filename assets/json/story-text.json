@@ -1,20 +1,27 @@
 {
-	"A0": {
-		"storyText": "The first scene",
-		"buttonText": ["aaa", "bbb"],
-		"duration": 30,
-		"buttonResponse": ["B0", "B1"]
+	"start": {
+		"storyText": "The story starts here.\nDo you have time to\nread and\nunderstand all of this?.\nChoose an option:",
+		"buttonText": ["option", "option", "option", "option", "option"],
+		"duration": 8,
+		"buttonResponse": ["B0", "B1", "B0", "B0", "B0"]
 	},
 	"B0": {
 		"storyText": "Lots of words words\nworrds sdluhgs lsiuh\nlsduh sldh lsikdh lkshd\nlikshd iklsh d",
 		"buttonText": ["aaa", "bbb"],
-		"duration": 30,
-		"buttonResponse": ["", ""]
+		"duration": 8,
+		"buttonResponse": ["B1", "B2"]
 	},
 	"B1": {
-		"storyText": "Lots of words words\nworrds sdluhgs lsiuh\nlsduh sldh lsikdh lkshd\nlikshd iklsh d",
+		"storyText": "Different words dodum\n dee wa oof ha",
 		"buttonText": ["aaa", "bbb"],
-		"duration": 30,
-		"buttonResponse": ["", ""]
+		"duration": 8,
+		"buttonResponse": ["B2", "B0"]
+	},
+	"B2": {
+		"storyText": "Without removing from the index \nthe submodule, Add the \nsubmodule's url to .gitmodules\n and to .git/config with",
+		"buttonText": ["aaa", "bbb", "ccc"],
+		"duration": 8,
+		"buttonResponse": ["B0", "B1", "start"]
 	}
+
 }
