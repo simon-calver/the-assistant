@@ -1,0 +1,20 @@
+{
+	"A0": {
+		"storyText": "The first scene",
+		"buttonText": ["aaa", "bbb"],
+		"duration": 30,
+		"buttonResponse": ["B0", "B1"]
+	},
+	"B0": {
+		"storyText": "Lots of words words\nworrds sdluhgs lsiuh\nlsduh sldh lsikdh lkshd\nlikshd iklsh d",
+		"buttonText": ["aaa", "bbb"],
+		"duration": 30,
+		"buttonResponse": ["", ""]
+	},
+	"B1": {
+		"storyText": "Lots of words words\nworrds sdluhgs lsiuh\nlsduh sldh lsikdh lkshd\nlikshd iklsh d",
+		"buttonText": ["aaa", "bbb"],
+		"duration": 30,
+		"buttonResponse": ["", ""]
+	}
+}
