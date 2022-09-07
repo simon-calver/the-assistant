@@ -45,11 +45,16 @@ export default class AssistantScene extends Phaser.Scene {
 
     this.storyText = this.cache.json.get('story-text');
 
+    this.playerItems = [];
+    this.playerEvents = [];
     this.setScene('start');
 
 
 
-
+    let background = this.add.image(width / 2, height / 2, 'button').setOrigin(0.5).setInteractive();
+    background.on('pointerdown', () => {
+      console.log(this.playerItems)
+    });
 
 
 
@@ -159,27 +164,155 @@ export default class AssistantScene extends Phaser.Scene {
 
   setScene(sceneId) {
     console.log('Next scene: ', sceneId);
+    // console.log(this.storyText[sceneId])
     this.displayText.text = this.storyText[sceneId]['storyText']
-    this.addButtons(this.storyText[sceneId]['buttonText'], this.storyText[sceneId]['buttonResponse']);
+    this.addButtons(this.storyText[sceneId]['options']); //['buttonText'], this.storyText[sceneId]['buttonResponse'], this.storyText[sceneId]['item']);
     this.buttonTimer(this.storyText[sceneId]['duration']);
   }
 
-  addButtons(buttonText, buttonResponse) {
+  addButtons(options) {
     let { width, height } = this.sys.game.canvas;
     const buttonWidth = 140, buttonHeight = 60;
 
-    const xPadding = (width - 2 * buttonWidth) / 4, xLeft = buttonWidth / 2 + xPadding, xRight = width - buttonWidth / 2 - xPadding;
-    const evenArrayLength = (buttonText.length % 2 == 0) ? buttonText.length : buttonText.length - 1;
+    console.log(options)
+    options = this.getValidOptions(options);
+    console.log(options)
 
-    for (var i = 0; i < evenArrayLength; i++) {
-      let button = new Button(this, (i % 2 == 0) ? xLeft : xRight, height - Math.floor(i / 2) * buttonHeight - 80, buttonText[i], buttonResponse[i], buttonWidth);
+    const xPadding = (width - 2 * buttonWidth) / 4, xLeft = buttonWidth / 2 + xPadding, xRight = width - buttonWidth / 2 - xPadding;
+
+    options.forEach((option, index) => {
+      let button;
+      if (index % 2 == 0 & index == options.length - 1) {
+        button = new Button(this, width / 2, height - (index / 2) * buttonHeight - 80, option, buttonWidth);
+      } else {
+        button = new Button(this, (index % 2 == 0) ? xLeft : xRight, height - Math.floor(index / 2) * buttonHeight - 80, option, buttonWidth);
+      }
       this.buttons.add(button);
-    }
-    if (buttonText.length == evenArrayLength + 1) {
-      let button = new Button(this, width / 2, height - (evenArrayLength / 2) * buttonHeight - 80, buttonText[i], buttonResponse[i], buttonWidth);
-      this.buttons.add(button);
-    }
+    })
+
+    // for (const [])
+    // const evenArrayLength = (options.length % 2 == 0) ? options.length : options.length - 1;
+
+    // for (var i = 0; i < evenArrayLength; i++) {
+    //   let button = new Button(this, (i % 2 == 0) ? xLeft : xRight, height - Math.floor(i / 2) * buttonHeight - 80, options[i], buttonWidth);
+    //   this.buttons.add(button);
+    // }
+    // if (options.length == evenArrayLength + 1) {
+    //   let button = new Button(this, width / 2, height - (evenArrayLength / 2) * buttonHeight - 80, options[i], buttonWidth);
+    //   this.buttons.add(button);
+    // }
+
+
+    // console.log(buttons);
+    // const buttonText = sceneJson['buttonText'];
+    // const buttonResponse = sceneJson['buttonResponse'];
+    // const buttonItem = sceneJson['item'] ? sceneJson['item'] : Array.from({ length: buttonResponse.length }, () => '');
+    // const buttonEvent = sceneJson['event'] ? sceneJson['event'] : Array.from({ length: buttonResponse.length }, () => '');
+    // const buttonRequirement = sceneJson['requirement'];
+
+    // let validOptions = Array.from(Array(buttonText.length).keys());
+    // // let org;
+    // if (buttonRequirement) {
+    //   validOptions = validOptions.filter(function (i) {
+    //     if ('item' in buttonRequirement[i]) {
+    //       return this.playerItems.includes(buttonRequirement[i]['item']);
+    //     } else if ('event' in buttonRequirement[i]) {
+    //       return this.playerEvents.includes(buttonRequirement[i]['event']);
+    //     } else if ('notEvent' in buttonRequirement[i]) {
+    //       return !this.playerEvents.includes(buttonRequirement[i]['notEvent']);
+    //     } else {
+    //       return true;
+    //     }
+    //   }, this);
+    // }
+
+    // const xPadding = (width - 2 * buttonWidth) / 4, xLeft = buttonWidth / 2 + xPadding, xRight = width - buttonWidth / 2 - xPadding;
+    // const evenArrayLength = (validOptions.length % 2 == 0) ? validOptions.length : validOptions.length - 1;
+
+    // for (var i = 0; i < evenArrayLength; i++) {
+    //   let button = new Button(this, (i % 2 == 0) ? xLeft : xRight, height - Math.floor(i / 2) * buttonHeight - 80, buttonText[validOptions[i]], buttonResponse[validOptions[i]], buttonItem[validOptions[i]], buttonEvent[validOptions[i]], buttonWidth);
+    //   this.buttons.add(button);
+    // }
+    // if (validOptions.length == evenArrayLength + 1) {
+    //   let button = new Button(this, width / 2, height - (evenArrayLength / 2) * buttonHeight - 80, buttonText[validOptions[i]], buttonResponse[validOptions[i]], buttonItem[validOptions[i]], buttonEvent[validOptions[i]], buttonWidth);
+    //   this.buttons.add(button);
+    // }
   }
+
+  getValidOptions(options) {
+    let validOptions = options.filter(function (option) {
+      const req = option['requirement']
+      if (req) {
+        if ('item' in req) {
+          return this.playerItems.includes(req['item']);
+        } else if ('event' in req) {
+          return this.playerEvents.includes(req['event']);
+        } else if ('notEvent' in req) {
+          return !this.playerEvents.includes(req['notEvent']);
+        } else {
+          return true;
+        }
+      } else {
+        return true;
+      }
+    }, this);
+    return validOptions;
+  }
+  // console.log(options)
+  // let validOptions = Array.from(Array(buttonText.length).keys());
+  // // let org;
+  // if (buttonRequirement) {
+  //   validOptions = validOptions.filter(function (i) {
+  //     if ('item' in buttonRequirement[i]) {
+  //       return this.playerItems.includes(buttonRequirement[i]['item']);
+  //     } else if ('event' in buttonRequirement[i]) {
+  //       return this.playerEvents.includes(buttonRequirement[i]['event']);
+  //     } else if ('notEvent' in buttonRequirement[i]) {
+  //       return !this.playerEvents.includes(buttonRequirement[i]['notEvent']);
+  //     } else {
+  //       return true;
+  //     }
+  //   }, this);
+  // }
+  // }
+  // addButtons(buttons) {
+  //   let { width, height } = this.sys.game.canvas;
+  //   const buttonWidth = 140, buttonHeight = 60;
+
+  //   const buttonText = sceneJson['buttonText'];
+  //   const buttonResponse = sceneJson['buttonResponse'];
+  //   const buttonItem = sceneJson['item'] ? sceneJson['item'] : Array.from({ length: buttonResponse.length }, () => '');
+  //   const buttonEvent = sceneJson['event'] ? sceneJson['event'] : Array.from({ length: buttonResponse.length }, () => '');
+  //   const buttonRequirement = sceneJson['requirement'];
+
+  //   let validOptions = Array.from(Array(buttonText.length).keys());
+  //   // let org;
+  //   if (buttonRequirement) {
+  //     validOptions = validOptions.filter(function (i) {
+  //       if ('item' in buttonRequirement[i]) {
+  //         return this.playerItems.includes(buttonRequirement[i]['item']);
+  //       } else if ('event' in buttonRequirement[i]) {
+  //         return this.playerEvents.includes(buttonRequirement[i]['event']);
+  //       } else if ('notEvent' in buttonRequirement[i]) {
+  //         return !this.playerEvents.includes(buttonRequirement[i]['notEvent']);
+  //       } else {
+  //         return true;
+  //       }
+  //     }, this);
+  //   }
+
+  //   const xPadding = (width - 2 * buttonWidth) / 4, xLeft = buttonWidth / 2 + xPadding, xRight = width - buttonWidth / 2 - xPadding;
+  //   const evenArrayLength = (validOptions.length % 2 == 0) ? validOptions.length : validOptions.length - 1;
+
+  //   for (var i = 0; i < evenArrayLength; i++) {
+  //     let button = new Button(this, (i % 2 == 0) ? xLeft : xRight, height - Math.floor(i / 2) * buttonHeight - 80, buttonText[validOptions[i]], buttonResponse[validOptions[i]], buttonItem[validOptions[i]], buttonEvent[validOptions[i]], buttonWidth);
+  //     this.buttons.add(button);
+  //   }
+  //   if (validOptions.length == evenArrayLength + 1) {
+  //     let button = new Button(this, width / 2, height - (evenArrayLength / 2) * buttonHeight - 80, buttonText[validOptions[i]], buttonResponse[validOptions[i]], buttonItem[validOptions[i]], buttonEvent[validOptions[i]], buttonWidth);
+  //     this.buttons.add(button);
+  //   }
+  // }
 
   buttonTimer(duration) {
     this.tweens.addCounter({
@@ -211,14 +344,18 @@ export default class AssistantScene extends Phaser.Scene {
   }
 
   getNextScene() {
-    let nextSceneId;
+    let nextSceneId, item, event;
     this.buttons.children.each(function (button) {
       if (button.isActive) {
         nextSceneId = button.response;
+        item = button.getItem();
+        event = button.getEvent();
       }
       button.destroy();
     });
-    this.setScene(nextSceneId)
+    this.setScene(nextSceneId);
+    if (item) this.playerItems.push(item);
+    if (event) this.playerEvents.push(event);
   }
 
   setSongPercent(percent) {
@@ -246,13 +383,12 @@ export default class AssistantScene extends Phaser.Scene {
   update(time, delta) {
     this.playerScene.updatePlayTime(this.song.seek, this.getSongPercent());
   }
-
 }
 
 class Button extends Phaser.GameObjects.Container {
-  constructor(scene, x, y, text, response, buttonWidth) {
+  constructor(scene, x, y, data, buttonWidth) {
     let background = scene.add.image(0, 0, 'button').setOrigin(0.5);
-    let bitmapText = scene.add.bitmapText(0, 0, 'mont', text, 20).setOrigin(0.5).setDropShadow(2, 2, 0x000000);//.setScale(0.5);
+    let bitmapText = scene.add.bitmapText(0, 0, 'mont', data['text'], 20).setOrigin(0.5).setDropShadow(2, 2, 0x000000);
 
     background.setScale(buttonWidth / background.displayWidth);
     let timerBar = scene.add.rectangle(-background.displayWidth / 2, background.displayHeight / 2, 0, 10, 0xff0000).setOrigin(0);
@@ -263,7 +399,9 @@ class Button extends Phaser.GameObjects.Container {
     this.setSize(background.displayWidth, background.displayHeight);
 
     this.isActive = true;
-    this.response = response;
+    this.response = data['response'];
+    this.item = data['item'] || '';
+    this.event = data['event'] || '';
 
     this.setInteractive();
     this.on('pointerdown', () => {
@@ -281,7 +419,14 @@ class Button extends Phaser.GameObjects.Container {
   }
 
   setActive() {
-    // this
     this.displayTimer(true);
+  }
+
+  getItem() {
+    return this.item;
+  }
+
+  getEvent() {
+    return this.event;
   }
 }
