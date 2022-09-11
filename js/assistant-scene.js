@@ -22,7 +22,7 @@ export default class AssistantScene extends Phaser.Scene {
 
     // Game assets
     // this.load.image('black-hole', 'assets/sprites/black-hole.png');
-    // this.load.image('ball', 'assets/sprites/ball.png');
+    this.load.image('item', 'assets/sprites/ball.png');
     // this.load.atlas('star', 'assets/sprites/star.png', 'assets/sprites/star.json');
 
     // JSON files
@@ -41,23 +41,33 @@ export default class AssistantScene extends Phaser.Scene {
     let { width, height } = this.sys.game.canvas;
 
     this.buttons = this.add.group({ classType: Button });
-    this.displayText = this.add.bitmapText(width / 2, 120, 'mont', '', 26).setCenterAlign().setOrigin(0.5).setTint('k');
+    this.displayText = this.add.bitmapText(width / 2, height / 2, 'mont', '', 26).setCenterAlign().setOrigin(0.5).setTint('k');
+    this.add.bitmapText(width / 2, 50, 'mont', 'Items', 18).setCenterAlign().setOrigin(0.5, 0).setTint('k');
+    this.add.bitmapText(width / 2, 140, 'mont', 'Other', 18).setCenterAlign().setOrigin(0.5, 0).setTint('k');
+
+    // ONly makie visiblbe when have items
+    // this.addItemsMenu();
 
     this.storyText = this.cache.json.get('story-text');
 
     this.playerItems = [];
-    this.playerEvents = [];
-    this.setScene('start');
+    this.playerEvents = []; // Make these sets?
+    this.setScene('graveyardStart');
 
+    this.displayItems = [];
 
+    // this.addItem('item');
+    // // this.addItem('item');
+    // let background = this.add.image(width / 2, height / 2, 'button').setOrigin(0.5).setInteractive();
+    // background.on('pointerdown', () => {
+    //   console.log(this.playerItems)
+    // });
 
-    let background = this.add.image(width / 2, height / 2, 'button').setOrigin(0.5).setInteractive();
-    background.on('pointerdown', () => {
-      console.log(this.playerItems)
-    });
+    // let a = 'a'
+    // let b = ['a', 'b']
+    // let oo = ['a', 'b', 'c']
 
-
-
+    // console.log(a.every(v => oo.includes(v)))
 
     // this.storyText = this.add.bitmapText(width / 2, 120, 'mont', 'Lots of words words\nworrds sdluhgs lsiuh\nlsduh sldh lsikdh lkshd\nlikshd iklsh d', 26).setCenterAlign().setOrigin(0.5).setTint('k');
 
@@ -146,20 +156,30 @@ export default class AssistantScene extends Phaser.Scene {
     }, this);
 
     this.song.play();
-    // if (params['muteSong']) {
-    //   this.song.setVolume(0);
-    //   this.updateGameScore(-20, 2, false);
-    // }
+    this.song.seek = 33;
+  }
 
-    // // Spawn the shapes!
-    // this.spawnAngle = 0;
-    // this.spawnIndex = 0;
-    // this.spawnTimer = this.time.addEvent({
-    //   delay: 1678,
-    //   loop: true,
-    //   callback: this.spawnShape,
-    //   callbackScope: this
-    // }, this);
+  // addItemsMenu() {
+  //   let { width, height } = this.sys.game.canvas;
+  //   this.add.bitmapText(width / 2, 50, 'mont', 'Items', 18).setCenterAlign().setOrigin(0.5, 0).setTint('k');
+
+  //   const itemWidth = 40
+  //   for (var i = -2; i < 3; i++) {
+  //     new DisplayItem(this, width / 2 + i * (itemWidth + 5), 80, itemWidth);
+  //   }
+  // }
+
+  addItem(item) {
+    let { width, height } = this.sys.game.canvas;
+    const itemWidth = 40;
+
+    this.playerItems.push(item);
+
+    this.displayItems.push(new DisplayItem(this, 0, 80, itemWidth, item));
+    const itemsLen = this.displayItems.length;
+    this.displayItems.forEach((item, i) => {
+      item.setXPos(width / 2 + (i - (itemsLen - 1) / 2) * (itemWidth + 5));
+    });
   }
 
   setScene(sceneId) {
@@ -174,9 +194,7 @@ export default class AssistantScene extends Phaser.Scene {
     let { width, height } = this.sys.game.canvas;
     const buttonWidth = 140, buttonHeight = 60;
 
-    console.log(options)
     options = this.getValidOptions(options);
-    console.log(options)
 
     const xPadding = (width - 2 * buttonWidth) / 4, xLeft = buttonWidth / 2 + xPadding, xRight = width - buttonWidth / 2 - xPadding;
 
@@ -188,55 +206,7 @@ export default class AssistantScene extends Phaser.Scene {
         button = new Button(this, (index % 2 == 0) ? xLeft : xRight, height - Math.floor(index / 2) * buttonHeight - 80, option, buttonWidth);
       }
       this.buttons.add(button);
-    })
-
-    // for (const [])
-    // const evenArrayLength = (options.length % 2 == 0) ? options.length : options.length - 1;
-
-    // for (var i = 0; i < evenArrayLength; i++) {
-    //   let button = new Button(this, (i % 2 == 0) ? xLeft : xRight, height - Math.floor(i / 2) * buttonHeight - 80, options[i], buttonWidth);
-    //   this.buttons.add(button);
-    // }
-    // if (options.length == evenArrayLength + 1) {
-    //   let button = new Button(this, width / 2, height - (evenArrayLength / 2) * buttonHeight - 80, options[i], buttonWidth);
-    //   this.buttons.add(button);
-    // }
-
-
-    // console.log(buttons);
-    // const buttonText = sceneJson['buttonText'];
-    // const buttonResponse = sceneJson['buttonResponse'];
-    // const buttonItem = sceneJson['item'] ? sceneJson['item'] : Array.from({ length: buttonResponse.length }, () => '');
-    // const buttonEvent = sceneJson['event'] ? sceneJson['event'] : Array.from({ length: buttonResponse.length }, () => '');
-    // const buttonRequirement = sceneJson['requirement'];
-
-    // let validOptions = Array.from(Array(buttonText.length).keys());
-    // // let org;
-    // if (buttonRequirement) {
-    //   validOptions = validOptions.filter(function (i) {
-    //     if ('item' in buttonRequirement[i]) {
-    //       return this.playerItems.includes(buttonRequirement[i]['item']);
-    //     } else if ('event' in buttonRequirement[i]) {
-    //       return this.playerEvents.includes(buttonRequirement[i]['event']);
-    //     } else if ('notEvent' in buttonRequirement[i]) {
-    //       return !this.playerEvents.includes(buttonRequirement[i]['notEvent']);
-    //     } else {
-    //       return true;
-    //     }
-    //   }, this);
-    // }
-
-    // const xPadding = (width - 2 * buttonWidth) / 4, xLeft = buttonWidth / 2 + xPadding, xRight = width - buttonWidth / 2 - xPadding;
-    // const evenArrayLength = (validOptions.length % 2 == 0) ? validOptions.length : validOptions.length - 1;
-
-    // for (var i = 0; i < evenArrayLength; i++) {
-    //   let button = new Button(this, (i % 2 == 0) ? xLeft : xRight, height - Math.floor(i / 2) * buttonHeight - 80, buttonText[validOptions[i]], buttonResponse[validOptions[i]], buttonItem[validOptions[i]], buttonEvent[validOptions[i]], buttonWidth);
-    //   this.buttons.add(button);
-    // }
-    // if (validOptions.length == evenArrayLength + 1) {
-    //   let button = new Button(this, width / 2, height - (evenArrayLength / 2) * buttonHeight - 80, buttonText[validOptions[i]], buttonResponse[validOptions[i]], buttonItem[validOptions[i]], buttonEvent[validOptions[i]], buttonWidth);
-    //   this.buttons.add(button);
-    // }
+    });
   }
 
   getValidOptions(options) {
@@ -354,7 +324,7 @@ export default class AssistantScene extends Phaser.Scene {
       button.destroy();
     });
     this.setScene(nextSceneId);
-    if (item) this.playerItems.push(item);
+    if (item) this.addItem(item);  //playerItems.push(item);
     if (event) this.playerEvents.push(event);
   }
 
@@ -428,5 +398,35 @@ class Button extends Phaser.GameObjects.Container {
 
   getEvent() {
     return this.event;
+  }
+}
+
+class DisplayItem {
+  constructor(scene, x, y, width, item) {
+    this.background = scene.add.image(x, y, 'button').setOrigin(0.5, 0);
+    this.background.displayWidth = width;
+    this.background.displayHeight = width;
+
+    this.item = item;
+    this.itemImage = scene.add.image(x, y, 'item').setOrigin(0.5, 0).setInteractive();
+    this.itemImage.displayWidth = 0.9 * width;
+    this.itemImage.displayHeight = 0.9 * width;
+
+    // this.itemImage.on('pointerover', function (pointer) {
+    //     console.log("The item is", this.item)
+
+    // }.bind(this));
+
+    // this.on('pointerout', function () {
+    // }.bind(this));
+
+    this.itemImage.on('pointerdown', function (pointer) {
+      console.log("The item is", this.item)
+    }, this)
+  }
+
+  setXPos(x) {
+    this.background.x = x;
+    this.itemImage.x = x;
   }
 }

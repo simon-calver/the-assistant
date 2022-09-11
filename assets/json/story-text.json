@@ -20,8 +20,8 @@
 	"graveyardHelp": {
 		"storyText": "Billy the grave robber:\n \"Thanks for your help.\nTake anything you want\"",
 		"options":[
-			{"text": "Arm", "reponse": "graveyardEnd", "item": "arm"},
-			{"text": "Leg", "response": "graveyardEnd", "item": "leg"}
+			{"text": "Arm", "response": "graveyardEnd", "item": "graveyardArm"},
+			{"text": "Leg", "response": "graveyardEnd", "item": "graveyardLeg"}
 		],
 		"duration": 8
 	},
@@ -50,14 +50,30 @@
 	"cavesStart": {
 		"storyText": "It's very dark in here\nyou can't see anything!",
 		"options":[
-			{"text": "Use Torch", "response": "graveyardEnd", "requirement": {"item": "torch"}},
-			{"text": "Feel Your Way", "response": "graveyardEnd"},
+			{"text": "Use Torch", "response": "cavesTorch", "requirement": {"item": "torch"}},
+			{"text": "Feel Your Way", "response": "cavesFeel"},
 			{"text": "Say Hello", "response": "cavesHelloEmpty", "requirement": {"notEvent": "attack"}},
 			{"text": "Say Hello", "response": "cavesHelloResponse", "requirement": {"event": "attack"}}
 		],
 		"requirement": [{"item": "torch"}, {}, {"notEvent": "attack"}, {"event": "attack"}],
 		"buttonText": ["Use Torch", "Feel Your Way", "Say Hello", "Say Hello"],
 		"buttonResponse": ["graveyardEnd", "graveyardEnd", "cavesHelloEmpty", "cavesHelloResponse"],
+		"duration": 8
+	},	
+	"cavesTorch": {
+		"storyText": "torch makes light, find thing choose",
+		"options":[
+			{"text": "Arm", "response": "cavesEnd", "item": "cavesArm"},
+			{"text": "Leg", "response": "cavesEnd", "item": "cavesLeg"}
+		],
+		"duration": 8
+	},
+	"cavesFeel": {
+		"storyText": "walls all slmiy and stuff\n",
+		"options":[
+			{"text": "Arm", "response": "cavesEnd", "item": "cavesArm"},
+			{"text": "Leg", "response": "cavesEnd", "item": "cavesLeg"}
+		],
 		"duration": 8
 	},
 	"cavesHelloEmpty": {
@@ -76,10 +92,100 @@
 		],
 		"duration": 8
 	},
-	"zooStart": {
-		"storyText": "",
+	"cavesEnd": {
+		"storyText": "Where to next?",
 		"options":[
-			{"text": "Zebra", "response": "start"}
+			{"text": "Zoo", "response": "zooStart"},
+			{"text": "Forest", "response": "forestStart"}
+		],
+		"duration": 8
+	},
+	"zooStart": {
+		"storyText": "Aparently the zoo\nis closed at night",
+		"options":[
+			{"text": "Break in", "response": "zooBreak", "requirement": {"item": "crowbar"}},
+			{"text": "Sneak around back", "response": "zooSneak"}
+		],
+		"duration": 8
+	},
+	"zooBreak": {
+		"storyText": "As you slip throught\nthe gate your are confronted\nby a security guard",
+		"options":[
+			{"text": "Attack", "response": "zooAttack"},
+			{"text": "Run away", "response": "zooRun"},
+			{"text": "Charm", "response": "zooCharm"}
+		],
+		"duration": 8
+	},
+	"zooSneak": {
+		"storyText": "You find a broken\nfence and make your\nway to lion or something",
+		"options":[
+			{"text": "Arm", "response": "zooEnd", "item": "zooArm"},
+			{"text": "Leg", "response": "zooEnd", "item": "zooLeg"}
+		],
+		"duration": 8
+	},
+	"zooEnd": {
+		"storyText": "Where to next?",
+		"options":[
+			{"text": "Morgue", "response": "morgueStart"},
+			{"text": "Hospital", "response": "hospitalStart"}
+		],
+		"duration": 8
+	},
+	"morgueStart": {
+		"storyText": "Knock on the back door\n[Door knock mini game??!!]\ntap screen",
+		"options":[
+			{"text": "Knock", "response": "morgueKnock"}
+		],
+		"duration": 8
+	},
+	"morgueKnock": {
+		"storyText": "The door slowly opens\n\"morgue Creep\": Ah wonderfujl to see you again\n what wiould you like?",
+		"options":[
+			{"text": "Brain", "response": "morgueEnd", "item": "morgueBrain"},
+			{"text": "Torso", "response": "morgueEnd", "item": "morgueTorso"},
+			{"text": "Leg", "response": "morgueEnd", "item": "morgueLeg"}
+		],
+		"duration": 8
+	},
+	"morgueEnd": {
+		"storyText": "Time to head back\nto the Doctor",
+		"options":[
+			{"text": "Walk", "response": "castleStart"},
+			{"text": "Run", "response": "castleStart"}
+		],
+		"duration": 8
+	},
+	"forestStart":{
+		"storyText": "Mysterious lights or\nsome other thing",
+		"options":[
+			{"text": "Mysterious lights", "response": "forestLights"},
+			{"text": "Other", "response": "forestOther"}
+		],
+		"duration": 8
+	},
+	"forestLights":{
+		"storyText": "    ",
+		"options":[
+			{"text": "Mysterious lights", "response": "zooStart"},
+			{"text": "Other", "response": "cavesStart"}
+		],
+		"duration": 8
+	},
+	"forestOther":{
+		"storyText": "    ",
+		"options":[
+			{"text": "Mysterious lights", "response": "zooStart"},
+			{"text": "Other", "response": "cavesStart"}
+		],
+		"duration": 8
+	},
+	"castleStart": {
+	"storyText": "The Doctor: \"Did you get everything?\"",
+		"options":[
+			{"text": "Mysterious lights", "response": "zooStart"},
+			{"text": "Other", "response": "cavesStart"}
 		],
 		"duration": 8
 	}
