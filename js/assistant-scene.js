@@ -15,6 +15,15 @@ export default class AssistantScene extends Phaser.Scene {
     // Audio
     this.load.audio('the-assistant', 'assets/audio/the-assistant.mp3', { stream: true }); // What does stream do??????
 
+    // Default background placeholders, the actual ones will be loaded dynamically
+    this.load.image('default_background', 'assets/images/backgrounds/default_background.png');
+    this.load.image('default_midground', 'assets/images/backgrounds/default_midground.png');
+    this.load.image('default_foreground', 'assets/images/backgrounds/default_foreground.png');
+    this.load.image('text_background', 'assets/images/backgrounds/text_background.png');
+
+    // this.load.image('bg', `assets/images/backgrounds/${'graveyard_background.png'}`);
+
+
     // For testing that the loading screen works
     // for (var i = 0; i < 50; i++) {
     //   this.load.image(`light_${i}`, 'assets/images/backgrounds/light.png');
@@ -40,10 +49,18 @@ export default class AssistantScene extends Phaser.Scene {
     // get this after resizing, obviously
     let { width, height } = this.sys.game.canvas;
 
+    this.backgroundOrigin = new Phaser.Math.Vector2(width / 2, height);
+    this.origin = new Phaser.Math.Vector2(width / 2, height / 2);
+    this.addDefaultBackgrounds();
+
     this.buttons = this.add.group({ classType: Button });
-    this.displayText = this.add.bitmapText(width / 2, height / 2, 'mont', '', 26).setCenterAlign().setOrigin(0.5).setTint('k');
-    this.add.bitmapText(width / 2, 50, 'mont', 'Items', 18).setCenterAlign().setOrigin(0.5, 0).setTint('k');
-    this.add.bitmapText(width / 2, 140, 'mont', 'Other', 18).setCenterAlign().setOrigin(0.5, 0).setTint('k');
+    this.textBackground = this.add.image(width / 2, 40, 'text_background').setOrigin(0.5, 0).setScale(1.2);
+    this.displayText = this.add.bitmapText(width / 2, 40, 'mont', '', 26).setCenterAlign().setOrigin(0.5, 0).setTint('w');
+    this.displayText.setMaxWidth(width - 80);
+
+
+    // this.add.bitmapText(width / 2, 50, 'mont', 'Items', 18).setCenterAlign().setOrigin(0.5, 0).setTint('k');
+    // this.add.bitmapText(width / 2, 140, 'mont', 'Other', 18).setCenterAlign().setOrigin(0.5, 0).setTint('k');
 
     // ONly makie visiblbe when have items
     // this.addItemsMenu();
@@ -51,13 +68,24 @@ export default class AssistantScene extends Phaser.Scene {
     this.storyText = this.cache.json.get('story-text');
 
     this.playerItems = [];
+    this.playerCollectibles = [];
     this.playerEvents = []; // Make these sets?
     this.setScene('graveyardStart');
 
     this.displayItems = [];
 
+
+    // this.paralax();
+
+
     // this.addItem('item');
-    // // this.addItem('item');
+    // this.addItem('item');
+    // this.addItem('item');
+    // this.addItem('item');
+    // this.addItem('item');
+    // this.addItem('item');
+    // this.addItem('item');
+    // this.addItem('item');
     // let background = this.add.image(width / 2, height / 2, 'button').setOrigin(0.5).setInteractive();
     // background.on('pointerdown', () => {
     //   console.log(this.playerItems)
@@ -127,7 +155,7 @@ export default class AssistantScene extends Phaser.Scene {
     // }, this);
 
 
-    // this.origin = new Phaser.Math.Vector2(width / 2, height / 2 - 50);
+    // this.backgroundOrigin = new Phaser.Math.Vector2(width / 2, height / 2 - 50);
 
     // this.sinks = [];
 
@@ -172,27 +200,44 @@ export default class AssistantScene extends Phaser.Scene {
   addItem(item) {
     let { width, height } = this.sys.game.canvas;
     const itemWidth = 40;
+    let displayX;
+    let displayY;
+    if (item.includes('Arm') | item.includes('Leg') | item.includes('Torso')) {
+      this.playerCollectibles.push(item);
+      displayX = width - itemWidth / 2 - 2;
+      displayY = this.playerCollectibles.length * (itemWidth + 5)
+    } else {
+      this.playerItems.push(item);
+      displayX = itemWidth / 2 + 2;
+      displayY = this.playerItems.length * (itemWidth + 5)
+    }
 
-    this.playerItems.push(item);
-
-    this.displayItems.push(new DisplayItem(this, 0, 80, itemWidth, item));
-    const itemsLen = this.displayItems.length;
-    this.displayItems.forEach((item, i) => {
-      item.setXPos(width / 2 + (i - (itemsLen - 1) / 2) * (itemWidth + 5));
-    });
+    // const itemsLen = this.displayItems.length;
+    this.displayItems.push(new DisplayItem(this, displayX, displayY + 160, itemWidth, item));
+    // const itemsLen = this.displayItems.length;
+    // this.displayItems.forEach((item, i) => {
+    //   item.setYPos(80 - (i - (itemsLen - 1) / 2) * (itemWidth + 5));
+    // });
+    // this.displayItems.forEach((item, i) => {
+    //   item.setXPos(width / 2 + (i - (itemsLen - 1) / 2) * (itemWidth + 5));
+    // });
   }
 
   setScene(sceneId) {
     console.log('Next scene: ', sceneId);
+    this.updateBackground(this.storyText[sceneId]['backgrounds']);
     // console.log(this.storyText[sceneId])
-    this.displayText.text = this.storyText[sceneId]['storyText']
+    this.displayText.text = this.storyText[sceneId]['storyText'];
+    this.textBackground.displayHeight = this.displayText.height + 20;
+    // console.log(this.displayText.getTextBounds());
     this.addButtons(this.storyText[sceneId]['options']); //['buttonText'], this.storyText[sceneId]['buttonResponse'], this.storyText[sceneId]['item']);
     this.buttonTimer(this.storyText[sceneId]['duration']);
+    // this.paralax();
   }
 
   addButtons(options) {
     let { width, height } = this.sys.game.canvas;
-    const buttonWidth = 140, buttonHeight = 60;
+    const buttonWidth = 140, buttonHeight = 60; // width 140 try bigger??
 
     options = this.getValidOptions(options);
 
@@ -207,6 +252,131 @@ export default class AssistantScene extends Phaser.Scene {
       }
       this.buttons.add(button);
     });
+  }
+
+  addDefaultBackgrounds() {
+    // let { width, height } = this.sys.game.canvas;
+    let background = this.add.image(this.backgroundOrigin.x, this.backgroundOrigin.y, 'default_background').setOrigin(0.5, 1).setScale(1.2);
+    let midground = this.add.image(this.backgroundOrigin.x, this.backgroundOrigin.y, 'default_midground').setOrigin(0.5, 1).setScale(1.2);
+    let foreground = this.add.image(this.backgroundOrigin.x, this.backgroundOrigin.y, 'default_foreground').setOrigin(0.5, 1).setScale(1.2);
+
+    this.backgrounds = [background, midground, foreground];
+  }
+
+  updateBackground(backgrounds) {
+    backgrounds = backgrounds ? backgrounds : {};
+    let keys = ["background", "midground", "foreground"];
+    keys.forEach(function (key, i) {
+      let texture = backgrounds[key] ? backgrounds[key] : `default_${key}`;
+      if (this.textures.exists(texture)) {
+        this.backgrounds[i].setTexture(texture);
+      } else {
+        this.load.image(texture, `assets/images/backgrounds/${texture}`);
+        this.load.start();
+        this.load.once(Phaser.Loader.Events.COMPLETE, () => {
+          this.backgrounds[i].setTexture(texture);
+        });
+      }
+    }, this);
+
+    // for (key )
+    // backgrounds[]
+    // console.log
+    // backgrounds = backgrounds ? backgrounds : [];
+
+    // for (let i = 0; i < this.backgrounds.length; i++) {
+    //   this.load.image(backgrounds[i], `assets/images/backgrounds/${backgrounds[i]}.png`);
+    //   this.load.start();
+    //   this.load.once(Phaser.Loader.Events.COMPLETE, () => {
+    //     this.backgrounds[i].setTexture(backgrounds[i]);
+    //   });
+    // }
+
+    console.log(backgrounds);
+    // if (backgrounds) {
+    //   for (let i = 0; i < backgrounds.length; i++) {
+    //     this.load.image(backgrounds[i], `assets/images/backgrounds/${backgrounds[i]}.png`);
+    //     this.load.start();
+    //     this.load.once(Phaser.Loader.Events.COMPLETE, () => {
+    //       this.backgrounds[i].setTexture(backgrounds[i]);
+    //     });
+    //   }
+    // console.log(backgrounds);
+    // backgrounds.forEach(background => {
+    //   console.log(background);
+    //   this.load.image('bg', `assets/images/backgrounds/${background}`);
+    //   this.load.start();
+    //   this.load.once(Phaser.Loader.Events.COMPLETE, () => {
+    //     console.log("HI");
+    //     this.add.image(width / 2, height / 2, 'bg').setOrigin(0.5)
+
+    //   });
+
+    // this.add.image(100, 0, 'itemoo').setOrigin(0.5);
+
+    // });
+    // }
+    // 
+
+    // this.add.image(width / 2, height / 2, 'bg').setOrigin(0.5);
+
+    // this.load.image('item', 'assets/sprites/ball.png');
+
+  }
+
+  moveBackground() {
+    const angle = Phaser.Math.Angle.BetweenPoints(this.input.mousePointer.position, this.origin);
+    const distance = Phaser.Math.Distance.BetweenPoints(this.input.mousePointer.position, this.origin);
+
+    let direction = new Phaser.Math.Vector2();
+    direction = direction.setToPolar(angle, Math.min(distance, 100) / 10);  //distance > 10 ? 10 : 0);// Math.min(distance, 10)
+
+    // console.log(Math.min(distance, 10));
+
+    this.backgrounds.forEach(function (background, i) {
+      background.x = this.backgroundOrigin.x + (i + 1) * direction.x;
+      background.y = this.backgroundOrigin.y + (i + 1) * direction.y;
+    }, this);
+
+    // const distance = Phaser.Math.Distance.BetweenPoints(
+    //   new Phaser.Math.Vector2(width / 2 + target.x, height - 40 + target.y),
+    //   new Phaser.Math.Vector2(this.backgrounds[0].x, this.backgrounds[0].y)
+    // );
+  }
+
+  paralax() {
+    console.log(this.input.mousePointer.position);
+    // Choose random point in circle around middle
+    // let { width, height } = this.sys.game.canvas;
+
+    // // let direction = new Phaser.Math.Vector2();
+    // // const angle = this.spawnIndex * Phaser.Math.PI2 / 4 + Phaser.Math.FloatBetween(-0.4, 0.4);
+    // // direction.setToPolar(angle, 4);
+
+    // // Keep speed the same, use angle
+    // let target = new Phaser.Math.Vector2(Phaser.Math.FloatBetween(-10.0, 10.0), Phaser.Math.FloatBetween(-10.0, 10.0));
+    // const distance = Phaser.Math.Distance.BetweenPoints(
+    //   new Phaser.Math.Vector2(width / 2 + target.x, height - 40 + target.y),
+    //   new Phaser.Math.Vector2(this.backgrounds[0].x, this.backgrounds[0].y)
+    // );
+    // // console.log(distance);
+    // // console.log(1 * target.x);
+    // this.backgrounds.forEach(function (background, i) {
+    //   this.tweens.add({
+    //     targets: background,
+    //     x: width / 2 + (i + 1) * target.x,
+    //     y: height - 40 + (i + 1) * target.y,
+    //     duration: 12000 / distance,
+    //     // ease: 'Power2',
+    //     onComplete: function () {
+    //       // if (this.)
+    //       // this.paralax();
+    //       // this.scoreText.setTint(0xffffff);
+    //       // emitter.explode(10, width - 20 - this.scoreText.width / 2, 20);
+    //     }.bind(this)
+    //     // yoyo: true
+    //   });
+    // }, this);
   }
 
   getValidOptions(options) {
@@ -352,7 +522,10 @@ export default class AssistantScene extends Phaser.Scene {
 
   update(time, delta) {
     this.playerScene.updatePlayTime(this.song.seek, this.getSongPercent());
+    this.moveBackground();
   }
+
+
 }
 
 class Button extends Phaser.GameObjects.Container {
@@ -428,5 +601,10 @@ class DisplayItem {
   setXPos(x) {
     this.background.x = x;
     this.itemImage.x = x;
+  }
+
+  setYPos(y) {
+    this.background.y = y;
+    this.itemImage.y = y;
   }
 }

@@ -9,13 +9,18 @@
 		"duration": 8
 	},
 	"graveyardStart": {
-		"storyText": "As you enter the\ngraveyard, you see a\nmysterious figure covered\nin dirtand holdng a\nshovel",
+		"storyText": "As you enter the graveyard, you see a mysterious figure holding a shovel",
 		"options":[
 			{"text": "Offer Assistance", "response": "graveyardHelp"},
 			{"text": "Attack", "response": "graveyardAttack", "event": "attack"},
 			{"text": "Sneak Past", "response": "graveyardSneak"}
 		],
-		"duration": 8
+		"duration": 8,
+		"backgrounds": {
+			"background": "graveyard_background.png",
+			"midground": "graveyard_midground.png",
+			"foreground": "graveyard_foreground.png"
+		}
 	},
 	"graveyardHelp": {
 		"storyText": "Billy the grave robber:\n \"Thanks for your help.\nTake anything you want\"",
@@ -106,7 +111,10 @@
 			{"text": "Break in", "response": "zooBreak", "requirement": {"item": "crowbar"}},
 			{"text": "Sneak around back", "response": "zooSneak"}
 		],
-		"duration": 8
+		"duration": 8,
+		"backgrounds": {
+			"background": "zoo_background.jpg"
+		}
 	},
 	"zooBreak": {
 		"storyText": "As you slip throught\nthe gate your are confronted\nby a security guard",
