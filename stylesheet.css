@@ -27,6 +27,81 @@ body {
   margin-right: 20px; */
 }
 
+/* header {
+  color: red;
+  text-align: center;
+} */
+
+/* Style the header with a grey background and some padding */
+.header {
+  overflow: hidden;
+  background-color: blueviolet;
+  /* padding: 20px 10px; */
+  /* display: inline-block; */
+  /* display: flex; */
+  /* height: 5%; */
+  /* vertical-align: middle; */
+  /* font-size: 0px; */
+}
+
+/* Style the header links */
+.header a {
+  float: left;
+  color: black;
+  text-align: center;
+  padding: 12px;
+  text-decoration: none;
+  font-size: 18px;
+  line-height: 25px;
+  border-radius: 4px;
+}
+
+/* Style the logo link (notice that we set the same value of line-height and font-size to prevent the header to increase when the font gets bigger */
+.header a.logo {
+  font-size: 25px;
+  font-weight: bold;
+}
+
+/* Change the background color on mouse-over */
+.header a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+/* Style the active/current link*/
+.header a.active {
+  background-color: dodgerblue;
+  color: white;
+}
+
+/* Float the link section to the right */
+.header-right {
+  float: right;
+}
+
+.header-left {
+  float: left;
+}
+
+/* Add media queries for responsiveness - when the screen is 500px wide or less, stack the links on top of each other */
+@media screen and (max-width: 500px) {
+  .header a {
+    float: none;
+    /* display: flex; */
+    font-size: 0px;
+    display: block;
+    text-align: left;
+  }
+
+  .header-right {
+    float: none;
+  }
+
+  .header-leftt {
+    float: none;
+  }
+}
+
 h4 {
   margin-top: 2px;
   margin-bottom: 0px;
@@ -229,32 +304,170 @@ input[type=button] {
   display: block;
 }
 
-#question,
-#leaderboards {
-  background-image: url('assets/images/icons/icons.png');
-  background-repeat: no-repeat;
+.frame {
+  height: 25px;
+  /* Equals maximum image height */
+  width: 160px;
+  border: 1px solid red;
+  white-space: nowrap;
+  /* This is required unless you put the helper span closely near the img */
+
+  text-align: center;
+  margin: 1em 0;
 }
 
-#question {
+.helper {
+  display: inline-block;
+  height: 100%;
+  vertical-align: middle;
+}
+
+.btn {
+  background-color: DodgerBlue;
+  border: none;
+  color: white;
+  padding: 12px 16px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+/* Darker background on mouse-over */
+.btn:hover {
+  background-color: RoyalBlue;
+}
+
+.toolbtn {
+  background: url('assets/images/icons/header-icons.png') no-repeat;
+  /* display: inline-block; */
+  height: 100px;
+  width: 100px;
+  scale: 0.6;
+  /* margin-right: -50px; */
+  display: -webkit-box;
+  /* OLD - iOS 6-, Safari 3.1-6 */
+  display: -moz-box;
+  /* OLD - Firefox 19- (buggy but mostly works) */
+  display: -ms-flexbox;
+  /* TWEENER - IE 10 */
+  display: -webkit-flex;
+  /* NEW - Chrome */
+  display: flex;
+  /* NEW, Spec - Opera 12.1, Firefox 20+ */
+}
+
+.hbtn {
+  background: url('assets/images/icons/header-icons.png') no-repeat;
+  /* display: inline-block; */
+  height: 100px;
+  width: 100px;
+  scale: 0.6;
+  cursor: pointer;
+  border: none;
+}
+
+.question {
+  background-position: 0px 0px;
+  /* display: inline-block; */
+  /* display: inline-block;
+  height: 100px;
+  width: 100px; */
+}
+
+.score {
   background-position: -200px 0px;
+  /* display: inline-block; */
+  /* display: inline-block;
+  height: 100px;
+  width: 100px; */
+}
+
+.leaderBoard {
+  background-position: -100px 0px;
+  /* display: inline-block; */
+}
+
+.lines {
+  background-position: -300px 0px;
+  /* display: inline-block; */
+}
+
+ul.flexbox {
+  display: -webkit-box;
+  /* OLD - iOS 6-, Safari 3.1-6 */
+  display: -moz-box;
+  /* OLD - Firefox 19- (buggy but mostly works) */
+  display: -ms-flexbox;
+  /* TWEENER - IE 10 */
+  display: -webkit-flex;
+  /* NEW - Chrome */
+  display: flex;
+  /* NEW, Spec - Opera 12.1, Firefox 20+ */
+}
+
+#questionoo,
+#leaderboardsoo {
+  background: url('assets/images/icons/header-icons.png');
+  display: inline-block;
+  height: 100px;
+  width: 100px;
+  scale: 0.6;
+  /* background-image: url('assets/images/icons/icons.png');
+  background-repeat: no-repeat;
+  border: none;
+  outline: none;
+  background-color: black; */
+}
+
+#questionoo {
+  background-position: 0px 0px;
+  /* background-color: black; */
+  /* border: none; */
   /* left: 200px;
   width: 46px; */
-  left: 0px;
-  width: 42px;
-  height: 66px;
+  /* left: 0px; */
+  /* width: 42px;
+  height: 66px; */
   /* background: url('assets/images/icons/icons.png') -200px 0px; */
-  scale: 0.5;
+  /* scale: 0.5;
+  border: none;
+  outline: none; */
 }
 
-#leaderboards {
+#leaderboardsoo {
   background-position: -69px -136px;
   /* left: 200px;
   width: 46px; */
-  left: 20px;
+  /* left: 20px; */
   width: 70px;
   height: 58px;
   /* background: url('assets/images/icons/icons.png') -69px -136px; */
   scale: 0.5;
+  /* bottom: 20px; */
+}
+
+
+#test {
+  background-image: url('assets/images/icons/header-icons.png');
+  display: inline-block;
+  /* background-repeat: no-repeat; */
+  /* border: none;
+  outline: none;
+  background-color: black; */
+}
+
+#test {
+  background-position: 0px 0px;
+  /* background-color: black; */
+  /* border: none; */
+  /* left: 200px;
+  width: 46px; */
+  /* left: 0px; */
+  /* width: 42px; */
+  height: 32px;
+  width: 32px;
+  /* background: url('assets/images/icons/icons.png') -200px 0px; */
+  /* scale: 0.5; */
+  /* border: none; */
 }
 
 #home {
@@ -284,4 +497,53 @@ input[type=button] {
 .flags-mexico {
   height: 147px;
   background-position: -5px -288px;
+}
+
+/* Add a black background color to the top navigation */
+.topnav {
+  background-color: #333;
+  /* overflow: hidden; */
+  display: flex;
+}
+
+/* Style the links inside the navigation bar */
+.topnav a {
+  /* float: right; */
+  /* color: #f2f2f2; */
+  /* text-align: center; */
+  /* padding: 14px 16px; */
+  /* text-decoration: none; */
+  /* font-size: 17px; */
+  background: url('assets/images/icons/header-icons.png') no-repeat;
+  display: inline-block;
+  height: 100px;
+  width: 100px;
+  scale: 0.6;
+  cursor: pointer;
+  border: none;
+}
+
+/* Change the color of links on hover */
+.topnav a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+/* Add a color to the active/current link */
+.topnav a.active {
+  background-color: #04AA6D;
+  color: white;
+}
+
+.topnav a.question {
+  background-position: 0px 0px;
+}
+
+.row {
+  display: flex;
+}
+
+.column {
+  /* flex: 1%; */
+  /* padding: 5px; */
 }
