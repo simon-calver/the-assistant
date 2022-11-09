@@ -23,12 +23,15 @@
 		}
 	},
 	"graveyardHelp": {
-		"storyText": "Billy the grave robber:\n \"Thanks for your help.\nTake anything you want\"",
+		"storyText": "Billy the grave robber: \"Thanks for your help. Take anything you want\"",
 		"options":[
 			{"text": "Arm", "response": "graveyardEnd", "item": "graveyardArm"},
 			{"text": "Leg", "response": "graveyardEnd", "item": "graveyardLeg"}
 		],
-		"duration": 8
+		"duration": 8,
+		"backgrounds": {
+			"background": "graveyard_help_background.jpg"
+		}
 	},
 	"graveyardAttack": {
 		"storyText": "They run away or something and drop torch",
@@ -53,7 +56,7 @@
 		"duration": 8
 	},
 	"cavesStart": {
-		"storyText": "It's very dark in here\nyou can't see anything!",
+		"storyText": "It's very dark in here you can't see anything!",
 		"options":[
 			{"text": "Use Torch", "response": "cavesTorch", "requirement": {"item": "torch"}},
 			{"text": "Feel Your Way", "response": "cavesFeel"},
@@ -63,8 +66,11 @@
 		"requirement": [{"item": "torch"}, {}, {"notEvent": "attack"}, {"event": "attack"}],
 		"buttonText": ["Use Torch", "Feel Your Way", "Say Hello", "Say Hello"],
 		"buttonResponse": ["graveyardEnd", "graveyardEnd", "cavesHelloEmpty", "cavesHelloResponse"],
-		"duration": 8
-	},	
+		"duration": 8,
+		"backgrounds": {
+			"background": "cave_background.jpg"
+		}
+	},
 	"cavesTorch": {
 		"storyText": "torch makes light, find thing choose",
 		"options":[
@@ -74,7 +80,7 @@
 		"duration": 8
 	},
 	"cavesFeel": {
-		"storyText": "walls all slmiy and stuff\n",
+		"storyText": "walls all slmiy and stuff",
 		"options":[
 			{"text": "Arm", "response": "cavesEnd", "item": "cavesArm"},
 			{"text": "Leg", "response": "cavesEnd", "item": "cavesLeg"}
@@ -82,7 +88,7 @@
 		"duration": 8
 	},
 	"cavesHelloEmpty": {
-		"storyText": "There's no response, that\nwas a waste of time!\nWhere to next?",
+		"storyText": "There's no response, that was a waste of time! Where to next?",
 		"options":[
 			{"text": "Zoo", "response": "zooStart"},
 			{"text": "Cave", "response": "cavesStart"}
@@ -106,7 +112,7 @@
 		"duration": 8
 	},
 	"zooStart": {
-		"storyText": "Aparently the zoo\nis closed at night",
+		"storyText": "Aparently the zoo is closed at night",
 		"options":[
 			{"text": "Break in", "response": "zooBreak", "requirement": {"item": "crowbar"}},
 			{"text": "Sneak around back", "response": "zooSneak"}
@@ -117,7 +123,7 @@
 		}
 	},
 	"zooBreak": {
-		"storyText": "As you slip throught\nthe gate your are confronted\nby a security guard",
+		"storyText": "As you slip throught the gate your are confronted by a security guard",
 		"options":[
 			{"text": "Attack", "response": "zooAttack"},
 			{"text": "Run away", "response": "zooRun"},
@@ -126,7 +132,7 @@
 		"duration": 8
 	},
 	"zooSneak": {
-		"storyText": "You find a broken\nfence and make your\nway to lion or something",
+		"storyText": "You find a broken fence and make your way to lion or something",
 		"options":[
 			{"text": "Arm", "response": "zooEnd", "item": "zooArm"},
 			{"text": "Leg", "response": "zooEnd", "item": "zooLeg"}
@@ -149,7 +155,7 @@
 		"duration": 8
 	},
 	"morgueKnock": {
-		"storyText": "The door slowly opens\n\"morgue Creep\": Ah wonderfujl to see you again\n what wiould you like?",
+		"storyText": "The door slowly opens \"morgue Creep\": Ah wonderfujl to see you again what wiould you like?",
 		"options":[
 			{"text": "Brain", "response": "morgueEnd", "item": "morgueBrain"},
 			{"text": "Torso", "response": "morgueEnd", "item": "morgueTorso"},
@@ -158,20 +164,42 @@
 		"duration": 8
 	},
 	"morgueEnd": {
-		"storyText": "Time to head back\nto the Doctor",
+		"storyText": "Time to head back to the Doctor",
 		"options":[
 			{"text": "Walk", "response": "castleStart"},
 			{"text": "Run", "response": "castleStart"}
 		],
-		"duration": 8
+		"duration": 8,
+		"backgrounds": {
+			"background": "castle_background.jpg"
+		}
+	},
+	"hospitalStart": {
+		"storyText": "It's very dark in here you can't see anything!",
+		"options":[
+			{"text": "Use Torch", "response": "cavesTorch", "requirement": {"item": "torch"}},
+			{"text": "Feel Your Way", "response": "cavesFeel"},
+			{"text": "Say Hello", "response": "cavesHelloEmpty", "requirement": {"notEvent": "attack"}},
+			{"text": "Say Hello", "response": "cavesHelloResponse", "requirement": {"event": "attack"}}
+		],
+		"requirement": [{"item": "torch"}, {}, {"notEvent": "attack"}, {"event": "attack"}],
+		"buttonText": ["Use Torch", "Feel Your Way", "Say Hello", "Say Hello"],
+		"buttonResponse": ["graveyardEnd", "graveyardEnd", "cavesHelloEmpty", "cavesHelloResponse"],
+		"duration": 8,
+		"backgrounds": {
+			"background": "hospital_background.jpg"
+		}
 	},
 	"forestStart":{
-		"storyText": "Mysterious lights or\nsome other thing",
+		"storyText": "Mysterious lights or some other thing",
 		"options":[
 			{"text": "Mysterious lights", "response": "forestLights"},
 			{"text": "Other", "response": "forestOther"}
 		],
-		"duration": 8
+		"duration": 8,
+		"backgrounds": {
+			"background": "forest_background.jpg"
+		}
 	},
 	"forestLights":{
 		"storyText": "    ",
@@ -195,6 +223,9 @@
 			{"text": "Mysterious lights", "response": "zooStart"},
 			{"text": "Other", "response": "cavesStart"}
 		],
-		"duration": 8
+		"duration": 8,
+		"backgrounds": {
+			"background": "lab_background.jpg"
+		}
 	}
 }

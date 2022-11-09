@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="210mm"
+   height="297mm"
+   viewBox="0 0 210 297"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.1.1 (3bf5ae0d25, 2021-09-20)"
+   sodipodi:docname="backgrounds.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="true"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:zoom="1.2810466"
+     inkscape:cx="372.74211"
+     inkscape:cy="546.03791"
+     inkscape:window-width="1920"
+     inkscape:window-height="1001"
+     inkscape:window-x="-9"
+     inkscape:window-y="-9"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs2">
+    <linearGradient
+       inkscape:collect="always"
+       id="linearGradient1974">
+      <stop
+         style="stop-color:#000000;stop-opacity:0.90081298"
+         offset="0"
+         id="stop1970" />
+      <stop
+         style="stop-color:#000000;stop-opacity:0.40243903"
+         offset="1"
+         id="stop1972" />
+    </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient1974"
+       id="linearGradient1976"
+       x1="36.763557"
+       y1="131.85289"
+       x2="87.960388"
+       y2="131.85289"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="translate(34.574034,-210.74997)" />
+    <filter
+       inkscape:collect="always"
+       style="color-interpolation-filters:sRGB"
+       id="filter2216"
+       x="-0.056920619"
+       y="-0.034377037"
+       width="1.1138412"
+       height="1.0687541">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="1.4401351"
+         id="feGaussianBlur2218" />
+    </filter>
+    <filter
+       inkscape:collect="always"
+       style="color-interpolation-filters:sRGB"
+       id="filter3264"
+       x="-0.031030902"
+       y="-0.069292529"
+       width="1.0620618"
+       height="1.1385851">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="1.2999576"
+         id="feGaussianBlur3266" />
+    </filter>
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath5609">
+      <rect
+         style="opacity:0.998451;fill:#858585;fill-opacity:1;stroke-width:1.5677;stroke-linecap:round;stroke-linejoin:round"
+         id="rect5611"
+         width="71.63649"
+         height="35.401615"
+         x="54.107655"
+         y="170.48981" />
+    </clipPath>
+  </defs>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <rect
+       style="opacity:0.998451;fill:url(#linearGradient1976);fill-opacity:1;stroke-width:1.84973;stroke-linecap:round;stroke-linejoin:round;filter:url(#filter2216)"
+       id="rect1888"
+       width="60.721832"
+       height="100.54166"
+       x="71.337601"
+       y="-129.16791"
+       transform="rotate(90)"
+       inkscape:export-filename="C:\Users\simon\Desktop\my git repositories\phaser-host\server\public\the-assistant\assets\images\backgrounds\text_background.png"
+       inkscape:export-xdpi="125.783"
+       inkscape:export-ydpi="125.783" />
+    <rect
+       style="opacity:0.830364;mix-blend-mode:normal;fill:#85817f;fill-opacity:1;stroke-width:1.26905;stroke-linecap:round;stroke-linejoin:round;filter:url(#filter3264)"
+       id="rect2480"
+       width="100.54166"
+       height="45.025032"
+       x="39.655075"
+       y="156.76147"
+       transform="matrix(1.4034978,0,0,1.4034978,-19.96849,-74.053744)"
+       clip-path="url(#clipPath5609)"
+       inkscape:export-filename="C:\Users\simon\Desktop\my git repositories\phaser-host\server\public\the-assistant\assets\images\backgrounds\text_background.png"
+       inkscape:export-xdpi="96.228806"
+       inkscape:export-ydpi="96.228806" />
+    <rect
+       style="opacity:0.830364;fill:#85817f;fill-opacity:0;stroke-width:0.0906749;stroke-linecap:round;stroke-linejoin:round"
+       id="rect8803"
+       width="2.6458333"
+       height="2.6458333"
+       x="-36.557022"
+       y="150.35883"
+       inkscape:export-filename="C:\Users\simon\Desktop\my git repositories\phaser-host\server\public\the-assistant\assets\images\backgrounds\default_background.png"
+       inkscape:export-xdpi="96.228806"
+       inkscape:export-ydpi="96.228806" />
+  </g>
+</svg>

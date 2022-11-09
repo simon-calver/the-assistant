@@ -22,6 +22,7 @@ export default class AssistantScene extends Phaser.Scene {
     this.load.image('text_background', 'assets/images/backgrounds/text_background.png');
 
     // this.load.image('bg', `assets/images/backgrounds/${'graveyard_background.png'}`);
+    this.load.image('graveyardArm', 'assets/sprites/graveyardArm.png');
 
 
     // For testing that the loading screen works
@@ -74,6 +75,8 @@ export default class AssistantScene extends Phaser.Scene {
 
     this.displayItems = [];
 
+
+    window.addEventListener('deviceorientation', this.handleOrientation, true);
 
     // this.paralax();
 
@@ -187,6 +190,13 @@ export default class AssistantScene extends Phaser.Scene {
     this.song.seek = 33;
   }
 
+  handleOrientation(e) {
+    const x = e.gamma;
+    const y = e.beta;
+
+    this.displayText.text = `x=${x}`;
+
+  }
   // addItemsMenu() {
   //   let { width, height } = this.sys.game.canvas;
   //   this.add.bitmapText(width / 2, 50, 'mont', 'Items', 18).setCenterAlign().setOrigin(0.5, 0).setTint('k');
@@ -256,9 +266,9 @@ export default class AssistantScene extends Phaser.Scene {
 
   addDefaultBackgrounds() {
     // let { width, height } = this.sys.game.canvas;
-    let background = this.add.image(this.backgroundOrigin.x, this.backgroundOrigin.y, 'default_background').setOrigin(0.5, 1).setScale(1.2);
-    let midground = this.add.image(this.backgroundOrigin.x, this.backgroundOrigin.y, 'default_midground').setOrigin(0.5, 1).setScale(1.2);
-    let foreground = this.add.image(this.backgroundOrigin.x, this.backgroundOrigin.y, 'default_foreground').setOrigin(0.5, 1).setScale(1.2);
+    let background = this.add.image(this.backgroundOrigin.x, this.backgroundOrigin.y, 'default_background').setOrigin(0.5, 1).setScale(1.1);
+    let midground = this.add.image(this.backgroundOrigin.x, this.backgroundOrigin.y, 'default_midground').setOrigin(0.5, 1).setScale(1.1);
+    let foreground = this.add.image(this.backgroundOrigin.x, this.backgroundOrigin.y, 'default_foreground').setOrigin(0.5, 1).setScale(1.1);
 
     this.backgrounds = [background, midground, foreground];
   }
@@ -581,7 +591,11 @@ class DisplayItem {
     this.background.displayHeight = width;
 
     this.item = item;
-    this.itemImage = scene.add.image(x, y, 'item').setOrigin(0.5, 0).setInteractive();
+    if (scene.textures.exists(item)) {
+      this.itemImage = scene.add.image(x, y, item).setOrigin(0.5, 0).setInteractive();
+    } else {
+      this.itemImage = scene.add.image(x, y, 'item').setOrigin(0.5, 0).setInteractive();
+    }
     this.itemImage.displayWidth = 0.9 * width;
     this.itemImage.displayHeight = 0.9 * width;
 
