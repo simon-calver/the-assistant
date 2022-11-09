@@ -194,8 +194,9 @@ export default class AssistantScene extends Phaser.Scene {
     const x = e.gamma;
     const y = e.beta;
 
-    this.displayText.text = `x=${x}`;
-
+    if (this.displayText) {
+      this.displayText.text = `x=${x}`;
+    }
   }
   // addItemsMenu() {
   //   let { width, height } = this.sys.game.canvas;
