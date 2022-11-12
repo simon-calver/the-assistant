@@ -5,11 +5,16 @@
 				"storyText": "The vehicle move along the road",
 				"speechText": "wa wa wa",
 				"options":[
+					{"text": "Offer Assistance", "response": "introCont"},
+					{"text": "Offer Assistance", "response": "introCont"},
+					{"text": "Offer Assistance", "response": "introCont"},
+					{"text": "Offer Assistance", "response": "introCont"},
 					{"text": "Offer Assistance", "response": "introCont"}
 				]
 			}
 		],
-		"duration": 8
+		"duration": 8,
+		"mapButton": false
 	},
 	"introCont": {
 		"story": [
@@ -21,7 +26,8 @@
 				]
 			}
 		],
-		"duration": 8
+		"duration": 8,
+		"mapButton": false
 	},
 	"outskirts":{
 		"story": [

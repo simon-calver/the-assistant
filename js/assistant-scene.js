@@ -60,6 +60,7 @@ export default class AssistantScene extends Phaser.Scene {
     this.displayText.setMaxWidth(width - 80);
 
 
+    this.addMapButton();
     // this.add.bitmapText(width / 2, 50, 'mont', 'Items', 18).setCenterAlign().setOrigin(0.5, 0).setTint('k');
     // this.add.bitmapText(width / 2, 140, 'mont', 'Other', 18).setCenterAlign().setOrigin(0.5, 0).setTint('k');
 
@@ -85,7 +86,6 @@ export default class AssistantScene extends Phaser.Scene {
     this.events = { "sceneName": { "start": 99, "triggered": false } };
 
 
-    this.addMapButton();
 
     this.addItem('shovel');
     // this.addItem('item');
@@ -243,12 +243,16 @@ export default class AssistantScene extends Phaser.Scene {
   setScene(sceneId) {
     console.log('Next scene: ', sceneId);
     this.updateBackground(this.storyText[sceneId]['backgrounds']);
+    let displayMapButton = true;
+    if (this.storyText[sceneId]['mapButton'] != undefined) {
+      displayMapButton = this.storyText[sceneId]['mapButton'];
+    }
     if (this.storyText[sceneId]['item']) {
       this.addItem(this.storyText[sceneId]['item']);
     }
     if (this.storyText[sceneId]['story']) {
       let storyEvent = this.getStoryEvent(this.storyText[sceneId]['story']);
-      console.log(storyEvent);
+      // console.log(storyEvent);
       this.displayText.text = storyEvent['storyText'];
       // Make all of these lists !!!!
       if (storyEvent['item']) {
@@ -263,14 +267,14 @@ export default class AssistantScene extends Phaser.Scene {
         this.playerEvents.push(storyEvent['event']);
       }
       if (storyEvent['options']) {
-        this.addButtons(storyEvent['options']);
+        this.addButtons(storyEvent['options'], displayMapButton);
       } else {
-        this.addButtons(this.storyText[sceneId]['options']);
+        this.addButtons(this.storyText[sceneId]['options'], displayMapButton);
       }
       // this.displayText.text = this.getText(this.storyText[sceneId]['story']);
     } else {
       this.displayText.text = this.storyText[sceneId]['storyText'];
-      this.addButtons(this.storyText[sceneId]['options']);
+      this.addButtons(this.storyText[sceneId]['options'], displayMapButton);
     }
 
     // console.log(this.storyText[sceneId]['item']);
@@ -282,18 +286,24 @@ export default class AssistantScene extends Phaser.Scene {
     console.log("Player events: ", this.playerEvents);
   }
 
-  addButtons(options) {
+  addButtons(options, displayMapButton) {
     let { width, height } = this.sys.game.canvas;
     const buttonWidth = 140, buttonHeight = 60; // width 140 try bigger??
 
+    const centre = displayMapButton ? width / 2 + 30 : width / 2;
+    width = displayMapButton ? width - 55 : width;
+
+    const xPadding = (width - 2 * buttonWidth) / 4, xLeft = centre - buttonWidth / 2 - xPadding, xRight = centre + buttonWidth / 2 + xPadding;
+
     options = this.getValidOptions(options);
 
-    const xPadding = (width - 2 * buttonWidth) / 4, xLeft = buttonWidth / 2 + xPadding, xRight = width - buttonWidth / 2 - xPadding;
-
+    if (displayMapButton) {
+      this.updateMapButton(height - Math.ceil(options.length / 2) / 2 * buttonHeight - 50);
+    }
     options.forEach((option, index) => {
       let button;
       if (index % 2 == 0 & index == options.length - 1) {
-        button = new Button(this, width / 2, height - (index / 2) * buttonHeight - 80, option, buttonWidth);
+        button = new Button(this, centre, height - (index / 2) * buttonHeight - 80, option, buttonWidth);
       } else {
         button = new Button(this, (index % 2 == 0) ? xLeft : xRight, height - Math.floor(index / 2) * buttonHeight - 80, option, buttonWidth);
       }
@@ -302,15 +312,24 @@ export default class AssistantScene extends Phaser.Scene {
   }
 
   addMapButton() {
-    let { width, height } = this.sys.game.canvas;
-    let background = this.add.image(width / 2, height / 2, 'button').setOrigin(0.5);
-    background.displayWidth = 40;
-    background.displayHeight = 40;
-    background.setInteractive();
-    background.on('pointerdown', () => {
+    this.mapButton = this.add.image(10, 50, 'button').setOrigin(0, 0.5);
+    this.mapButton.displayWidth = 45;
+    this.mapButton.displayHeight = 45;
+    this.mapButton.setInteractive();
+    this.mapButton.on('pointerdown', () => {
       this.stopCurrentScene();
       this.setScene('outskirts');
     }, this);
+    this.displayMapButton(false);
+  }
+
+  updateMapButton(yPos) {
+    this.mapButton.y = yPos;
+    this.displayMapButton(true);
+  }
+
+  displayMapButton(visible) {
+    this.mapButton.setVisible(visible);
   }
 
   addDefaultBackgrounds() {
@@ -669,6 +688,15 @@ class Button extends Phaser.GameObjects.Container {
     this.on('pointerdown', () => {
       scene.updateActiveButton(this);
     }, this);
+
+    // This seems a little dangerous!!!
+    while (bitmapText.width > buttonWidth - 5) {
+      bitmapText.setFontSize(bitmapText.fontSize - 1);
+    }
+    // for (let i = 0; i < 10; i++) {
+    //   bitmapText.setFontSize(bitmapText.fontSize - 1);
+    //   console.log(bitmapText.width / bitmapText.fontSize);
+    // }
   }
 
   updateTimer(percent) {
