@@ -71,7 +71,7 @@ export default class AssistantScene extends Phaser.Scene {
     this.playerItems = [];
     this.playerCollectibles = [];
     this.playerEvents = []; // Make these sets?
-    this.setScene('graveyardStart');
+    this.setScene('intro');
 
     this.displayItems = [];
 
@@ -81,7 +81,13 @@ export default class AssistantScene extends Phaser.Scene {
     // this.paralax();
 
 
-    // this.addItem('item');
+    // Hard code this for now, maybe add to json?
+    this.events = { "sceneName": { "start": 99, "triggered": false } };
+
+
+    this.addMapButton();
+
+    this.addItem('shovel');
     // this.addItem('item');
     // this.addItem('item');
     // this.addItem('item');
@@ -187,7 +193,7 @@ export default class AssistantScene extends Phaser.Scene {
     }, this);
 
     this.song.play();
-    this.song.seek = 33;
+    // this.song.seek = 33;
   }
 
   handleOrientation(e) {
@@ -213,7 +219,7 @@ export default class AssistantScene extends Phaser.Scene {
     const itemWidth = 40;
     let displayX;
     let displayY;
-    if (item.includes('Arm') | item.includes('Leg') | item.includes('Torso')) {
+    if (item.includes('Arm') | item.includes('Leg') | item.includes('Torso') | item.includes('Brain') | item.includes('Organs')) {
       this.playerCollectibles.push(item);
       displayX = width - itemWidth / 2 - 2;
       displayY = this.playerCollectibles.length * (itemWidth + 5)
@@ -237,13 +243,43 @@ export default class AssistantScene extends Phaser.Scene {
   setScene(sceneId) {
     console.log('Next scene: ', sceneId);
     this.updateBackground(this.storyText[sceneId]['backgrounds']);
-    // console.log(this.storyText[sceneId])
-    this.displayText.text = this.storyText[sceneId]['storyText'];
+    if (this.storyText[sceneId]['item']) {
+      this.addItem(this.storyText[sceneId]['item']);
+    }
+    if (this.storyText[sceneId]['story']) {
+      let storyEvent = this.getStoryEvent(this.storyText[sceneId]['story']);
+      console.log(storyEvent);
+      this.displayText.text = storyEvent['storyText'];
+      // Make all of these lists !!!!
+      if (storyEvent['item']) {
+        this.addItem(storyEvent['item']);
+      }
+      if (storyEvent['items']) {
+        for (var item of storyEvent['items']) {
+          this.addItem(item);
+        }
+      }
+      if (storyEvent['event']) {
+        this.playerEvents.push(storyEvent['event']);
+      }
+      if (storyEvent['options']) {
+        this.addButtons(storyEvent['options']);
+      } else {
+        this.addButtons(this.storyText[sceneId]['options']);
+      }
+      // this.displayText.text = this.getText(this.storyText[sceneId]['story']);
+    } else {
+      this.displayText.text = this.storyText[sceneId]['storyText'];
+      this.addButtons(this.storyText[sceneId]['options']);
+    }
+
+    // console.log(this.storyText[sceneId]['item']);
     this.textBackground.displayHeight = this.displayText.height + 20;
-    // console.log(this.displayText.getTextBounds());
-    this.addButtons(this.storyText[sceneId]['options']); //['buttonText'], this.storyText[sceneId]['buttonResponse'], this.storyText[sceneId]['item']);
+    // console.log(this.displayText.getTextBounds()); //['buttonText'], this.storyText[sceneId]['buttonResponse'], this.storyText[sceneId]['item']);
     this.buttonTimer(this.storyText[sceneId]['duration']);
     // this.paralax();
+
+    console.log("Player events: ", this.playerEvents);
   }
 
   addButtons(options) {
@@ -263,6 +299,18 @@ export default class AssistantScene extends Phaser.Scene {
       }
       this.buttons.add(button);
     });
+  }
+
+  addMapButton() {
+    let { width, height } = this.sys.game.canvas;
+    let background = this.add.image(width / 2, height / 2, 'button').setOrigin(0.5);
+    background.displayWidth = 40;
+    background.displayHeight = 40;
+    background.setInteractive();
+    background.on('pointerdown', () => {
+      this.stopCurrentScene();
+      this.setScene('outskirts');
+    }, this);
   }
 
   addDefaultBackgrounds() {
@@ -390,19 +438,61 @@ export default class AssistantScene extends Phaser.Scene {
     // }, this);
   }
 
+  // getText(textOptions) {
+  //   let validText = textOptions.filter(function (text) {
+  //     const req = text['requirement']
+  //     if (req) {
+  //       if ('item' in req) {
+  //         return this.playerItems.includes(req['item']);
+  //       } else if ('event' in req) {
+  //         return this.playerEvents.includes(req['event']);
+  //       } else if ('notEvent' in req) {
+  //         return !this.playerEvents.includes(req['notEvent']);
+  //       } else {
+  //         return true;
+  //       }
+  //     } else {
+  //       return true;
+  //     }
+  //   }, this);
+  //   return validOptions;
+  // }
+  getStoryEvent(storyEvents) {
+    console.log(storyEvents);
+    let event = this.getValidOptions(storyEvents);
+
+    if (event.length > 1) {
+      console.log('Too many text options!');
+    }
+    return event[0];
+  }
+
   getValidOptions(options) {
     let validOptions = options.filter(function (option) {
-      const req = option['requirement']
-      if (req) {
-        if ('item' in req) {
-          return this.playerItems.includes(req['item']);
-        } else if ('event' in req) {
-          return this.playerEvents.includes(req['event']);
-        } else if ('notEvent' in req) {
-          return !this.playerEvents.includes(req['notEvent']);
-        } else {
-          return true;
+      const reqs = option['requirements']
+      if (reqs) {
+        let valid = true;
+        // Require all conditions to be true
+        for (var req of reqs) {
+          if ('item' in req) {
+            valid = valid & this.playerItems.includes(req['item']);
+          } else if ('event' in req) {
+            valid = valid & this.playerEvents.includes(req['event']);
+          } else if ('notEvent' in req) {
+            valid = valid & !this.playerEvents.includes(req['notEvent']);
+          } else if ('time' in req) {
+            // This check is probably only neccesary for testing
+            if (this.song) {
+              valid = valid & this.song.seek >= req['time'][0] & this.song.seek < req['time'][1];
+            }
+          } else if ('notTime' in req) {
+            // This check is probably only neccesary for testing
+            if (this.song) {
+              valid = valid & !(this.song.seek >= req['notTime'][0] & this.song.seek < req['notTime'][1]);
+            }
+          }
         }
+        return valid;
       } else {
         return true;
       }
@@ -466,7 +556,7 @@ export default class AssistantScene extends Phaser.Scene {
   // }
 
   buttonTimer(duration) {
-    this.tweens.addCounter({
+    this.buttonTween = this.tweens.addCounter({
       from: 0,
       to: 1,
       duration: 1000 * duration,
@@ -504,9 +594,16 @@ export default class AssistantScene extends Phaser.Scene {
       }
       button.destroy();
     });
-    this.setScene(nextSceneId);
-    if (item) this.addItem(item);  //playerItems.push(item);
+    if (item) this.addItem(item);
     if (event) this.playerEvents.push(event);
+    this.setScene(nextSceneId);
+  }
+
+  stopCurrentScene() {
+    this.buttons.children.each(function (button) {
+      button.destroy();
+    });
+    this.buttonTween.stop();
   }
 
   setSongPercent(percent) {
@@ -534,8 +631,19 @@ export default class AssistantScene extends Phaser.Scene {
   update(time, delta) {
     this.playerScene.updatePlayTime(this.song.seek, this.getSongPercent());
     this.moveBackground();
+    this.checkForEvent();
   }
 
+  checkForEvent() {
+    // check json? a bit slow? put conditions first?
+    if (this.song.seek > 99 & !this.events['sceneName']['triggered']) {
+      this.events['sceneName']['triggered'] = true;
+      this.stopCurrentScene()
+      this.setScene('frankensteinMiddle');
+      console.log("WWWWWWWWWWWWWWWWW");
+    }
+
+  }
 
 }
 

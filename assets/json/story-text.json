@@ -1,19 +1,60 @@
 {
-	"start": {
-		"storyText": "The story starts here.\nDo you have time to\nread and\nunderstand all of this?.\nChoose an option:",
+	"intro": {
+		"story": [
+			{
+				"storyText": "The vehicle move along the road",
+				"speechText": "wa wa wa",
+				"options":[
+					{"text": "Offer Assistance", "response": "introCont"}
+				]
+			}
+		],
+		"duration": 8
+	},
+	"introCont": {
+		"story": [
+			{
+				"storyText": "The vehicle move along the road",
+				"speechText": "wa wa wa",
+				"options":[
+					{"text": "Offer Assistance", "response": "graveyardGrave"}
+				]
+			}
+		],
+		"duration": 8
+	},
+	"outskirts":{
+		"story": [
+			{"storyText": "Your journey begins, where to start?", "requirements": [{"time": [32, 35]}]},
+			{"storyText": "Where to?"}
+		],
 		"options":[
 			{"text": "Graveyard", "response": "graveyardStart"},
-			{"text": "Caves", "response": "cavesStart", "item":"aaa"},
-			{"text": "Sewer", "response": "sewerStart", "requirement": {"item": "crowbar"}}
+			{"text": "Zoo", "response": "zooStart"},
+			{"text": "Forest", "response": "forestStart"},
+			{"text": "Caves", "response": "caveStart"}
 		],
 		"duration": 8
 	},
 	"graveyardStart": {
-		"storyText": "As you enter the graveyard, you see a mysterious figure holding a shovel",
-		"options":[
-			{"text": "Offer Assistance", "response": "graveyardHelp"},
-			{"text": "Attack", "response": "graveyardAttack", "event": "attack"},
-			{"text": "Sneak Past", "response": "graveyardSneak"}
+		"story": [
+			{
+				"storyText": "As you enter the graveyard, you see a mysterious figure holding a shovel", 
+				"requirements": [{"time": [23, 43]}],
+				"options":[
+					{"text": "Offer Assistance", "response": "graveyardGrave", "event": "exhumation"},
+					{"text": "Attack", "response": "graveyardAttack"},
+					{"text": "Sneak Past", "response": "graveyardCrypt"}
+				]
+			},
+			{
+				"storyText": "A creepy graveyard, lovely",
+				"options":[
+					{"text": "Head North", "response": "graveyardCrypt"},
+					{"text": "Head East", "response": "graveyardGrave"},
+					{"text": "Head West", "response": "cavesStart"}
+				]
+			}
 		],
 		"duration": 8,
 		"backgrounds": {
@@ -22,11 +63,19 @@
 			"foreground": "graveyard_foreground.png"
 		}
 	},
-	"graveyardHelp": {
+	"graveyardGrave": {
 		"storyText": "Billy the grave robber: \"Thanks for your help. Take anything you want\"",
+		"story": [
+			{"storyText": "Billy the grave robber: \"Thanks for your help. Take anything you want\"", "requirements": [{"time": [30, 50]}, {"notEvent": "exhumation"}], "item": "graveyardArm"},
+			{"storyText": "There's still a few more things here", "requirements": [{"event": "exhumation"}, {"notEvent": "graveSearch"}], "item": "graveyardLeg"},
+			{"storyText": "An open grave, there's nothing useful. Where to next?", "requirements": [{"event": "graveSearch"}]},
+			{"storyText": "Looks fresh, a shovel would be useful"}
+		],
 		"options":[
-			{"text": "Arm", "response": "graveyardEnd", "item": "graveyardArm"},
-			{"text": "Leg", "response": "graveyardEnd", "item": "graveyardLeg"}
+			{"text": "Stay here", "response": "graveyardGrave", "event": "graveSearch"},
+			{"text": "Start digging", "response": "graveyardGrave", "requirements": [{"item": "shovel"}, {"notEvent": "exhumation"}]},
+			{"text": "Zoo", "response": "zooStart"},
+			{"text": "Caves", "response": "cavesStart"}
 		],
 		"duration": 8,
 		"backgrounds": {
@@ -34,18 +83,24 @@
 		}
 	},
 	"graveyardAttack": {
-		"storyText": "They run away or something and drop torch",
+		"story": [
+			{"storyText": "Your shovel slices throuh the air and cleanly decapitates the grave rober", "requirements": [{"item": "shovel"}], "items": ["billyLeg", "billyBrain"], "event": "killBill"},
+			{"storyText": "The mysterious figure flees as you attack dropping their lantern", "item": "lantern", "event": "attackBill"}
+		],
 		"options":[
 			{"text": "Pick up torch", "response": "graveyardEnd", "item": "torch"}
 		],
 		"duration": 8
 	},
-	"graveyardSneak": {
+	"graveyardCrypt": {
 		"storyText": "You find something cool",
 		"options":[
 			{"text": "???", "response": "graveyardEnd"}
 		],
-		"duration": 8
+		"duration": 8,
+		"backgrounds": {
+			"background": "crypt_background.jpg"
+		}
 	},
 	"graveyardEnd": {
 		"storyText": "Where to next?",
@@ -58,10 +113,10 @@
 	"cavesStart": {
 		"storyText": "It's very dark in here you can't see anything!",
 		"options":[
-			{"text": "Use Torch", "response": "cavesTorch", "requirement": {"item": "torch"}},
+			{"text": "Use Torch", "response": "cavesTorch", "requirements": [{"item": "torch"}]},
 			{"text": "Feel Your Way", "response": "cavesFeel"},
-			{"text": "Say Hello", "response": "cavesHelloEmpty", "requirement": {"notEvent": "attack"}},
-			{"text": "Say Hello", "response": "cavesHelloResponse", "requirement": {"event": "attack"}}
+			{"text": "Say Hello", "response": "cavesHelloEmpty", "requirements": [{"notEvent": "attack"}]},
+			{"text": "Say Hello", "response": "cavesHelloResponse", "requirements": [{"event": "attack"}]}
 		],
 		"requirement": [{"item": "torch"}, {}, {"notEvent": "attack"}, {"event": "attack"}],
 		"buttonText": ["Use Torch", "Feel Your Way", "Say Hello", "Say Hello"],
@@ -111,10 +166,43 @@
 		],
 		"duration": 8
 	},
-	"zooStart": {
+	"zooStart":{
+		"story": [
+			{
+				"storyText": "Aparently the zoo is closed at night. Security guard: \"What are you doing here?!\"", 
+				"requirements": [{"time": [48, 55]}],
+				"options":[
+					{"text": "Bribe", "response": "forestAltar"},
+					{"text": "Attack", "response": "zooAttack", "event": "attackSecurityGuard"},
+					{"text": "Run away", "response": "forestCabin"}
+				]
+			},
+			{
+				"storyText": "You unlock gate with key, where go?", 
+				"requirements": [{"item": "key"}, {"notTime": [48, 55]}],
+				"options":[
+					{"text": "Head North", "response": "forestAltar"},
+					{"text": "Head West", "response": "zooAttack"}
+				]
+			},
+			{
+				"storyText": "Aparently the zoo is closed at night",
+				"options":[
+					{"text": "Sneak around back", "response": "zooSneak"},
+					{"text": "Head East", "response": "forestAltar"},
+					{"text": "Head South", "response": "cavesStart"}
+				]
+			}
+		],
+		"duration": 8,
+		"backgrounds": {
+			"background": "zoo_background.jpg"
+		}
+	},
+	"zooStartooo": {
 		"storyText": "Aparently the zoo is closed at night",
 		"options":[
-			{"text": "Break in", "response": "zooBreak", "requirement": {"item": "crowbar"}},
+			{"text": "Break in", "response": "zooBreak", "requirements": [{"item": "crowbar"}]},
 			{"text": "Sneak around back", "response": "zooSneak"}
 		],
 		"duration": 8,
@@ -177,10 +265,10 @@
 	"hospitalStart": {
 		"storyText": "It's very dark in here you can't see anything!",
 		"options":[
-			{"text": "Use Torch", "response": "cavesTorch", "requirement": {"item": "torch"}},
+			{"text": "Use Torch", "response": "cavesTorch", "requirements": [{"item": "torch"}]},
 			{"text": "Feel Your Way", "response": "cavesFeel"},
-			{"text": "Say Hello", "response": "cavesHelloEmpty", "requirement": {"notEvent": "attack"}},
-			{"text": "Say Hello", "response": "cavesHelloResponse", "requirement": {"event": "attack"}}
+			{"text": "Say Hello", "response": "cavesHelloEmpty", "requirements": [{"notEvent": "attack"}]},
+			{"text": "Say Hello", "response": "cavesHelloResponse", "requirements": [{"event": "attack"}]}
 		],
 		"requirement": [{"item": "torch"}, {}, {"notEvent": "attack"}, {"event": "attack"}],
 		"buttonText": ["Use Torch", "Feel Your Way", "Say Hello", "Say Hello"],
@@ -191,14 +279,117 @@
 		}
 	},
 	"forestStart":{
-		"storyText": "Mysterious lights or some other thing",
-		"options":[
-			{"text": "Mysterious lights", "response": "forestLights"},
-			{"text": "Other", "response": "forestOther"}
+		"story": [
+			{
+				"storyText": "A mysterious robed stranger approaches. Occultist: \"Are you here for the ceremony?\"", 
+				"requirements": [{"time": [23, 43]}],
+				"options":[
+					{"text": "...Yes?", "response": "forestAltar", "event": "ceremony"},
+					{"text": "Attack", "response": "forestAttack", "event": "attackOccultist"},
+					{"text": "Run away", "response": "forestCabin"}
+				]
+			},
+			{
+				"storyText": "A forest, it would probably be less spooky during the day",
+				"options":[
+					{"text": "Head North", "response": "forestCabin"},
+					{"text": "Head East", "response": "forestAltar"},
+					{"text": "Head South", "response": "cavesStart"}
+				]
+			}
 		],
 		"duration": 8,
 		"backgrounds": {
 			"background": "forest_background.jpg"
+		}
+	},
+	"forestAttack": {
+		"story": [
+			{"storyText": "You bring down your axe, they didn't stand a chance", "requirements": [{"item": "axe"}], "event": "attackAdherant", "items": ["forestLeg", "forestBrain"]},
+			{"storyText": "You swing your shovel and completely miss your target, more come", "requirements": [{"item": "shovel"}]},
+			{"storyText": "The mysterious figure flees as you attack dropping their lantern", "item": "lantern", "event": "attackBill"}
+		],
+		"options":[
+			{"text": "Run away", "response": "forestAltar"},
+			{"text": "Attack", "response": "forestAttack"},
+			{"text": "Run away", "response": "forestCabin"}
+		],
+		"duration": 8
+	},
+	"forestAltar":{
+		"story": [
+			{
+				"storyText": "A group of robed figures stand around an altar. Occultist: \"Thanks, you can clean up now\"", 
+				"requirements": [{"event": "ceremony"}], 
+				"items": ["forestOrgans"],
+				"options": [
+					{"text": "Hang around", "response": "forestAltar"},
+					{"text": "Head North", "response": "forestCabin"}
+				]
+			},
+			{
+				"storyText": "A group of robed figures stand around an altar", 
+				"requirements": [{"time": [43, 63]}], 
+				"options": [
+					{"text": "Join in", "response": "forestAltar", "event": "ceremony"},
+					{"text": "Run away", "response": "forestCabin"},
+					{"text": "Attack", "response": "forestCabinCellar", "event": "attackCeremony"}
+				]
+			},
+			{
+				"storyText": "A blood splattered alter stands before you",
+				"options": [
+					{"text": "Hang around", "response": "forestAltar"},
+					{"text": "Head North", "response": "forestCabin"}
+				]
+			}
+		],
+		"duration": 8,
+		"backgrounds": {
+			"background": "altar_background.jpg"
+		}
+	},
+	"forestCabin":{
+		"story": [
+			{"storyText": "You stumble upon an abandoned cabin. There is an axe outside, could be useful", "items": ["axe"]}
+		],
+		"options":[
+			{"text": "Look inside", "response": "forestCabin"},
+			{"text": "Attack", "response": "graveyardAttack"}
+		],
+		"duration": 8,
+		"backgrounds": {
+			"background": "forest_background.jpg"
+		}
+	},
+	"forestCabinCellar":{
+		"story": [
+			{
+				"storyText": "You wake up here, that was a bad idea", 
+				"requirements": [{"event": "attackCeremony"}], 
+				"options": [
+					{"text": "Hang around", "response": "forestAltar"}
+				]
+			},
+			{
+				"storyText": "A group of robed figures stand around an altar", 
+				"requirements": [{"time": [43, 63]}], 
+				"options": [
+					{"text": "Join in", "response": "forestAltar", "event": "ceremony"},
+					{"text": "Run away", "response": "forestCabin"},
+					{"text": "Attack", "response": "forestCabin", "event": "attackCeremony"}
+				]
+			},
+			{
+				"storyText": "A blood splattered alter stands before you",
+				"options": [
+					{"text": "Hang around", "response": "forestAltar"}
+				]
+			}
+		],
+		"duration": 8,
+		"backgrounds": {
+			"background": "altar_background.jpg"
 		}
 	},
 	"forestLights":{
@@ -226,6 +417,23 @@
 		"duration": 8,
 		"backgrounds": {
 			"background": "lab_background.jpg"
+		}
+	},
+	"frankensteinMiddle": {
+		"story": [
+			{"storyText": "Oh yeah", "requirements": [{"time": [23, 43]}]},
+			{"storyText": "Nice"}
+		],
+		"options":[
+			{"text": "Offer Assistance", "response": "graveyardGrave", "event": "exhumation"},
+			{"text": "Attack", "response": "graveyardAttack", "event": "attack"},
+			{"text": "Sneak Past", "response": "graveyardSneak"}
+		],
+		"duration": 800,
+		"backgrounds": {
+			"background": "graveyard_background.png",
+			"midground": "graveyard_midground.png",
+			"foreground": "graveyard_foreground.png"
 		}
 	}
 }
