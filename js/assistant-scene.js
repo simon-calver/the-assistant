@@ -308,6 +308,8 @@ export default class AssistantScene extends Phaser.Scene {
 
     if (displayMapButton) {
       this.updateMapButton(height - Math.ceil(options.length / 2) / 2 * buttonHeight - 50);
+    } else {
+      this.displayMapButton(false);
     }
     options.forEach((option, index) => {
       let button;
