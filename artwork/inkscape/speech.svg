@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="793.70081"
+   height="1122.5197"
+   viewBox="0 0 210 297"
+   version="1.1"
+   id="svg837"
+   inkscape:version="1.1.1 (3bf5ae0d25, 2021-09-20)"
+   sodipodi:docname="speech.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview839"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="true"
+     inkscape:document-units="px"
+     showgrid="false"
+     units="px"
+     inkscape:zoom="1.8116734"
+     inkscape:cx="401.28645"
+     inkscape:cy="464.48768"
+     inkscape:window-width="1920"
+     inkscape:window-height="1001"
+     inkscape:window-x="-9"
+     inkscape:window-y="-9"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs834" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <path
+       id="path874"
+       style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.999999px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 238.0491,405.13803 -108.89595,-0.001 c 0,0 31.43979,47.23494 50.29627,68.3036 17.06221,19.06389 33.92071,39.84013 56.39807,52.05975 35.96962,19.55457 118.99128,30.44392 118.99128,30.44392 0,0 -60.79856,-29.24965 -84.64423,-52.3017 -10.04333,-9.70908 -18.25757,-21.82766 -23.22209,-34.88477 -7.61043,-20.01606 -8.92335,-63.61937 -8.92335,-63.61937 z"
+       transform="scale(0.26458333)"
+       sodipodi:nodetypes="ccaacaacc"
+       inkscape:export-filename="C:\Users\simon\Desktop\my git repositories\phaser-host\server\public\the-assistant\assets\sprites\speech.png"
+       inkscape:export-xdpi="27.223711"
+       inkscape:export-ydpi="27.223711" />
+  </g>
+</svg>

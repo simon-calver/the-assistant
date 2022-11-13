@@ -1,0 +1,146 @@
+{
+	"textures": [
+		{
+			"image": "items.png",
+			"format": "RGBA8888",
+			"size": {
+				"w": 148,
+				"h": 124
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "lantern.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 64,
+						"h": 64
+					},
+					"frame": {
+						"x": 1,
+						"y": 1,
+						"w": 64,
+						"h": 64
+					}
+				},
+				{
+					"filename": "shovel.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 1,
+						"y": 3,
+						"w": 61,
+						"h": 56
+					},
+					"frame": {
+						"x": 1,
+						"y": 67,
+						"w": 61,
+						"h": 56
+					}
+				},
+				{
+					"filename": "money.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 5,
+						"y": 5,
+						"w": 56,
+						"h": 54
+					},
+					"frame": {
+						"x": 64,
+						"y": 67,
+						"w": 56,
+						"h": 54
+					}
+				},
+				{
+					"filename": "graveyardArm.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 13,
+						"y": 0,
+						"w": 29,
+						"h": 64
+					},
+					"frame": {
+						"x": 67,
+						"y": 1,
+						"w": 29,
+						"h": 64
+					}
+				},
+				{
+					"filename": "graveyardLeg.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 13,
+						"y": 0,
+						"w": 29,
+						"h": 64
+					},
+					"frame": {
+						"x": 67,
+						"y": 1,
+						"w": 29,
+						"h": 64
+					}
+				},
+				{
+					"filename": "medallion.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 8,
+						"y": 8,
+						"w": 49,
+						"h": 49
+					},
+					"frame": {
+						"x": 98,
+						"y": 1,
+						"w": 49,
+						"h": 49
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "3.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:403e01b6c3de850077434a0172b59296:c3d6cf6b8522ca36e9d1450bf87e2fc9:110e074689c9edd2c54833ce2e4d9270$"
+	}
+}

@@ -24,6 +24,7 @@ export default class AssistantScene extends Phaser.Scene {
     // this.load.image('bg', `assets/images/backgrounds/${'graveyard_background.png'}`);
     this.load.image('graveyardArm', 'assets/sprites/graveyardArm.png');
 
+    this.load.image('speech', 'assets/sprites/speech.png');
 
     // For testing that the loading screen works
     // for (var i = 0; i < 50; i++) {
@@ -34,6 +35,7 @@ export default class AssistantScene extends Phaser.Scene {
     // this.load.image('black-hole', 'assets/sprites/black-hole.png');
     this.load.image('item', 'assets/sprites/ball.png');
     // this.load.atlas('star', 'assets/sprites/star.png', 'assets/sprites/star.json');
+    this.load.atlas('items', 'assets/sprites/items.png', 'assets/sprites/items.json');
 
     // JSON files
     this.load.json('story-text', 'assets/json/story-text.json');
@@ -55,10 +57,13 @@ export default class AssistantScene extends Phaser.Scene {
     this.addDefaultBackgrounds();
 
     this.buttons = this.add.group({ classType: Button });
-    this.textBackground = this.add.image(width / 2, 40, 'text_background').setOrigin(0.5, 0).setScale(1.2);
-    this.displayText = this.add.bitmapText(width / 2, 40, 'mont', '', 26).setCenterAlign().setOrigin(0.5, 0).setTint('w');
-    this.displayText.setMaxWidth(width - 80);
+    this.textBackground = this.add.rectangle(width / 2, 40, width, 40, 0x85817f).setOrigin(0.5, 0).setAlpha(0.6);
 
+    // this.add.image(width / 2, 40, 'text_background').setOrigin(0.5, 0).setScale(1.2);
+    this.displayText = this.add.bitmapText(width / 2, 40, 'mont', '', 26).setCenterAlign().setOrigin(0.5, 0).setTint('w');
+    this.displayText.setMaxWidth(width - 20);
+
+    this.speechBubbles = [];
 
     this.addMapButton();
     // this.add.bitmapText(width / 2, 50, 'mont', 'Items', 18).setCenterAlign().setOrigin(0.5, 0).setTint('k');
@@ -87,7 +92,7 @@ export default class AssistantScene extends Phaser.Scene {
 
 
 
-    this.addItem('shovel');
+    // this.addItem('shovel');
     // this.addItem('item');
     // this.addItem('item');
     // this.addItem('item');
@@ -255,6 +260,9 @@ export default class AssistantScene extends Phaser.Scene {
       // console.log(storyEvent);
       this.displayText.text = storyEvent['storyText'];
       // Make all of these lists !!!!
+      if (storyEvent['speechBubble']) {
+        this.speechBubbles.push(new SpeechBubble(this, storyEvent['speechBubble']));
+      }
       if (storyEvent['item']) {
         this.addItem(storyEvent['item']);
       }
@@ -278,7 +286,7 @@ export default class AssistantScene extends Phaser.Scene {
     }
 
     // console.log(this.storyText[sceneId]['item']);
-    this.textBackground.displayHeight = this.displayText.height + 20;
+    this.textBackground.displayHeight = this.displayText.height;// + 5;
     // console.log(this.displayText.getTextBounds()); //['buttonText'], this.storyText[sceneId]['buttonResponse'], this.storyText[sceneId]['item']);
     this.buttonTimer(this.storyText[sceneId]['duration']);
     // this.paralax();
@@ -605,6 +613,7 @@ export default class AssistantScene extends Phaser.Scene {
 
   getNextScene() {
     let nextSceneId, item, event;
+    // Get items/events from buttons then delete them
     this.buttons.children.each(function (button) {
       if (button.isActive) {
         nextSceneId = button.response;
@@ -615,6 +624,13 @@ export default class AssistantScene extends Phaser.Scene {
     });
     if (item) this.addItem(item);
     if (event) this.playerEvents.push(event);
+
+    // Delete all speech bubbles, there should probably only ever be one on zero in this array
+    this.speechBubbles.forEach((speechBubble) => {
+      speechBubble.destroy();
+    });
+    this.speechBubbles = [];
+
     this.setScene(nextSceneId);
   }
 
@@ -623,6 +639,10 @@ export default class AssistantScene extends Phaser.Scene {
       button.destroy();
     });
     this.buttonTween.stop();
+    this.speechBubbles.forEach((speechBubble) => {
+      speechBubble.destroy();
+    });
+    this.speechBubbles = [];
   }
 
   setSongPercent(percent) {
@@ -659,10 +679,76 @@ export default class AssistantScene extends Phaser.Scene {
       this.events['sceneName']['triggered'] = true;
       this.stopCurrentScene()
       this.setScene('frankensteinMiddle');
-      console.log("WWWWWWWWWWWWWWWWW");
+      // console.log("WWWWWWWWWWWWWWWWW");
     }
 
   }
+
+}
+
+class SpeechBubble {//} extends Phaser.GameObjects.Container {
+  constructor(scene, data) {
+    let { width, height } = scene.sys.game.canvas;
+    const maxWidth = 180;
+
+    const xPos = width / 2 - maxWidth / 2 + 20;
+    const yPos = height / 2 - 100;
+    // Would need to use mask for this to work or use alpha=1
+    // this.aa = scene.add.image(xPos, yPos, 'speech').setOrigin(0.5, 0).setScale(1.2);
+    this.background = scene.add.circle(xPos, yPos, 20, 0x85817f).setAlpha(0.6);
+
+    this.bitmapText = scene.add.bitmapText(xPos, yPos, 'mont', '\"' + data['text'] + '\"', 26).setOrigin(0.5).setTint('k');
+    this.bitmapText.setMaxWidth(maxWidth);
+
+    this.background.displayWidth = this.bitmapText.width + 20;
+    this.background.displayHeight = this.bitmapText.height + 20;
+
+    this.showCharacter(scene, data['image'])
+    // scene.add.existing(this.background);
+    // console.log(data);
+  }
+
+  showCharacter(scene, texture) {
+    let { width, height } = scene.sys.game.canvas;
+    const characterHeight = 3 * height / 4;
+
+    this.character = scene.add.image(width / 2 + 80, height + 40).setOrigin(0.5, 1);
+
+    if (scene.textures.exists(texture)) {
+      this.character.setTexture(texture);
+      this.character.setScale(characterHeight / this.character.displayHeight);
+    } else {
+      scene.load.image(texture, `assets/images/characters/${texture}`);
+      scene.load.start();
+      scene.load.once(Phaser.Loader.Events.COMPLETE, () => {
+        this.character.setTexture(texture);
+        this.character.setScale(characterHeight / this.character.displayHeight);
+      });
+    }
+  }
+
+  destroy() {
+    this.background.destroy();
+    this.bitmapText.destroy();
+    this.character.destroy();
+  }
+
+
+  // updateBackground(backgrounds) {
+  //   backgrounds = backgrounds ? backgrounds : {};
+  //   let keys = ["background", "midground", "foreground"];
+  //   keys.forEach(function (key, i) {
+  //     let texture = backgrounds[key] ? backgrounds[key] : `default_${key}`;
+  //     if (this.textures.exists(texture)) {
+  //       this.backgrounds[i].setTexture(texture);
+  //     } else {
+  //       this.load.image(texture, `assets/images/backgrounds/${texture}`);
+  //       this.load.start();
+  //       this.load.once(Phaser.Loader.Events.COMPLETE, () => {
+  //         this.backgrounds[i].setTexture(texture);
+  //       });
+  //     }
+  //   }, this);
 
 }
 
@@ -728,8 +814,8 @@ class DisplayItem {
     this.background.displayHeight = width;
 
     this.item = item;
-    if (scene.textures.exists(item)) {
-      this.itemImage = scene.add.image(x, y, item).setOrigin(0.5, 0).setInteractive();
+    if (scene.textures.exists('items', `${item}.png`)) {
+      this.itemImage = scene.add.image(x, y, 'items', `${item}.png`).setOrigin(0.5, 0).setInteractive();
     } else {
       this.itemImage = scene.add.image(x, y, 'item').setOrigin(0.5, 0).setInteractive();
     }

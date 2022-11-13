@@ -3,7 +3,7 @@
 		"story": [
 			{
 				"storyText": "The vehicle move along the road",
-				"speechText": "wa wa wa",
+				"speechBubble": {"text": "wa wa wa", "image": "doctor.png"},
 				"options":[
 					{"text": "Offer Assistance", "response": "introCont"},
 					{"text": "Offer Assistance", "response": "introCont"},
@@ -14,20 +14,64 @@
 			}
 		],
 		"duration": 8,
-		"mapButton": false
+		"mapButton": false,
+		"backgrounds": {
+			"background": "start_background.jpg"
+		}
 	},
 	"introCont": {
 		"story": [
 			{
 				"storyText": "The vehicle move along the road",
-				"speechText": "wa wa wa",
+				"speechBubble": {"text": "we we we", "image": "doctor.png"},
 				"options":[
-					{"text": "Offer Assistance", "response": "graveyardGrave"}
+					{"text": "Offer Assistance", "response": "introSearch"}
 				]
 			}
 		],
 		"duration": 8,
-		"mapButton": false
+		"mapButton": false,
+		"backgrounds": {
+			"background": "start_background.jpg"
+		}
+	},
+	"introSearch": {
+		"story": [
+			{
+				"storyText": "get item",
+				"speechBubble": {"text": "we we we", "image": "doctor.png"},
+				"options":[
+					{"text": "Under the seat", "response": "introSearchCont", "item": "medallion", "event": "seatSearch"},
+					{"text": "trunk", "response": "introSearchCont", "item": "money", "event": "trunkSearch"},
+					{"text": "Roof", "response": "introSearchCont", "item": "shovel", "event": "roofSearch"},
+					{"text": "other", "response": "introSearchCont", "item": "lantern", "event": "otherSearch"}
+				]
+			}
+		],
+		"duration": 8,
+		"mapButton": false,
+		"backgrounds": {
+			"background": "start_background.jpg"
+		}
+	},
+	"introSearchCont": {
+		"story": [
+			{
+				"storyText": "get item",
+				"event": "search",
+				"options":[
+					{"text": "Under the seat", "response": "outskirts", "requirements": [{"notEvent": "seatSearch"}], "item": "medallion"},
+					{"text": "trunk", "response": "outskirts", "requirements": [{"notEvent": "trunkSearch"}], "item": "money"},
+					{"text": "Roof", "response": "outskirts", "requirements": [{"notEvent": "roofSearch"}], "item": "shovel"},
+					{"text": "other", "response": "outskirts", "requirements": [{"notEvent": "otherSearch"}], "item": "lantern"}
+				]
+			}
+		],
+		"duration": 8,
+		"mapButton": false,
+		"backgrounds": {
+			"background": "start_background.jpg"
+		}
 	},
 	"outskirts":{
 		"story": [
@@ -40,7 +84,8 @@
 			{"text": "Forest", "response": "forestStart"},
 			{"text": "Caves", "response": "caveStart"}
 		],
-		"duration": 8
+		"duration": 8,
+		"mapButton": false
 	},
 	"graveyardStart": {
 		"story": [
@@ -287,7 +332,8 @@
 	"forestStart":{
 		"story": [
 			{
-				"storyText": "A mysterious robed stranger approaches. Occultist: \"Are you here for the ceremony?\"", 
+				"storyText": "A mysterious robed stranger approaches", 
+				"speechBubble": {"text": "Are you here for the ceremony?", "image": "occultist.png"},
 				"requirements": [{"time": [23, 43]}],
 				"options":[
 					{"text": "...Yes?", "response": "forestAltar", "event": "ceremony"},
