@@ -66,6 +66,7 @@ export default class AssistantScene extends Phaser.Scene {
     this.speechBubbles = [];
 
     this.addMapButton();
+    this.addFastForwardButton();
     // this.add.bitmapText(width / 2, 50, 'mont', 'Items', 18).setCenterAlign().setOrigin(0.5, 0).setTint('k');
     // this.add.bitmapText(width / 2, 140, 'mont', 'Other', 18).setCenterAlign().setOrigin(0.5, 0).setTint('k');
 
@@ -317,6 +318,18 @@ export default class AssistantScene extends Phaser.Scene {
       }
       this.buttons.add(button);
     });
+  }
+
+  // For testing only
+  addFastForwardButton() {
+    let fastForward = this.add.image(20, 200, 'button').setOrigin(0, 0.5);
+    fastForward.displayWidth = 45;
+    fastForward.displayHeight = 45;
+    fastForward.setInteractive();
+    fastForward.on('pointerdown', () => {
+      this.buttonTween.stop();
+      this.getNextScene()
+    }, this);
   }
 
   addMapButton() {
