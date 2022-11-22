@@ -275,6 +275,11 @@ export default class AssistantScene extends Phaser.Scene {
       if (storyEvent['event']) {
         this.playerEvents.push(storyEvent['event']);
       }
+      if (storyEvent['events']) {
+        for (var event of storyEvent['events']) {
+          this.playerEvents.push(event);
+        }
+      }
       if (storyEvent['options']) {
         this.addButtons(storyEvent['options'], displayMapButton);
       } else {
@@ -627,18 +632,26 @@ export default class AssistantScene extends Phaser.Scene {
   }
 
   getNextScene() {
-    let nextSceneId, item, event;
+    let nextSceneId, items, events;
     // Get items/events from buttons then delete them
     this.buttons.children.each(function (button) {
       if (button.isActive) {
         nextSceneId = button.response;
-        item = button.getItem();
-        event = button.getEvent();
+        items = button.getItems();
+        events = button.getEvents();
       }
       button.destroy();
     });
-    if (item) this.addItem(item);
-    if (event) this.playerEvents.push(event);
+    // if (data['events']) {
+    //   this.event = data['events'];
+    // }
+    for (var item of items) {
+      this.addItem(item);
+    }
+    for (var event of events) {
+      this.playerEvents.push(event);
+    }
+    // if (event) this.playerEvents.push(event);
 
     // Delete all speech bubbles, there should probably only ever be one on zero in this array
     this.speechBubbles.forEach((speechBubble) => {
@@ -704,7 +717,7 @@ export default class AssistantScene extends Phaser.Scene {
 class SpeechBubble {//} extends Phaser.GameObjects.Container {
   constructor(scene, data) {
     let { width, height } = scene.sys.game.canvas;
-    const maxWidth = 180;
+    const maxWidth = width / 2;
 
     const xPos = width / 2 - maxWidth / 2 + 20;
     const yPos = height / 2 - 100;
@@ -712,10 +725,12 @@ class SpeechBubble {//} extends Phaser.GameObjects.Container {
     // this.aa = scene.add.image(xPos, yPos, 'speech').setOrigin(0.5, 0).setScale(1.2);
     this.background = scene.add.circle(xPos, yPos, 20, 0x85817f).setAlpha(0.6);
 
-    this.bitmapText = scene.add.bitmapText(xPos, yPos, 'mont', '\"' + data['text'] + '\"', 26).setOrigin(0.5).setTint('k');
+    this.bitmapText = scene.add.bitmapText(xPos, yPos, 'mont', '\"' + data['text'] + '\"', 20).setOrigin(0.5).setTint('k').setCenterAlign();
     this.bitmapText.setMaxWidth(maxWidth);
 
-    this.background.displayWidth = this.bitmapText.width + 20;
+    // Phaser.Display.Align.In.Center(this.bitmapText, this.background);
+
+    this.background.displayWidth = this.bitmapText.width + 60;
     this.background.displayHeight = this.bitmapText.height + 20;
 
     this.showCharacter(scene, data['image'])
@@ -782,8 +797,16 @@ class Button extends Phaser.GameObjects.Container {
 
     this.isActive = true;
     this.response = data['response'];
-    this.item = data['item'] || '';
-    this.event = data['event'] || '';
+    this.items = data['items'] || [];
+    this.events = data['events'] || [];
+
+    // Make this all events!!
+    // if (data['events']) {
+    //   this.event = data['events'];
+    // }
+    // if (data['items']) {
+    //   this.item = data['items'];
+    // }
 
     this.setInteractive();
     this.on('pointerdown', () => {
@@ -813,12 +836,12 @@ class Button extends Phaser.GameObjects.Container {
     this.displayTimer(true);
   }
 
-  getItem() {
-    return this.item;
+  getItems() {
+    return this.items;
   }
 
-  getEvent() {
-    return this.event;
+  getEvents() {
+    return this.events;
   }
 }
 

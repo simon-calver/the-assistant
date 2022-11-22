@@ -2,34 +2,55 @@
 	"intro": {
 		"story": [
 			{
-				"storyText": "The vehicle move along the road",
-				"speechBubble": {"text": "wa wa wa", "image": "doctor.png"},
+				"storyText": "The carriage draws to a juddering stop, the doctor leans towards you",
+				"speechBubble": {"text": "This may be the night of my greatest scientific achievement!", "image": "doctor.png"},
 				"options":[
-					{"text": "Offer Assistance", "response": "introCont"},
-					{"text": "Offer Assistance", "response": "introCont"},
-					{"text": "Offer Assistance", "response": "introCont"},
-					{"text": "Offer Assistance", "response": "introCont"},
-					{"text": "Offer Assistance", "response": "introCont"}
+					{"text": "\"Wow\"", "response": "introCont1"},
+					{"text": "\"...\"", "response": "introCont1"},
+					{"text": "\"Whatever\"", "response": "introCont1"},
+					{"text": "\"Oh\"", "response": "introCont1"}
 				]
 			}
 		],
-		"duration": 8,
+		"duration": 4,
 		"mapButton": false,
 		"backgrounds": {
 			"background": "start_background.jpg"
 		}
 	},
-	"introCont": {
+	"introCont1": {
 		"story": [
 			{
-				"storyText": "The vehicle move along the road",
-				"speechBubble": {"text": "we we we", "image": "doctor.png"},
+				"storyText": "hand a list?",
+				"speechBubble": {"text": "But first I need you to aquire some special components", "image": "doctor.png"},
 				"options":[
-					{"text": "Offer Assistance", "response": "introSearch"}
+					{"text": "\"Wow\"", "response": "introCont2"},
+					{"text": "\"...\"", "response": "introCont2"},
+					{"text": "\"Whatever\"", "response": "introCont2"},
+					{"text": "\"Oh\"", "response": "introCont2"}
 				]
 			}
 		],
-		"duration": 8,
+		"duration": 4,
+		"mapButton": false,
+		"backgrounds": {
+			"background": "start_background.jpg"
+		}
+	},
+	"introCont2": {
+		"story": [
+			{
+				"storyText": "hand a list?",
+				"speechBubble": {"text": "Just a few arms and legs ... various organs, oh and a brain", "image": "doctor.png"},
+				"options":[
+					{"text": "\"Huh?\"", "response": "introSearch"},
+					{"text": "\"...OK\"", "response": "introSearch"},
+					{"text": "\"Absolutely\"", "response": "introSearch"},
+					{"text": "\"...\"", "response": "introSearch"}
+				]
+			}
+		],
+		"duration": 4,
 		"mapButton": false,
 		"backgrounds": {
 			"background": "start_background.jpg"
@@ -38,13 +59,13 @@
 	"introSearch": {
 		"story": [
 			{
-				"storyText": "get item",
-				"speechBubble": {"text": "we we we", "image": "doctor.png"},
+				"storyText": "Try to find something useful",
+				"speechBubble": {"text": "hurry there may some useful things ", "image": "doctor.png"},
 				"options":[
-					{"text": "Under the seat", "response": "introSearchCont", "item": "medallion", "event": "seatSearch"},
-					{"text": "trunk", "response": "introSearchCont", "item": "money", "event": "trunkSearch"},
-					{"text": "Roof", "response": "introSearchCont", "item": "shovel", "event": "roofSearch"},
-					{"text": "other", "response": "introSearchCont", "item": "lantern", "event": "otherSearch"}
+					{"text": "Under the seat", "response": "introSearchCont", "items": ["medallion"], "events": ["seatSearch"]},
+					{"text": "trunk", "response": "introSearchCont", "items": ["money"], "events": ["trunkSearch"]},
+					{"text": "Roof", "response": "introSearchCont", "items": ["shovel"], "events": ["roofSearch"]},
+					{"text": "other", "response": "introSearchCont", "items": ["lantern"], "events": ["otherSearch"]}
 				]
 			}
 		],
@@ -58,12 +79,12 @@
 		"story": [
 			{
 				"storyText": "get item",
-				"event": "search",
+				"speechBubble": {"text": "OK one more that will do off you go", "image": "doctor.png"},
 				"options":[
-					{"text": "Under the seat", "response": "outskirts", "requirements": [{"notEvent": "seatSearch"}], "item": "medallion"},
-					{"text": "trunk", "response": "outskirts", "requirements": [{"notEvent": "trunkSearch"}], "item": "money"},
-					{"text": "Roof", "response": "outskirts", "requirements": [{"notEvent": "roofSearch"}], "item": "shovel"},
-					{"text": "other", "response": "outskirts", "requirements": [{"notEvent": "otherSearch"}], "item": "lantern"}
+					{"text": "Under the seat", "response": "outskirts", "requirements": [{"notEvent": "seatSearch"}], "items": ["medallion"]},
+					{"text": "trunk", "response": "outskirts", "requirements": [{"notEvent": "trunkSearch"}], "items": ["money"]},
+					{"text": "Roof", "response": "outskirts", "requirements": [{"notEvent": "roofSearch"}], "items": ["shovel"]},
+					{"text": "other", "response": "outskirts", "requirements": [{"notEvent": "otherSearch"}], "items": ["lantern"]}
 				]
 			}
 		],
@@ -82,18 +103,21 @@
 			{"text": "Graveyard", "response": "graveyardStart"},
 			{"text": "Zoo", "response": "zooStart"},
 			{"text": "Forest", "response": "forestStart"},
-			{"text": "Caves", "response": "caveStart"}
+			{"text": "Caves", "response": "cavesStart"}
 		],
 		"duration": 8,
-		"mapButton": false
+		"mapButton": false,
+		"backgrounds": {
+			"background": "outskirts_background.jpg"
+		}
 	},
 	"graveyardStart": {
 		"story": [
 			{
 				"storyText": "As you enter the graveyard, you see a mysterious figure holding a shovel", 
-				"requirements": [{"time": [23, 43]}],
+				"requirements": [{"time": [0, 43]}],
 				"options":[
-					{"text": "Offer Assistance", "response": "graveyardGrave", "event": "exhumation"},
+					{"text": "Offer Assistance", "response": "graveyardGrave", "events": ["helpBilly"]},
 					{"text": "Attack", "response": "graveyardAttack"},
 					{"text": "Sneak Past", "response": "graveyardCrypt"}
 				]
@@ -115,18 +139,48 @@
 		}
 	},
 	"graveyardGrave": {
-		"storyText": "Billy the grave robber: \"Thanks for your help. Take anything you want\"",
 		"story": [
-			{"storyText": "Billy the grave robber: \"Thanks for your help. Take anything you want\"", "requirements": [{"time": [30, 50]}, {"notEvent": "exhumation"}], "item": "graveyardArm"},
-			{"storyText": "There's still a few more things here", "requirements": [{"event": "exhumation"}, {"notEvent": "graveSearch"}], "item": "graveyardLeg"},
-			{"storyText": "An open grave, there's nothing useful. Where to next?", "requirements": [{"event": "graveSearch"}]},
-			{"storyText": "Looks fresh, a shovel would be useful"}
-		],
-		"options":[
-			{"text": "Stay here", "response": "graveyardGrave", "event": "graveSearch"},
-			{"text": "Start digging", "response": "graveyardGrave", "requirements": [{"item": "shovel"}, {"notEvent": "exhumation"}]},
-			{"text": "Zoo", "response": "zooStart"},
-			{"text": "Caves", "response": "cavesStart"}
+			{
+				"storyText": "You dig it, where to next", 
+				"speechBubble": {"text": "Thanks for your help. Take anything you want", "image": "doctor.png"},
+				"requirements": [{"time": [0, 50]}, {"event": "helpBilly"}, {"notEvent": "graveSearch"}], 
+				"items": ["graveyardArm"],
+				"events": ["graveSearch"],
+				"options": [
+					{"text": "Stay here", "response": "graveyardGrave"},
+					{"text": "Start digging", "response": "graveyardGrave", "requirements": [{"item": "shovel"}, {"notEvent": "graveSearch"}]},
+					{"text": "Head North", "response": "graveyardCrypt"},
+					{"text": "Head West", "response": "cavesStart"}
+				]
+			},
+			{
+				"storyText": "An open grave, there's nothing useful. Where to next?", 
+				"requirements": [{"event": "graveSearch"}],
+				"options": [
+					{"text": "Stay here", "response": "graveyardGrave"},
+					{"text": "Head North", "response": "graveyardCrypt"},
+					{"text": "Head West", "response": "cavesStart"}
+				]
+			},
+			{
+				"storyText": "Looks fresh, you do some diggin",
+				"requirements": [{"notEvent": "graveSearch"}],
+				"items": ["graveyardArm"],
+				"events": ["graveSearch"],
+				"options": [
+					{"text": "Stay here", "response": "graveyardGrave"},
+					{"text": "Head North", "response": "graveyardCrypt"},
+					{"text": "Head West", "response": "cavesStart"}
+				]
+			},
+			{
+				"storyText": "Looks fresh, a shovel would be useful",
+				"options": [
+					{"text": "Stay here", "response": "graveyardGrave"},
+					{"text": "Head North", "response": "graveyardCrypt"},
+					{"text": "Head West", "response": "cavesStart"}
+				]
+			}
 		],
 		"duration": 8,
 		"backgrounds": {
@@ -135,7 +189,16 @@
 	},
 	"graveyardAttack": {
 		"story": [
-			{"storyText": "Your shovel slices throuh the air and cleanly decapitates the grave rober", "requirements": [{"item": "shovel"}], "items": ["billyLeg", "billyBrain"], "event": "killBill"},
+			{
+				"storyText": "Your shovel slices throuh the air and cleanly decapitates the grave rober", 
+				"requirements": [{"item": "shovel"}], "items": ["billyLeg", "billyBrain"], 
+				"events": ["killBill"],
+				"options": [
+					{"text": "Stay here", "response": "graveyardGrave"},
+					{"text": "Head North", "response": "graveyardCrypt"},
+					{"text": "Head West", "response": "cavesStart"}
+				]
+			},
 			{"storyText": "The mysterious figure flees as you attack dropping their lantern", "item": "lantern", "event": "attackBill"}
 		],
 		"options":[
@@ -162,6 +225,23 @@
 		"duration": 8
 	},
 	"cavesStart": {
+		"story": [
+			{
+				"storyText": "It's very dark in here you can't see anything!",
+				"options":[
+					{"text": "Feel Your Way", "response": "cavesFeel"}
+				]
+			},
+			{
+				"storyText": "Your lantern illuminates the way",
+				"requirements": [{"item": "lantern"}],
+				"options":[
+					{"text": "Feel Your Way", "response": "cavesFeel"},
+					{"text": "\"Whatever\"", "response": "introCont1"},
+					{"text": "\"Oh\"", "response": "introCont1"}
+				]
+			}
+		],
 		"storyText": "It's very dark in here you can't see anything!",
 		"options":[
 			{"text": "Use Torch", "response": "cavesTorch", "requirements": [{"item": "torch"}]},
@@ -332,17 +412,17 @@
 	"forestStart":{
 		"story": [
 			{
-				"storyText": "A mysterious robed stranger approaches", 
+				"storyText": "As you enter the forest a mysterious robed stranger approaches", 
 				"speechBubble": {"text": "Are you here for the ceremony?", "image": "occultist.png"},
-				"requirements": [{"time": [23, 43]}],
+				"requirements": [{"time": [23, 43]}, {"item": "medallion"}],
 				"options":[
-					{"text": "...Yes?", "response": "forestAltar", "event": "ceremony"},
+					{"text": "\"...Yes?\"", "response": "forestAltar", "event": "ceremony"},
 					{"text": "Attack", "response": "forestAttack", "event": "attackOccultist"},
 					{"text": "Run away", "response": "forestCabin"}
 				]
 			},
 			{
-				"storyText": "A forest, it would probably be less spooky during the day",
+				"storyText": "A forest, it would probably be less spooky during the day. Which way to go?",
 				"options":[
 					{"text": "Head North", "response": "forestCabin"},
 					{"text": "Head East", "response": "forestAltar"},
@@ -371,9 +451,10 @@
 	"forestAltar":{
 		"story": [
 			{
-				"storyText": "A group of robed figures stand around an altar. Occultist: \"Thanks, you can clean up now\"", 
+				"storyText": "A group of robed figures stand around an altar. chant you  do well", 
+				"speechBubble": {"text": "Thanks, you can clean up now. You might need this", "image": "occultist.png"},
 				"requirements": [{"event": "ceremony"}], 
-				"items": ["forestOrgans"],
+				"items": ["forestOrgans", "zooKey"],
 				"options": [
 					{"text": "Hang around", "response": "forestAltar"},
 					{"text": "Head North", "response": "forestCabin"}
@@ -389,7 +470,7 @@
 				]
 			},
 			{
-				"storyText": "A blood splattered alter stands before you",
+				"storyText": "A blood splattered alter stands before you, there's nobody around",
 				"options": [
 					{"text": "Hang around", "response": "forestAltar"},
 					{"text": "Head North", "response": "forestCabin"}
@@ -406,8 +487,7 @@
 			{"storyText": "You stumble upon an abandoned cabin. There is an axe outside, could be useful", "items": ["axe"]}
 		],
 		"options":[
-			{"text": "Look inside", "response": "forestCabin"},
-			{"text": "Attack", "response": "graveyardAttack"}
+			{"text": "Look inside", "response": "forestCabinCellar"}
 		],
 		"duration": 8,
 		"backgrounds": {
@@ -424,18 +504,10 @@
 				]
 			},
 			{
-				"storyText": "A group of robed figures stand around an altar", 
+				"storyText": "There is a locked door, you have no way of opening it. there's nothing else", 
 				"requirements": [{"time": [43, 63]}], 
 				"options": [
-					{"text": "Join in", "response": "forestAltar", "event": "ceremony"},
-					{"text": "Run away", "response": "forestCabin"},
-					{"text": "Attack", "response": "forestCabin", "event": "attackCeremony"}
-				]
-			},
-			{
-				"storyText": "A blood splattered alter stands before you",
-				"options": [
-					{"text": "Hang around", "response": "forestAltar"}
+					{"text": "Head South", "response": "forestAltar", "event": "ceremony"}
 				]
 			}
 		],
