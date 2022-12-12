@@ -4,30 +4,72 @@
 			"image": "items.png",
 			"format": "RGBA8888",
 			"size": {
-				"w": 148,
-				"h": 124
+				"w": 165,
+				"h": 125
 			},
 			"scale": 1,
 			"frames": [
 				{
-					"filename": "lantern.png",
+					"filename": "medallion.png",
 					"rotated": false,
-					"trimmed": false,
+					"trimmed": true,
 					"sourceSize": {
 						"w": 64,
 						"h": 64
 					},
 					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 64,
-						"h": 64
+						"x": 8,
+						"y": 8,
+						"w": 49,
+						"h": 49
 					},
 					"frame": {
 						"x": 1,
 						"y": 1,
+						"w": 49,
+						"h": 49
+					}
+				},
+				{
+					"filename": "money.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
 						"w": 64,
 						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 5,
+						"y": 5,
+						"w": 56,
+						"h": 54
+					},
+					"frame": {
+						"x": 52,
+						"y": 1,
+						"w": 56,
+						"h": 54
+					}
+				},
+				{
+					"filename": "axe.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 5,
+						"y": 4,
+						"w": 54,
+						"h": 57
+					},
+					"frame": {
+						"x": 110,
+						"y": 1,
+						"w": 54,
+						"h": 57
 					}
 				},
 				{
@@ -46,30 +88,9 @@
 					},
 					"frame": {
 						"x": 1,
-						"y": 67,
+						"y": 57,
 						"w": 61,
 						"h": 56
-					}
-				},
-				{
-					"filename": "money.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 64
-					},
-					"spriteSourceSize": {
-						"x": 5,
-						"y": 5,
-						"w": 56,
-						"h": 54
-					},
-					"frame": {
-						"x": 64,
-						"y": 67,
-						"w": 56,
-						"h": 54
 					}
 				},
 				{
@@ -87,8 +108,8 @@
 						"h": 64
 					},
 					"frame": {
-						"x": 67,
-						"y": 1,
+						"x": 64,
+						"y": 57,
 						"w": 29,
 						"h": 64
 					}
@@ -108,31 +129,31 @@
 						"h": 64
 					},
 					"frame": {
-						"x": 67,
-						"y": 1,
+						"x": 64,
+						"y": 57,
 						"w": 29,
 						"h": 64
 					}
 				},
 				{
-					"filename": "medallion.png",
+					"filename": "lantern.png",
 					"rotated": false,
-					"trimmed": true,
+					"trimmed": false,
 					"sourceSize": {
 						"w": 64,
 						"h": 64
 					},
 					"spriteSourceSize": {
-						"x": 8,
-						"y": 8,
-						"w": 49,
-						"h": 49
+						"x": 0,
+						"y": 0,
+						"w": 64,
+						"h": 64
 					},
 					"frame": {
-						"x": 98,
-						"y": 1,
-						"w": 49,
-						"h": 49
+						"x": 95,
+						"y": 60,
+						"w": 64,
+						"h": 64
 					}
 				}
 			]
@@ -141,6 +162,6 @@
 	"meta": {
 		"app": "https://www.codeandweb.com/texturepacker",
 		"version": "3.0",
-		"smartupdate": "$TexturePacker:SmartUpdate:403e01b6c3de850077434a0172b59296:c3d6cf6b8522ca36e9d1450bf87e2fc9:110e074689c9edd2c54833ce2e4d9270$"
+		"smartupdate": "$TexturePacker:SmartUpdate:0cadc3823113b5c647b0ba88b7e5ac94:863ce0bd49d51d26879b865ba157e3b9:110e074689c9edd2c54833ce2e4d9270$"
 	}
 }

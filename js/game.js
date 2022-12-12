@@ -16,7 +16,7 @@ const MIN_HEIGHT = 72;
 // Set up Phaser game
 var game = new Phaser.Game({
   type: Phaser.AUTO,
-  backgroundColor: "dedede",
+  backgroundColor: "000000",
   dom: {
     createContainer: true
   },
