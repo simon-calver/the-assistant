@@ -38,6 +38,18 @@ export default class PlayerScene extends Phaser.Scene {
     // Stop sound pausing when loose focus, will this work for all OS?
     this.sound.pauseOnBlur = false;
 
+    document.getElementById('instructions').addEventListener('click', () =>
+      this.launchMenuScene('MenuScene', 'how_to_play')
+    );
+    document.getElementById('stats').addEventListener('click', () =>
+      // Don't fo anything if this is already displayed
+      // close other menu if it is open
+      this.launchMenuScene('MenuScene', 'stats')
+    );
+    document.getElementById('leaderboard').addEventListener('click', () =>
+      this.launchMenuScene('MenuScene', 'high_scores')
+    );
+
     this.addMenuBars();
     this.pauseGame();
 
@@ -76,22 +88,23 @@ export default class PlayerScene extends Phaser.Scene {
   addMenuBars() {
     let { width, height } = this.sys.game.canvas;
 
-    this.add.rectangle(0, 0, width, 40, 0x000000).setOrigin(0, 0);
+    // console.log(width)
+    // this.add.rectangle(0, 0, width, 40, 0x000000).setOrigin(0, 0);
 
-    let howToPlayIcon = this.add.image(0, 20, 'icons', 'question.png').setOrigin(0, 0.5).setScale(0.5).setInteractive();
-    let scoreIcon = this.add.image(40, 20, 'icons', 'star.png').setOrigin(0, 0.5).setScale(0.5).setInteractive();
-    let highScoresIcon = this.add.image(80, 20, 'icons', 'leaderboardsComplex.png').setOrigin(0, 0.5).setScale(0.5).setInteractive();
+    // let howToPlayIcon = this.add.image(0, 20, 'icons', 'question.png').setOrigin(0, 0.5).setScale(0.5).setInteractive();
+    // let scoreIcon = this.add.image(40, 20, 'icons', 'star.png').setOrigin(0, 0.5).setScale(0.5).setInteractive();
+    // let highScoresIcon = this.add.image(80, 20, 'icons', 'leaderboardsComplex.png').setOrigin(0, 0.5).setScale(0.5).setInteractive();
 
-    scoreIcon.on('pointerdown', () => this.launchMenuScene('MenuScene', 'stats'));
-    howToPlayIcon.on('pointerdown', () => this.launchMenuScene('MenuScene', 'how_to_play'));
-    highScoresIcon.on('pointerdown', () => this.launchMenuScene('MenuScene', 'high_scores'));
+    // scoreIcon.on('pointerdown', () => this.launchMenuScene('MenuScene', 'stats'));
+    // howToPlayIcon.on('pointerdown', () => this.launchMenuScene('MenuScene', 'how_to_play'));
+    // highScoresIcon.on('pointerdown', () => this.launchMenuScene('MenuScene', 'high_scores'));
 
     this.add.rectangle(0, height - 40, width, 40, 0x000000).setOrigin(0, 0);
     let restartIcon = this.add.image(0, height - 20, 'icons', 'return.png').setOrigin(0, 0.5).setScale(0.5).setInteractive();
     this.playIcon = this.add.image(40, height - 20, 'icons', 'right.png').setOrigin(0, 0.5).setScale(0.5).setInteractive();
 
-    let muteIcon = this.add.sprite(width, 40, 'icons', 'audioOn.png').setOrigin(1, 0).setScale(0.5).setInteractive().setDepth(10);
-    this.add.circle(width, 40, muteIcon.displayWidth / 2, 0x000000).setOrigin(1, 0).setAlpha(0.75).setDepth(0);
+    let muteIcon = this.add.sprite(width, 0, 'icons', 'audioOn.png').setOrigin(1, 0).setScale(0.5).setInteractive().setDepth(10);
+    this.add.circle(width, 0, muteIcon.displayWidth / 2, 0x000000).setOrigin(1, 0).setAlpha(0.75).setDepth(0);
 
     restartIcon.on('pointerdown', this.restartGame, this); //
     this.playIcon.on('pointerdown', this.playGame, this)
@@ -103,18 +116,18 @@ export default class PlayerScene extends Phaser.Scene {
           if (this.gameScene.song.volume > 0) {
             this.gameScene.song.setVolume(0);
             muteIcon.setTexture('icons', 'audioOff.png');
-            this.gameScene.updateGameScore(-20, 2, false);
+            // this.gameScene.updateGameScore(-20, 2, false);
           } else {
             this.gameScene.song.setVolume(1);
             muteIcon.setTexture('icons', 'audioOn.png');
-            this.gameScene.updateGameScore(20, 2, false);
+            // this.gameScene.updateGameScore(20, 2, false);
           }
         }
       }
     }, this);
 
     this.addTime();
-    this.addScoreText();
+    // this.addScoreText();
   }
 
   addTime() {
@@ -253,7 +266,7 @@ export default class PlayerScene extends Phaser.Scene {
     let { width, height } = this.sys.game.canvas;
 
     // Set this to be interactive to block interacting with stuff underneath
-    this.pauseScreen = this.add.rectangle(0, 40, width, height - 80, 0x000000).setOrigin(0, 0).setDepth(1000).setInteractive();
+    this.pauseScreen = this.add.rectangle(0, 0, width, height - 40, 0x000000).setOrigin(0, 0).setDepth(1000).setInteractive();
     this.pauseScreen.alpha = 0.6;
 
     this.pauseScreenDetail = this.add.circle(this.centre.x, this.centre.y, 80, 0x000000).setOrigin(0.5).setDepth(1001);

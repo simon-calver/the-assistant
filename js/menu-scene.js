@@ -15,7 +15,7 @@ export default class MenuScene extends Phaser.Scene {
     let imageWidth = this.textures.get('menu-top').getSourceImage().width;
     let imageScale = width / imageWidth;
 
-    // Make menu background out of pngs
+    // Make menu background out of pngs, these will be duplicated if the button is pressed many times
     let backgroundTop = this.add.image(width / 2, 0, 'menu-top').setOrigin(0.5, 0).setScale(imageScale).setInteractive();
     let backgroundMiddle = this.add.image(width / 2, backgroundTop.displayHeight, 'menu-middle').setOrigin(0.5, 0).setScale(imageScale).setInteractive();
     backgroundMiddle.displayHeight = height - 2 * backgroundTop.displayHeight; // middleHeight;

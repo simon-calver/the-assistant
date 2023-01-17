@@ -9,7 +9,7 @@ var assistantScene = new AssistantScene();
 
 // Maximum width and height of game
 const WIDTH = window.innerWidth;
-const HEIGHT = window.innerHeight;
+const HEIGHT = window.innerHeight;// - 40;
 const MIN_WIDTH = 36;
 const MIN_HEIGHT = 72;
 

@@ -15,6 +15,8 @@
   <script src="https://code.jquery.com/jquery-3.5.0.js"></script> <!-- Need this to use ajax -->
 
   <script type="text/javascript" src="js/database.js"></script>
+
+
 </head>
 <!-- <header style="color:red">
   <h1>A heading here</h1>
@@ -25,16 +27,50 @@
 
 
 <body onload="checkForUser()">
-  <nav>
-    <ul>
-      <li><a href="#" class="howTo"></a></li>
-      <li><a href="#" class="stats"></a></li>
-      <li><a href="#" class="leaderboard"></a></li>
-      <li><a href="#" class="menu"></a></li>
-    </ul>
-  </nav>
+  <div style="height: 100%;display: flex;flex-direction: column;">
+    <div style="flex: 0;">
+      <nav>
+        <ul>
+          <!-- <li><button class="instuctions-button"></button></li> -->
+          <li><a href="#" class="instructions" id="instructions"></a></li>
+          <li><a href="#" class="stats" id="stats"></a></li>
+          <li><a href="#" class="leaderboard" id="leaderboard"></a></li>
+          <li><a href="#" class="menu"></a>
+            <ul>
+              <li><a href="#">Service 1</a></li>
+              <li><a href="#">Service 2</a></li>
+              <li><a href="#">Service 3</a></li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+
+    </div>
+
+    <div id="phaser-app" style="flex:1; overflow: auto;">
+      <script type="module" src="js/game.js"></script>
+    </div>
+
+  </div>
+  <!-- sdy dyt dyt duyt sa -->
+  <!-- <iframe id="page" src="" frameborder="0"></iframe> -->
+
+  <!-- <iframe id="new" src="" frameborder="0"></iframe> -->
 
 
+  <script type="text/javascript">
+    // document.getElementById("instructions").addEventListener("click", function () {
+    //   document.getElementById("new").src = "assets/text/instructions.html";
+    // });
+
+    // document.getElementById("leaderboard").addEventListener("click", function () {
+    //   document.getElementById("new").src = "assets/text/high-scores.html";
+    // });
+
+    // document.getElementById("instructions").addEventListener("click", function () {
+    //   window.open("assets/text/instructions.htmll", "Popup", "height=300,width=400");
+    // });
+  </script>
   <!-- <nav>
     <ul>
       <li><a href="#">Home</a></li>
@@ -56,9 +92,7 @@
   <!-- <img id="question" src="assets/images/icons/icons.png">
   <img id="leaderboards" src="assets/images/icons/icons.png"> -->
 
-  <div id="phaser-app">
-    <script type="module" src="js/game.js"></script>
-  </div>
+
 </body>
 
 </html>

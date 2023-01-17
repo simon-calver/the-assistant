@@ -42,7 +42,7 @@ export default class AssistantScene extends Phaser.Scene {
   }
 
   create(params = { 'pauseAtStart': true, 'muteSong': false, 'firstGame': false }) {
-    this.input.setDefaultCursor('url(assets/cursors/hand.cur), pointer');
+    // this.input.setDefaultCursor('url(assets/cursors/hand.cur), pointer');
 
     // I don't want the canvas to fill the screen on desktop, so set default size. This should only affect the 
     // aspect ratio since it is using scale.FIT
@@ -52,15 +52,15 @@ export default class AssistantScene extends Phaser.Scene {
     // get this after resizing, obviously
     let { width, height } = this.sys.game.canvas;
 
-    this.backgroundOrigin = new Phaser.Math.Vector2(width / 2, height);
+    this.backgroundOrigin = new Phaser.Math.Vector2(width / 2, height - 30);
     this.origin = new Phaser.Math.Vector2(width / 2, height / 2);
     this.addDefaultBackgrounds();
 
     this.buttons = this.add.group({ classType: Button });
-    this.textBackground = this.add.rectangle(width / 2, 40, width, 40, 0x85817f).setOrigin(0.5, 0).setAlpha(0.6);
+    this.textBackground = this.add.rectangle(width / 2, 0, width, 40, 0x85817f).setOrigin(0.5, 0).setAlpha(0.6);
 
     // this.add.image(width / 2, 40, 'text_background').setOrigin(0.5, 0).setScale(1.2);
-    this.displayText = this.add.bitmapText(width / 2, 40, 'mont', '', 26).setCenterAlign().setOrigin(0.5, 0).setTint('w');
+    this.displayText = this.add.bitmapText(width / 2, 0, 'mont', '', 26).setCenterAlign().setOrigin(0.5, 0).setTint('w');
     this.displayText.setMaxWidth(width - 20);
 
     this.speechBubbles = [];
@@ -86,6 +86,12 @@ export default class AssistantScene extends Phaser.Scene {
 
 
     window.addEventListener('deviceorientation', this.handleOrientation, true);
+
+
+    // window.addEventListener("click", function () {
+    //   console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
+    // });
+
 
     // this.paralax();
 
@@ -490,6 +496,7 @@ export default class AssistantScene extends Phaser.Scene {
     width = displayMapButton ? width - 55 : width;
 
     const xPadding = (width - 2 * buttonWidth) / 4, xLeft = centre - buttonWidth / 2 - xPadding, xRight = centre + buttonWidth / 2 + xPadding;
+    const startHeight = 90;
 
     options = this.getValidOptions(options);
 
@@ -501,9 +508,9 @@ export default class AssistantScene extends Phaser.Scene {
     options.forEach((option, index) => {
       let button;
       if (index % 2 == 0 & index == options.length - 1) {
-        button = new Button(this, centre, height - (index / 2) * buttonHeight - 80, option, buttonWidth);
+        button = new Button(this, centre, height - (index / 2) * buttonHeight - startHeight, option, buttonWidth);
       } else {
-        button = new Button(this, (index % 2 == 0) ? xLeft : xRight, height - Math.floor(index / 2) * buttonHeight - 80, option, buttonWidth);
+        button = new Button(this, (index % 2 == 0) ? xLeft : xRight, height - Math.floor(index / 2) * buttonHeight - startHeight, option, buttonWidth);
       }
       this.buttons.add(button);
     });
