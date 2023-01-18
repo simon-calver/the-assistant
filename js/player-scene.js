@@ -100,10 +100,10 @@ export default class PlayerScene extends Phaser.Scene {
     // highScoresIcon.on('pointerdown', () => this.launchMenuScene('MenuScene', 'high_scores'));
 
     this.add.rectangle(0, height - 40, width, 40, 0x000000).setOrigin(0, 0);
-    let restartIcon = this.add.image(0, height - 20, 'icons', 'return.png').setOrigin(0, 0.5).setScale(0.5).setInteractive();
-    this.playIcon = this.add.image(40, height - 20, 'icons', 'right.png').setOrigin(0, 0.5).setScale(0.5).setInteractive();
+    let restartIcon = this.add.image(0, height - 20, 'icons', 'return.png').setOrigin(0, 0.5).setScale(0.5).setInteractive({ cursor: 'pointer' });
+    this.playIcon = this.add.image(40, height - 20, 'icons', 'right.png').setOrigin(0, 0.5).setScale(0.5).setInteractive({ cursor: 'pointer' });
 
-    let muteIcon = this.add.sprite(width, 0, 'icons', 'audioOn.png').setOrigin(1, 0).setScale(0.5).setInteractive().setDepth(10);
+    let muteIcon = this.add.sprite(width, 0, 'icons', 'audioOn.png').setOrigin(1, 0).setScale(0.5).setInteractive({ cursor: 'pointer' }).setDepth(10);
     this.add.circle(width, 0, muteIcon.displayWidth / 2, 0x000000).setOrigin(1, 0).setAlpha(0.75).setDepth(0);
 
     restartIcon.on('pointerdown', this.restartGame, this); //
@@ -140,7 +140,7 @@ export default class PlayerScene extends Phaser.Scene {
     this.add.rectangle(startX, height - 20, this.timerWidth, 2, 0x676767).setOrigin(0, 0.5);
 
     // Add extra invisible rect for interactions, could use existing graphics but they are too small?
-    let playBar = this.add.rectangle(startX, height - 20, this.timerWidth, 15).setAlpha(0.1).setOrigin(0, 0.5).setInteractive();
+    let playBar = this.add.rectangle(startX, height - 20, this.timerWidth, 15).setAlpha(0.1).setOrigin(0, 0.5).setInteractive({ cursor: 'pointer' });
     playBar.on('pointerdown', function (pointer) {
       if (this.sceneLoaded & !this.gamePaused) {
         const playBarPercent = (startX - pointer.x) / (startX - endX);
@@ -238,7 +238,7 @@ export default class PlayerScene extends Phaser.Scene {
     this.sceneLoaded = true;
     this.loadingIconTween.remove();
 
-    this.playButton = this.add.image(this.centre.x, this.centre.y, 'icons', 'right.png').setOrigin(0.5).setInteractive().setDepth(1001);
+    this.playButton = this.add.image(this.centre.x, this.centre.y, 'icons', 'right.png').setOrigin(0.5).setInteractive({ cursor: 'pointer' }).setDepth(1001);
     this.playButton.on('pointerdown', () => {
       this.resumeGame();
     }, this);
@@ -284,12 +284,12 @@ export default class PlayerScene extends Phaser.Scene {
         // Update cookie and db with score
         this.saveScore(this.gameScene.getTotalScore()).then(response => this.gameOverText(response['id']));
 
-        this.playButton = this.add.image(this.centre.x, this.centre.y, 'icons', 'return.png').setOrigin(0.5).setInteractive().setDepth(1001);
+        this.playButton = this.add.image(this.centre.x, this.centre.y, 'icons', 'return.png').setOrigin(0.5).setInteractive({ cursor: 'pointer' }).setDepth(1001);
         this.playButton.on('pointerdown', () => {
           this.restartGame();
         }, this);
       } else {
-        this.playButton = this.add.image(this.centre.x, this.centre.y, 'icons', 'right.png').setOrigin(0.5).setInteractive().setDepth(1001);
+        this.playButton = this.add.image(this.centre.x, this.centre.y, 'icons', 'right.png').setOrigin(0.5).setInteractive({ cursor: 'pointer' }).setDepth(1001);
         this.playButton.on('pointerdown', this.resumeGame, this);
       }
     }
@@ -438,9 +438,9 @@ export default class PlayerScene extends Phaser.Scene {
     let { width, height } = this.sys.game.canvas;
 
     let iconWidth = 60;
-    scene.instagramButton = scene.add.image(width - 10, height - bottomHeight, 'icons', 'instagram.png').setScale(0.75).setOrigin(1, 1).setInteractive().setDepth(1001);
-    scene.twitterButton = scene.add.image(width - iconWidth - 10, height - bottomHeight, 'icons', 'twitter.png').setScale(0.75).setOrigin(1, 1).setInteractive().setDepth(1001);
-    scene.spotifyButton = scene.add.image(width - 2 * iconWidth - 10, height - bottomHeight, 'icons', 'spotify.png').setScale(0.75).setOrigin(1, 1).setInteractive().setDepth(1001);
+    scene.instagramButton = scene.add.image(width - 10, height - bottomHeight, 'icons', 'instagram.png').setScale(0.75).setOrigin(1, 1).setInteractive({ cursor: 'pointer' }).setDepth(1001);
+    scene.twitterButton = scene.add.image(width - iconWidth - 10, height - bottomHeight, 'icons', 'twitter.png').setScale(0.75).setOrigin(1, 1).setInteractive({ cursor: 'pointer' }).setDepth(1001);
+    scene.spotifyButton = scene.add.image(width - 2 * iconWidth - 10, height - bottomHeight, 'icons', 'spotify.png').setScale(0.75).setOrigin(1, 1).setInteractive({ cursor: 'pointer' }).setDepth(1001);
 
     scene.instagramButton.on('pointerdown', () => {
       this.openExternalLink('https://www.instagram.com/inflightmovie_music/');

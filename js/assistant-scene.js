@@ -1070,7 +1070,7 @@ class Button extends Phaser.GameObjects.Container {
     //   this.item = data['items'];
     // }
 
-    this.setInteractive();
+    this.setInteractive({ cursor: 'pointer' });
     this.on('pointerdown', () => {
       scene.updateActiveButton(this);
     }, this);
