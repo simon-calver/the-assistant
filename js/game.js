@@ -8,8 +8,9 @@ var playerScene = new PlayerScene();
 var assistantScene = new AssistantScene();
 
 // Maximum width and height of game
+const NAVBAR_HEIGHT = document.getElementById('navbar').offsetHeight;
 const WIDTH = window.innerWidth;
-const HEIGHT = window.innerHeight;// - 40;
+const HEIGHT = window.innerHeight - NAVBAR_HEIGHT;
 const MIN_WIDTH = 36;
 const MIN_HEIGHT = 72;
 

@@ -21,13 +21,26 @@ export default class PlayerScene extends Phaser.Scene {
   create(params = { 'scene': 'PromisesScene' }) {
     // I don't want the canvas to fill the screen on desktop, so set default size. This should only affect the 
     // aspect ratio since it is using scale.FIT
+    const navbarHeight = document.getElementById('navbar').offsetHeight;
+
     if (this.sys.game.device.os.desktop) {
       this.scale.setGameSize(380, 720);
     }
 
+    // else {
+    //   this.scale.setGameSize(window.innerWidth, window.innerHeight - navbarHeight);
+    // }
+
+    // console.log(window.innerWidth, window.innerHeight, navbarHeight);
+
+
+
     this.params = params;
     let { width, height } = this.sys.game.canvas;
     this.centre = new Phaser.Math.Vector2(width / 2, height / 2 - 50);
+
+    // this.add.bitmapText(this.centre.x, this.centre.y - 100, 'mont', `${window.innerWidth}    ${window.innerHeight}   ${navbarHeight}`, 28).setOrigin(0, 0.5);
+
 
     this.sceneLoaded = false;
     this.songComplete = false;
