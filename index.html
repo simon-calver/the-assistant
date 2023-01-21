@@ -32,9 +32,41 @@
     <div style="flex: 0;" id="navbar">
       <nav>
         <ul>
-          <!-- <li><button class="instuctions-button"></button></li> -->
           <li><a href="#" class="instructions" id="instructions"></a></li>
           <li><a href="#" class="stats" id="stats"></a></li>
+          <li><a href="#" class="leaderboard" id="leaderboard"></a></li>
+          <!-- dynamic menu button -->
+          <li>
+            <div class="menu" onclick="displayMenu(this)">
+              <div class="bar1"></div>
+              <div class="bar2"></div>
+              <div class="bar3"></div>
+            </div>
+            <div class="menu-items" id="menu-items">
+              <a href="#news">News</a>
+              <button class="dropbtn" onclick="myFunction()">Dropdown
+                <i class="fa fa-caret-down"></i>
+              </button>
+              <a href="#contact">Contact</a>
+              <a href="#about">About</a>
+            </div>
+          </li>
+          <!-- static menu button -->
+          <!-- <li><a href="#" class="menu" onclick="displayMenu()"></a>
+            <div class="menu-items" id="menu-items">
+              <a href="#news">News</a>
+              <button class="dropbtn" onclick="myFunction()">Dropdown
+                <i class="fa fa-caret-down"></i>
+              </button>
+              <a href="#contact">Contact</a>
+              <a href="#about">About</a>
+            </div>
+          </li> -->
+
+
+
+          <!-- <li><button class="instuctions-button"></button></li> -->
+
           <!-- <div class="dropdown-content">
             <a href="#">Link 1</a>
             <a href="#">Link 2</a>
@@ -42,28 +74,32 @@
           <!-- </div>
             </div> -->
           <!-- </div> -->
-          <li><a href="#" class="leaderboard" id="leaderboard"></a></li>
-          <li><a href="#" class="menu" onclick="displayMenu()"></a>
-            <div class="menu-items" id="menu-items">
-              <a href="#news">News</a>
-              <a href="#contact">Contact</a>
-              <a href="#about">About</a>
-            </div>
-            <!-- <div class="dropdown-content">
-              <div class="dropdown"> -->
-            <!-- <button class="dropbtn">More
-              <i class="fa fa-caret-down"></i>
-            </button> -->
 
-            <!-- <a href="#">sfgfg </a>
+          <!-- <div class="dropdown-content">
+              <div class="dropdown">
+                <button class="dropbtn">More
+                  <i class="fa fa-caret-down"></i>
+                </button>
+
+              </div>
+            </div> -->
+          <!-- <a href="#">sfgfg </a>
               <a href="#">rytj lkfdj</a>
               <a href="#">ey yeju tyy</a> -->
-            <!-- <ul>
+          <!-- <ul>
               <li><a href="#">Service 1</a></li>
               <li><a href="#">Service 2</a></li>
               <li><a href="#">Service 3</a></li>
             </ul> -->
-          </li>
+
+          <!-- <li>
+            <select id="menuDropdown">
+              <option value="services">Services</option>
+              <option value="products">Products</option>
+              <option value="contact">Contact</option>
+            </select>
+          </li> -->
+
         </ul>
       </nav>
 
@@ -81,13 +117,16 @@
 
 
   <script type="text/javascript">
-    function displayMenu() {
+    function displayMenu(menu) {
       var x = document.getElementById("menu-items");
       if (x.style.display === "block") {
         x.style.display = "none";
       } else {
         x.style.display = "block";
       }
+
+      // var menu = document.getElementsByClassName("menu");
+      menu.classList.toggle("change");
     }
     // document.getElementById("instructions").addEventListener("click", function () {
     //   document.getElementById("new").src = "assets/text/instructions.html";
