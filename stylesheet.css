@@ -19,269 +19,129 @@
 body {
   margin: 0;
   overflow: hidden;
-  background-color: black;
-  /* black; */
-  /* color: white;
+  /* background-color: black; */
+  background: linear-gradient(to right, rgb(50, 50, 50), black, black, black, black, black, rgb(50, 50, 50));
   font-family: 'mont-heavy';
-  margin-left: 20px;
-  margin-right: 20px; */
 }
 
-h4 {
-  margin-top: 2px;
-  margin-bottom: 0px;
-  font-size: 25px;
-}
-
-/* #instructions-header {
-  color: white;
-  font-family: 'mont-heavy';
-  text-align: left;
-  font-size: 30px;
-  margin-left: 20px;
-  margin-right: 20px;
-} */
-
-.instructions {
-  /* display: flex; */
-  /* flex-direction: column; */
-  /* flex-wrap: wrap; */
-  /* row-gap: 10px; */
-  /* align-items: center; */
-  color: white;
-  font-family: 'mont-heavy';
-  /* text-align: left; */
-  font-size: 20px;
-  margin-left: 20px;
-  margin-right: 20px;
-  overflow-y: auto;
-  height: 500px;
-  /* align-items: center; */
-}
-
-/* can the height be a variable? */
-table.scores,
-table.scores th,
-table.scores td {
-  /* border: 8px solid rgb(31, 30, 30); */
-  text-align: left;
-  font-size: 20px;
-  border: none;
-}
-
-table.scores th {
-  position: sticky;
-  top: 0;
-  background: rgb(31, 30, 30);
-  height: 30px;
-  /* border: 8px solid rgb(31, 30, 30); */
-}
-
-table.scores {
-  table-layout: fixed;
-  width: 100%;
-  border: none;
-}
-
-/* 
-table.scores,
-table.scores th,
-table.scores td {
-  border: 4px solid rgb(31, 30, 30);
-  text-align: left;
-  font-size: 20px;
-}
-
-table.scores {
-  border-collapse: collapse; 
-  margin-left: auto;
-  margin-right: auto;
-  word-wrap: break-word;
-}
-
-table.scores th,
-table.scores td {
-  padding: 2px;
-}
-
-table.scores th {
-  position: sticky;
-  top: 0; 
-  background: rgb(31, 30, 30); 
-  height: 30px; 
-  box-shadow: 0 0 6px rgb(29, 194, 29);
-}
-
-table.info {
-  margin-top: -4px; 
-  text-align: left;
-  font-size: 20px;
-} */
-
-img {
-  margin: auto;
-  display: block;
-  width: 250px;
-  height: auto
-}
-
-/* #instructions input {
-  display: block;
-} */
-
-#form-wrapper {
+nav {
+  background: linear-gradient(to right, rgb(50, 50, 50), black, black, black, black, black, rgb(50, 50, 50));
   display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  row-gap: 10px;
-  column-gap: 20px;
+  justify-content: center;
   align-items: center;
 }
 
-#form-wrapper input {
-  display: block;
-}
-
-input[type=text] {
-  width: 200px;
-  font-family: 'mont-heavy';
-  font-size: 30px;
-  text-align: center;
-  color: rgb(255, 255, 255);
-  background-color: rgb(31, 30, 30);
-  /* border: none; */
-}
-
-input[type=button] {
-  font-family: 'mont-light';
-  /* color: rgb(29, 194, 29); */
-  background-color: rgb(31, 30, 30);
-}
-
-.smallButton {
-  width: 100px;
-  font-size: 26px;
-}
-
-.bigButton {
-  width: 120px;
-  font-size: 30px;
-  /* border: none; */
-  /* font-family: 'mont-light'; */
-  color: rgb(255, 255, 255);
-}
-
-/* Use this to shake input when text is invalid */
-.error {
-  position: relative;
-  animation: shake .1s linear;
-  animation-iteration-count: 3;
-}
-
-@keyframes shake {
-  0% {
-    left: -5px;
-  }
-
-  100% {
-    right: -5px;
-  }
-}
-
-/* Designing for scroll-bar */
-::-webkit-scrollbar {
-  width: 6px;
-}
-
-/* Track */
-::-webkit-scrollbar-track {
-  background: gainsboro;
-  border-radius: 5px;
-  box-shadow: inset 0 0 5px grey;
-}
-
-/* Handle */
-::-webkit-scrollbar-thumb {
-  background: black;
-  border-radius: 5px;
-}
-
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-  background: #555;
-}
-
-#navlist {
-  position: relative;
-}
-
-#navlist li {
-  margin: 0;
-  padding: 0;
+nav ul {
   list-style: none;
-  position: absolute;
-  top: 0;
+  margin-left: -245px;
+  margin-top: -5px;
+  margin-bottom: -5px;
 }
 
-#navlist li,
-#navlist a {
-  height: 66px;
+nav li {
+  display: inline-block;
+  margin-left: -5px;
+  margin-right: -5px;
+  position: relative;
+}
+
+nav li:last-child {
+  position: relative;
+  right: -195px;
+}
+
+nav a.instructions {
+  background-image: url(assets/images/icons/question.png);
+  width: 50px;
+  height: 50px;
   display: block;
 }
 
-#question,
-#leaderboards {
-  background-image: url('assets/images/icons/icons.png');
-  background-repeat: no-repeat;
+nav a.stats {
+  background-image: url(assets/images/icons/star.png);
+  width: 50px;
+  height: 50px;
+  display: block;
 }
 
-#question {
-  background-position: -200px 0px;
-  /* left: 200px;
-  width: 46px; */
-  left: 0px;
-  width: 42px;
-  height: 66px;
-  /* background: url('assets/images/icons/icons.png') -200px 0px; */
-  scale: 0.5;
+nav a.leaderboard {
+  background-image: url(assets/images/icons/leaderboardsComplex.png);
+  width: 50px;
+  height: 50px;
+  display: block;
 }
 
-#leaderboards {
-  background-position: -69px -136px;
-  /* left: 200px;
-  width: 46px; */
-  left: 20px;
-  width: 70px;
-  height: 58px;
-  /* background: url('assets/images/icons/icons.png') -69px -136px; */
-  scale: 0.5;
+.menu {
+  cursor: pointer;
+  display: block;
 }
 
-#home {
-  left: 0px;
-  width: 46px;
-  background: url('assets/images/icons/icons.png') 0 0;
+/* nav a.menu {
+  background-image: url(assets/images/icons/barsHorizontal.png);
+  width: 50px;
+  height: 50px;
+  display: block;
+} */
+
+.menu-items {
+  position: absolute;
+  background-color: black;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(255, 255, 255, 0.2);
+  z-index: 1;
+  display: block;
+  right: 0;
 }
 
-
-.flags-canada,
-.flags-mexico,
-.flags-usa {
-  background-image: url('assets/images/icons/icons.png');
-  background-repeat: no-repeat;
+/* Links inside the dropdown */
+.menu-items a {
+  float: none;
+  color: white;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: flex;
+  text-align: left;
 }
 
-.flags-canada {
-  height: 128px;
-  background-position: -5px -5px;
+.submenu-items {
+  background-color: rgb(37, 37, 37);
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(255, 255, 255, 0.2);
+  z-index: 1;
+  display: block;
+  right: 0;
 }
 
-.flags-usa {
-  height: 15px;
-  background-position: 0px 0px;
+.submenu-items a {
+  float: none;
+  color: white;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: flex;
+  text-align: left;
 }
 
-.flags-mexico {
-  height: 147px;
-  background-position: -5px -288px;
+.bar1,
+.bar2,
+.bar3 {
+  width: 35px;
+  height: 7px;
+  background-color: white;
+  margin: 6px 0px;
+  transition: 0.4s;
+}
+
+/* Rotate first bar */
+.change .bar1 {
+  transform: translate(0, 12.5px) rotate(-45deg);
+}
+
+/* Fade out the second bar */
+.change .bar2 {
+  opacity: 0;
+}
+
+/* Rotate last bar */
+.change .bar3 {
+  transform: translate(0, -12.5px) rotate(45deg);
 }

@@ -42,7 +42,7 @@ export default class AssistantScene extends Phaser.Scene {
   }
 
   create(params = { 'pauseAtStart': true, 'muteSong': false, 'firstGame': false }) {
-    this.input.setDefaultCursor('url(assets/cursors/hand.cur), pointer');
+    // this.input.setDefaultCursor('url(assets/cursors/hand.cur), pointer');
 
     // I don't want the canvas to fill the screen on desktop, so set default size. This should only affect the 
     // aspect ratio since it is using scale.FIT
@@ -52,15 +52,15 @@ export default class AssistantScene extends Phaser.Scene {
     // get this after resizing, obviously
     let { width, height } = this.sys.game.canvas;
 
-    this.backgroundOrigin = new Phaser.Math.Vector2(width / 2, height);
+    this.backgroundOrigin = new Phaser.Math.Vector2(width / 2, height - 30);
     this.origin = new Phaser.Math.Vector2(width / 2, height / 2);
     this.addDefaultBackgrounds();
 
     this.buttons = this.add.group({ classType: Button });
-    this.textBackground = this.add.rectangle(width / 2, 40, width, 40, 0x85817f).setOrigin(0.5, 0).setAlpha(0.6);
+    this.textBackground = this.add.rectangle(width / 2, 0, width, 40, 0x85817f).setOrigin(0.5, 0).setAlpha(0.6);
 
     // this.add.image(width / 2, 40, 'text_background').setOrigin(0.5, 0).setScale(1.2);
-    this.displayText = this.add.bitmapText(width / 2, 40, 'mont', '', 26).setCenterAlign().setOrigin(0.5, 0).setTint('w');
+    this.displayText = this.add.bitmapText(width / 2, 0, 'mont', '', 26).setCenterAlign().setOrigin(0.5, 0).setTint('w');
     this.displayText.setMaxWidth(width - 20);
 
     this.speechBubbles = [];
@@ -78,12 +78,20 @@ export default class AssistantScene extends Phaser.Scene {
     this.playerItems = [];
     this.playerCollectibles = [];
     this.playerEvents = []; // Make these sets?
-    this.setScene('intro');
+    this.playerStates = [];
+    this.setScene('outskirts'); //intro');
+
 
     this.displayItems = [];
 
 
     window.addEventListener('deviceorientation', this.handleOrientation, true);
+
+
+    // window.addEventListener("click", function () {
+    //   console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
+    // });
+
 
     // this.paralax();
 
@@ -91,9 +99,11 @@ export default class AssistantScene extends Phaser.Scene {
     // Hard code this for now, maybe add to json?
     this.events = { "sceneName": { "start": 99, "triggered": false } };
 
+    this.addItem('axe');
+    this.addItem('money');
+    this.addItem('shovel');
+    this.addItem('medallion');
 
-
-    // this.addItem('shovel');
     // this.addItem('item');
     // this.addItem('item');
     // this.addItem('item');
@@ -199,7 +209,7 @@ export default class AssistantScene extends Phaser.Scene {
     }, this);
 
     this.song.play();
-    // this.song.seek = 33;
+    // this.song.seek = 50;
   }
 
   handleOrientation(e) {
@@ -246,51 +256,145 @@ export default class AssistantScene extends Phaser.Scene {
     // });
   }
 
+  removeItem(item) {
+    const itemIndex = this.displayItems.findIndex(displayItem => displayItem.getItem() == item);
+    this.displayItems[itemIndex].destroy();
+    this.displayItems.splice(itemIndex, 1);
+    if (item.includes('Arm') | item.includes('Leg') | item.includes('Torso') | item.includes('Brain') | item.includes('Organs')) {
+      const itemIndex = this.playerCollectibles.findIndex(collectible => collectible == item);
+      this.playerCollectibles.splice(itemIndex, 1);
+    } else {
+      const itemIndex = this.playerItems.findIndex(collectible => collectible == item);
+      this.playerItems.splice(itemIndex, 1);
+    }
+    this.resetItemDisplay();
+  }
+
+  // removeItem(item) {
+  //   if (item.includes('Arm') | item.includes('Leg') | item.includes('Torso') | item.includes('Brain') | item.includes('Organs')) {
+  //     const itemIndex = this.playerCollectibles.findIndex(collectible => collectible == item);
+  //     this.playerCollectibles.splice(itemIndex, 1);
+  //   } else {
+  //     const itemIndex = this.playerItems.findIndex(collectible => collectible == item);
+  //     this.playerItems.splice(itemIndex, 1);
+  //   }
+  //   this.resetItemDisplay();
+  // }
+
+  resetItemDisplay() {
+  }
+
+  //   let { width, height } = this.sys.game.canvas;
+  //   const itemWidth = 40;
+  //   let displayX;
+  //   let displayY;
+
+  //   for (var item of this.playerItems) {
+
+  //   }
+
+
+  //   if (item.includes('Arm') | item.includes('Leg') | item.includes('Torso') | item.includes('Brain') | item.includes('Organs')) {
+  //     this.playerCollectibles.push(item);
+  //     displayX = width - itemWidth / 2 - 2;
+  //     displayY = this.playerCollectibles.length * (itemWidth + 5)
+  //   } else {
+  //     this.playerItems.push(item);
+  //     displayX = itemWidth / 2 + 2;
+  //     displayY = this.playerItems.length * (itemWidth + 5)
+  //   }
+
+  //   // const itemsLen = this.displayItems.length;
+  //   this.displayItems.push(new DisplayItem(this, displayX, displayY + 160, itemWidth, item));
+  // }
+
   setScene(sceneId) {
     console.log('Next scene: ', sceneId);
-    this.updateBackground(this.storyText[sceneId]['backgrounds']);
-    let displayMapButton = true;
-    if (this.storyText[sceneId]['mapButton'] != undefined) {
-      displayMapButton = this.storyText[sceneId]['mapButton'];
-    }
-    if (this.storyText[sceneId]['item']) {
-      this.addItem(this.storyText[sceneId]['item']);
-    }
-    if (this.storyText[sceneId]['story']) {
-      let storyEvent = this.getStoryEvent(this.storyText[sceneId]['story']);
-      // console.log(storyEvent);
-      this.displayText.text = storyEvent['storyText'];
-      // Make all of these lists !!!!
-      if (storyEvent['speechBubble']) {
-        this.speechBubbles.push(new SpeechBubble(this, storyEvent['speechBubble']));
-      }
-      if (storyEvent['item']) {
-        this.addItem(storyEvent['item']);
-      }
-      if (storyEvent['items']) {
-        for (var item of storyEvent['items']) {
-          this.addItem(item);
+    if (this.storyText[sceneId]['text']) {
+      this.updateBackground(this.storyText[sceneId]['backgrounds']);
+
+      let text = '';
+      let options = [];
+      for (var storyEvent of this.storyText[sceneId]['text']) {
+        if (this.checkRequirements(storyEvent['requirements'])) {
+          text += storyEvent['story'] ? storyEvent['story'] : '';
+          if (storyEvent['items']) {
+            for (var item of storyEvent['items']) {
+              this.addItem(item);
+            }
+          }
+          if (storyEvent['events']) {
+            for (var event of storyEvent['events']) {
+              this.playerEvents.push(event);
+            }
+          }
+          if (storyEvent['options']) {
+            options = options.concat(storyEvent['options']);
+          }
+          console.log(options);
+          // What if there are multiple of these? show in order with delay? Assume there will be one, maybe do speech separate in json
+          if (storyEvent['speechBubble']) {
+            this.speechBubbles.push(new SpeechBubble(this, storyEvent['speechBubble']));
+          }
         }
       }
-      if (storyEvent['event']) {
-        this.playerEvents.push(storyEvent['event']);
+      this.displayText.text = text;
+
+
+      let displayMapButton = true;
+      if (this.storyText[sceneId]['mapButton'] != undefined) {
+        displayMapButton = this.storyText[sceneId]['mapButton'];
       }
-      if (storyEvent['events']) {
-        for (var event of storyEvent['events']) {
-          this.playerEvents.push(event);
+      this.addButtons(options, displayMapButton);
+
+      // this.addButtons(this.storyText[sceneId]['options'], displayMapButton);
+
+
+    } else {
+      this.updateBackground(this.storyText[sceneId]['backgrounds']);
+      let displayMapButton = true;
+      if (this.storyText[sceneId]['mapButton'] != undefined) {
+        displayMapButton = this.storyText[sceneId]['mapButton'];
+      }
+      if (this.storyText[sceneId]['item']) {
+        this.addItem(this.storyText[sceneId]['item']);
+      }
+      if (this.storyText[sceneId]['story']) {
+        let storyEvent = this.getStoryEvent(this.storyText[sceneId]['story']);
+        // console.log(storyEvent);
+        this.displayText.text = storyEvent['storyText'];
+        // Make all of these lists !!!!
+        if (storyEvent['speechBubble']) {
+          this.speechBubbles.push(new SpeechBubble(this, storyEvent['speechBubble']));
         }
-      }
-      if (storyEvent['options']) {
-        this.addButtons(storyEvent['options'], displayMapButton);
+        if (storyEvent['item']) {
+          this.addItem(storyEvent['item']);
+        }
+        if (storyEvent['items']) {
+          for (var item of storyEvent['items']) {
+            this.addItem(item);
+          }
+        }
+        if (storyEvent['event']) {
+          this.playerEvents.push(storyEvent['event']);
+        }
+        if (storyEvent['events']) {
+          for (var event of storyEvent['events']) {
+            this.playerEvents.push(event);
+          }
+        }
+        if (storyEvent['options']) {
+          this.addButtons(storyEvent['options'], displayMapButton);
+        } else {
+          this.addButtons(this.storyText[sceneId]['options'], displayMapButton);
+        }
+        // this.displayText.text = this.getText(this.storyText[sceneId]['story']);
       } else {
+        this.displayText.text = this.storyText[sceneId]['storyText'];
         this.addButtons(this.storyText[sceneId]['options'], displayMapButton);
       }
-      // this.displayText.text = this.getText(this.storyText[sceneId]['story']);
-    } else {
-      this.displayText.text = this.storyText[sceneId]['storyText'];
-      this.addButtons(this.storyText[sceneId]['options'], displayMapButton);
-    }
 
+    }
     // console.log(this.storyText[sceneId]['item']);
     this.textBackground.displayHeight = this.displayText.height;// + 5;
     // console.log(this.displayText.getTextBounds()); //['buttonText'], this.storyText[sceneId]['buttonResponse'], this.storyText[sceneId]['item']);
@@ -298,6 +402,90 @@ export default class AssistantScene extends Phaser.Scene {
     // this.paralax();
 
     console.log("Player events: ", this.playerEvents);
+  }
+
+
+  checkRequirements(reqs) {
+    if (reqs) {
+      let valid;
+      for (var req of reqs) {
+        // console.log(req);
+        // console.log(valid)
+        let reqValid = this.checkRequirement(req);
+        // console.log(reqValid)
+        if (valid == null) {
+          valid = reqValid;
+        } else {
+          // Check which operation to use (i.e. and or or), default is &
+          if (req['op'] != undefined & req['op'] == 'OR') {
+            valid = valid | reqValid;
+          } else {
+            valid = valid & reqValid;
+          }
+        }
+      }
+
+      return valid;
+    } else {
+      return true;
+    }
+  }
+
+  checkRequirementsOLD(reqs) {
+    if (reqs) {
+      let valid = true;
+      // Require all conditions to be true
+      for (var req of reqs) {
+        if ('item' in req) {
+          valid = valid & this.playerItems.includes(req['item']);
+        } else if ('notItem' in req) {
+          valid = valid & !this.playerItems.includes(req['notItem']);
+        } else if ('event' in req) {
+          valid = valid & this.playerEvents.includes(req['event']);
+        } else if ('notEvent' in req) {
+          valid = valid & !this.playerEvents.includes(req['notEvent']);
+        } else if ('time' in req) {
+          // This check is probably only neccesary for testing
+          if (this.song) {
+            valid = valid & this.song.seek >= req['time'][0] & this.song.seek < req['time'][1];
+          }
+        } else if ('notTime' in req) {
+          // This check is probably only neccesary for testing
+          if (this.song) {
+            valid = valid & !(this.song.seek >= req['notTime'][0] & this.song.seek < req['notTime'][1]);
+          }
+        }
+      }
+      return valid;
+    } else {
+      return true;
+    }
+  }
+
+  checkRequirement(req) {
+    let valid = false;
+    if ('item' in req) {
+      valid = this.playerItems.includes(req['item']) | this.playerCollectibles.includes(req['item']);
+    } else if ('event' in req) {
+      valid = this.playerEvents.includes(req['event']);
+    } else if ('time' in req) {
+      // This check is probably only neccesary for testing
+      if (this.song) {
+        // console.log(this.song.seek)
+        valid = Boolean(this.song.seek >= req['time'][0] & this.song.seek < req['time'][1]);
+      }
+    } else if ('state' in req) {
+      valid = this.playerStates.includes(req['state']);
+    }
+
+    // Check if this is negated
+    // console.log(req['cond'])
+    if (req['cond'] != undefined & req['cond'] == 'not') {
+      // console.log('its nort')
+      return !valid;
+    } else {
+      return valid;
+    }
   }
 
   addButtons(options, displayMapButton) {
@@ -308,6 +496,7 @@ export default class AssistantScene extends Phaser.Scene {
     width = displayMapButton ? width - 55 : width;
 
     const xPadding = (width - 2 * buttonWidth) / 4, xLeft = centre - buttonWidth / 2 - xPadding, xRight = centre + buttonWidth / 2 + xPadding;
+    const startHeight = 90;
 
     options = this.getValidOptions(options);
 
@@ -319,9 +508,9 @@ export default class AssistantScene extends Phaser.Scene {
     options.forEach((option, index) => {
       let button;
       if (index % 2 == 0 & index == options.length - 1) {
-        button = new Button(this, centre, height - (index / 2) * buttonHeight - 80, option, buttonWidth);
+        button = new Button(this, centre, height - (index / 2) * buttonHeight - startHeight, option, buttonWidth);
       } else {
-        button = new Button(this, (index % 2 == 0) ? xLeft : xRight, height - Math.floor(index / 2) * buttonHeight - 80, option, buttonWidth);
+        button = new Button(this, (index % 2 == 0) ? xLeft : xRight, height - Math.floor(index / 2) * buttonHeight - startHeight, option, buttonWidth);
       }
       this.buttons.add(button);
     });
@@ -518,34 +707,84 @@ export default class AssistantScene extends Phaser.Scene {
     let validOptions = options.filter(function (option) {
       const reqs = option['requirements']
       if (reqs) {
-        let valid = true;
-        // Require all conditions to be true
-        for (var req of reqs) {
-          if ('item' in req) {
-            valid = valid & this.playerItems.includes(req['item']);
-          } else if ('event' in req) {
-            valid = valid & this.playerEvents.includes(req['event']);
-          } else if ('notEvent' in req) {
-            valid = valid & !this.playerEvents.includes(req['notEvent']);
-          } else if ('time' in req) {
-            // This check is probably only neccesary for testing
-            if (this.song) {
-              valid = valid & this.song.seek >= req['time'][0] & this.song.seek < req['time'][1];
-            }
-          } else if ('notTime' in req) {
-            // This check is probably only neccesary for testing
-            if (this.song) {
-              valid = valid & !(this.song.seek >= req['notTime'][0] & this.song.seek < req['notTime'][1]);
-            }
-          }
-        }
-        return valid;
+        return this.checkRequirements(reqs);
+        // let valid = true;
+        // // Require all conditions to be true
+        // for (var req of reqs) {
+        //   if ('item' in req) {
+        //     valid = valid & this.playerItems.includes(req['item']);
+        //   } else if ('event' in req) {
+        //     valid = valid & this.playerEvents.includes(req['event']);
+        //   } else if ('notEvent' in req) {
+        //     valid = valid & !this.playerEvents.includes(req['notEvent']);
+        //   } else if ('time' in req) {
+        //     // This check is probably only neccesary for testing
+        //     if (this.song) {
+        //       valid = valid & this.song.seek >= req['time'][0] & this.song.seek < req['time'][1];
+        //     }
+        //   } else if ('notTime' in req) {
+        //     // This check is probably only neccesary for testing
+        //     if (this.song) {
+        //       valid = valid & !(this.song.seek >= req['notTime'][0] & this.song.seek < req['notTime'][1]);
+        //     }
+        //   }
+        // }
+        // return valid;
       } else {
         return true;
       }
     }, this);
     return validOptions;
   }
+
+  // checkRequirement(req) {
+  //   let valid = false;
+  //   if ('item' in req) {
+  //     valid = this.playerItems.includes(req['item']);
+  //   } else if ('event' in req) {
+  //     valid = this.playerEvents.includes(req['event']);
+  //   } else if ('time' in req) {
+  //     // This check is probably only neccesary for testing
+  //     if (this.song) {
+  //       // console.log(this.song.seek)
+  //       valid = Boolean(this.song.seek >= req['time'][0] & this.song.seek < req['time'][1]);
+  //     }
+  //   }
+
+  //   // Check if this is negated
+  //   // console.log(req['cond'])
+  //   if (req['cond'] != undefined & req['cond'] == 'not') {
+  //     // console.log('its nort')
+  //     return !valid;
+  //   } else {
+  //     return valid;
+  //   }
+  // }
+
+  // checkRequirement(req) {
+  //   let valid = false;
+  //   if ('item' in req) {
+  //     valid = this.playerItems.includes(req['item']);
+  //   } else if ('event' in req) {
+  //     valid = this.playerEvents.includes(req['event']);
+  //   } else if ('time' in req) {
+  //     // This check is probably only neccesary for testing
+  //     if (this.song) {
+  //       // console.log(this.song.seek)
+  //       valid = Boolean(this.song.seek >= req['time'][0] & this.song.seek < req['time'][1]);
+  //     }
+  //   }
+
+  //   // Check if this is negated
+  //   // console.log(req['cond'])
+  //   if (req['cond'] != undefined & req['cond'] == 'not') {
+  //     // console.log('its nort')
+  //     return !valid;
+  //   } else {
+  //     return valid;
+  //   }
+  // }
+
   // console.log(options)
   // let validOptions = Array.from(Array(buttonText.length).keys());
   // // let org;
@@ -632,13 +871,18 @@ export default class AssistantScene extends Phaser.Scene {
   }
 
   getNextScene() {
-    let nextSceneId, items, events;
+    // Reset player states before each turn 
+    this.playerStates = [];
+
+    let nextSceneId, items, events, cost, states;
     // Get items/events from buttons then delete them
     this.buttons.children.each(function (button) {
       if (button.isActive) {
         nextSceneId = button.response;
         items = button.getItems();
         events = button.getEvents();
+        cost = button.getCost();
+        states = button.getStates();
       }
       button.destroy();
     });
@@ -651,15 +895,31 @@ export default class AssistantScene extends Phaser.Scene {
     for (var event of events) {
       this.playerEvents.push(event);
     }
+    for (var itemCost of cost) {
+      this.removeItem(itemCost);
+    }
+    for (var state of states) {
+      this.playerStates.push(state);
+    }
     // if (event) this.playerEvents.push(event);
 
-    // Delete all speech bubbles, there should probably only ever be one on zero in this array
+    // Delete all speech bubbles, there should probably only ever be one or zero in this array
     this.speechBubbles.forEach((speechBubble) => {
       speechBubble.destroy();
     });
     this.speechBubbles = [];
 
+    // Check for player states
+    this.updatePlayerStates();
+
     this.setScene(nextSceneId);
+  }
+
+  updatePlayerStates() {
+    const weaponItems = ['shovel', 'axe'];
+    if (weaponItems.some(item => this.playerItems.includes(item))) {
+      this.playerStates.push('hasWeapon');
+    }
   }
 
   stopCurrentScene() {
@@ -799,6 +1059,8 @@ class Button extends Phaser.GameObjects.Container {
     this.response = data['response'];
     this.items = data['items'] || [];
     this.events = data['events'] || [];
+    this.cost = data['cost'] || [];
+    this.states = data['states'] || [];
 
     // Make this all events!!
     // if (data['events']) {
@@ -808,7 +1070,7 @@ class Button extends Phaser.GameObjects.Container {
     //   this.item = data['items'];
     // }
 
-    this.setInteractive();
+    this.setInteractive({ cursor: 'pointer' });
     this.on('pointerdown', () => {
       scene.updateActiveButton(this);
     }, this);
@@ -842,6 +1104,14 @@ class Button extends Phaser.GameObjects.Container {
 
   getEvents() {
     return this.events;
+  }
+
+  getCost() {
+    return this.cost;
+  }
+
+  getStates() {
+    return this.states;
   }
 }
 
@@ -881,5 +1151,14 @@ class DisplayItem {
   setYPos(y) {
     this.background.y = y;
     this.itemImage.y = y;
+  }
+
+  getItem() {
+    return this.item;
+  }
+
+  destroy() {
+    this.background.destroy();
+    this.itemImage.destroy();
   }
 }

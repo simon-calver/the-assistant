@@ -21,13 +21,26 @@ export default class PlayerScene extends Phaser.Scene {
   create(params = { 'scene': 'PromisesScene' }) {
     // I don't want the canvas to fill the screen on desktop, so set default size. This should only affect the 
     // aspect ratio since it is using scale.FIT
+    const navbarHeight = document.getElementById('navbar').offsetHeight;
+
     if (this.sys.game.device.os.desktop) {
       this.scale.setGameSize(380, 720);
     }
 
+    // else {
+    //   this.scale.setGameSize(window.innerWidth, window.innerHeight - navbarHeight);
+    // }
+
+    // console.log(window.innerWidth, window.innerHeight, navbarHeight);
+
+
+
     this.params = params;
     let { width, height } = this.sys.game.canvas;
     this.centre = new Phaser.Math.Vector2(width / 2, height / 2 - 50);
+
+    // this.add.bitmapText(this.centre.x, this.centre.y - 100, 'mont', `${window.innerWidth}    ${window.innerHeight}   ${navbarHeight}`, 28).setOrigin(0, 0.5);
+
 
     this.sceneLoaded = false;
     this.songComplete = false;
@@ -37,6 +50,18 @@ export default class PlayerScene extends Phaser.Scene {
 
     // Stop sound pausing when loose focus, will this work for all OS?
     this.sound.pauseOnBlur = false;
+
+    document.getElementById('instructions').addEventListener('click', () =>
+      this.launchMenuScene('MenuScene', 'how_to_play')
+    );
+    document.getElementById('stats').addEventListener('click', () =>
+      // Don't fo anything if this is already displayed
+      // close other menu if it is open
+      this.launchMenuScene('MenuScene', 'stats')
+    );
+    document.getElementById('leaderboard').addEventListener('click', () =>
+      this.launchMenuScene('MenuScene', 'high_scores')
+    );
 
     this.addMenuBars();
     this.pauseGame();
@@ -76,22 +101,23 @@ export default class PlayerScene extends Phaser.Scene {
   addMenuBars() {
     let { width, height } = this.sys.game.canvas;
 
-    this.add.rectangle(0, 0, width, 40, 0x000000).setOrigin(0, 0);
+    // console.log(width)
+    // this.add.rectangle(0, 0, width, 40, 0x000000).setOrigin(0, 0);
 
-    let howToPlayIcon = this.add.image(0, 20, 'icons', 'question.png').setOrigin(0, 0.5).setScale(0.5).setInteractive();
-    let scoreIcon = this.add.image(40, 20, 'icons', 'star.png').setOrigin(0, 0.5).setScale(0.5).setInteractive();
-    let highScoresIcon = this.add.image(80, 20, 'icons', 'leaderboardsComplex.png').setOrigin(0, 0.5).setScale(0.5).setInteractive();
+    // let howToPlayIcon = this.add.image(0, 20, 'icons', 'question.png').setOrigin(0, 0.5).setScale(0.5).setInteractive();
+    // let scoreIcon = this.add.image(40, 20, 'icons', 'star.png').setOrigin(0, 0.5).setScale(0.5).setInteractive();
+    // let highScoresIcon = this.add.image(80, 20, 'icons', 'leaderboardsComplex.png').setOrigin(0, 0.5).setScale(0.5).setInteractive();
 
-    scoreIcon.on('pointerdown', () => this.launchMenuScene('MenuScene', 'stats'));
-    howToPlayIcon.on('pointerdown', () => this.launchMenuScene('MenuScene', 'how_to_play'));
-    highScoresIcon.on('pointerdown', () => this.launchMenuScene('MenuScene', 'high_scores'));
+    // scoreIcon.on('pointerdown', () => this.launchMenuScene('MenuScene', 'stats'));
+    // howToPlayIcon.on('pointerdown', () => this.launchMenuScene('MenuScene', 'how_to_play'));
+    // highScoresIcon.on('pointerdown', () => this.launchMenuScene('MenuScene', 'high_scores'));
 
     this.add.rectangle(0, height - 40, width, 40, 0x000000).setOrigin(0, 0);
-    let restartIcon = this.add.image(0, height - 20, 'icons', 'return.png').setOrigin(0, 0.5).setScale(0.5).setInteractive();
-    this.playIcon = this.add.image(40, height - 20, 'icons', 'right.png').setOrigin(0, 0.5).setScale(0.5).setInteractive();
+    let restartIcon = this.add.image(0, height - 20, 'icons', 'return.png').setOrigin(0, 0.5).setScale(0.5).setInteractive({ cursor: 'pointer' });
+    this.playIcon = this.add.image(40, height - 20, 'icons', 'right.png').setOrigin(0, 0.5).setScale(0.5).setInteractive({ cursor: 'pointer' });
 
-    let muteIcon = this.add.sprite(width, 40, 'icons', 'audioOn.png').setOrigin(1, 0).setScale(0.5).setInteractive().setDepth(10);
-    this.add.circle(width, 40, muteIcon.displayWidth / 2, 0x000000).setOrigin(1, 0).setAlpha(0.75).setDepth(0);
+    let muteIcon = this.add.sprite(width, 0, 'icons', 'audioOn.png').setOrigin(1, 0).setScale(0.5).setInteractive({ cursor: 'pointer' }).setDepth(10);
+    this.add.circle(width, 0, muteIcon.displayWidth / 2, 0x000000).setOrigin(1, 0).setAlpha(0.75).setDepth(0);
 
     restartIcon.on('pointerdown', this.restartGame, this); //
     this.playIcon.on('pointerdown', this.playGame, this)
@@ -103,18 +129,18 @@ export default class PlayerScene extends Phaser.Scene {
           if (this.gameScene.song.volume > 0) {
             this.gameScene.song.setVolume(0);
             muteIcon.setTexture('icons', 'audioOff.png');
-            this.gameScene.updateGameScore(-20, 2, false);
+            // this.gameScene.updateGameScore(-20, 2, false);
           } else {
             this.gameScene.song.setVolume(1);
             muteIcon.setTexture('icons', 'audioOn.png');
-            this.gameScene.updateGameScore(20, 2, false);
+            // this.gameScene.updateGameScore(20, 2, false);
           }
         }
       }
     }, this);
 
     this.addTime();
-    this.addScoreText();
+    // this.addScoreText();
   }
 
   addTime() {
@@ -127,7 +153,7 @@ export default class PlayerScene extends Phaser.Scene {
     this.add.rectangle(startX, height - 20, this.timerWidth, 2, 0x676767).setOrigin(0, 0.5);
 
     // Add extra invisible rect for interactions, could use existing graphics but they are too small?
-    let playBar = this.add.rectangle(startX, height - 20, this.timerWidth, 15).setAlpha(0.1).setOrigin(0, 0.5).setInteractive();
+    let playBar = this.add.rectangle(startX, height - 20, this.timerWidth, 15).setAlpha(0.1).setOrigin(0, 0.5).setInteractive({ cursor: 'pointer' });
     playBar.on('pointerdown', function (pointer) {
       if (this.sceneLoaded & !this.gamePaused) {
         const playBarPercent = (startX - pointer.x) / (startX - endX);
@@ -225,7 +251,7 @@ export default class PlayerScene extends Phaser.Scene {
     this.sceneLoaded = true;
     this.loadingIconTween.remove();
 
-    this.playButton = this.add.image(this.centre.x, this.centre.y, 'icons', 'right.png').setOrigin(0.5).setInteractive().setDepth(1001);
+    this.playButton = this.add.image(this.centre.x, this.centre.y, 'icons', 'right.png').setOrigin(0.5).setInteractive({ cursor: 'pointer' }).setDepth(1001);
     this.playButton.on('pointerdown', () => {
       this.resumeGame();
     }, this);
@@ -253,7 +279,7 @@ export default class PlayerScene extends Phaser.Scene {
     let { width, height } = this.sys.game.canvas;
 
     // Set this to be interactive to block interacting with stuff underneath
-    this.pauseScreen = this.add.rectangle(0, 40, width, height - 80, 0x000000).setOrigin(0, 0).setDepth(1000).setInteractive();
+    this.pauseScreen = this.add.rectangle(0, 0, width, height - 40, 0x000000).setOrigin(0, 0).setDepth(1000).setInteractive();
     this.pauseScreen.alpha = 0.6;
 
     this.pauseScreenDetail = this.add.circle(this.centre.x, this.centre.y, 80, 0x000000).setOrigin(0.5).setDepth(1001);
@@ -271,12 +297,12 @@ export default class PlayerScene extends Phaser.Scene {
         // Update cookie and db with score
         this.saveScore(this.gameScene.getTotalScore()).then(response => this.gameOverText(response['id']));
 
-        this.playButton = this.add.image(this.centre.x, this.centre.y, 'icons', 'return.png').setOrigin(0.5).setInteractive().setDepth(1001);
+        this.playButton = this.add.image(this.centre.x, this.centre.y, 'icons', 'return.png').setOrigin(0.5).setInteractive({ cursor: 'pointer' }).setDepth(1001);
         this.playButton.on('pointerdown', () => {
           this.restartGame();
         }, this);
       } else {
-        this.playButton = this.add.image(this.centre.x, this.centre.y, 'icons', 'right.png').setOrigin(0.5).setInteractive().setDepth(1001);
+        this.playButton = this.add.image(this.centre.x, this.centre.y, 'icons', 'right.png').setOrigin(0.5).setInteractive({ cursor: 'pointer' }).setDepth(1001);
         this.playButton.on('pointerdown', this.resumeGame, this);
       }
     }
@@ -425,9 +451,9 @@ export default class PlayerScene extends Phaser.Scene {
     let { width, height } = this.sys.game.canvas;
 
     let iconWidth = 60;
-    scene.instagramButton = scene.add.image(width - 10, height - bottomHeight, 'icons', 'instagram.png').setScale(0.75).setOrigin(1, 1).setInteractive().setDepth(1001);
-    scene.twitterButton = scene.add.image(width - iconWidth - 10, height - bottomHeight, 'icons', 'twitter.png').setScale(0.75).setOrigin(1, 1).setInteractive().setDepth(1001);
-    scene.spotifyButton = scene.add.image(width - 2 * iconWidth - 10, height - bottomHeight, 'icons', 'spotify.png').setScale(0.75).setOrigin(1, 1).setInteractive().setDepth(1001);
+    scene.instagramButton = scene.add.image(width - 10, height - bottomHeight, 'icons', 'instagram.png').setScale(0.75).setOrigin(1, 1).setInteractive({ cursor: 'pointer' }).setDepth(1001);
+    scene.twitterButton = scene.add.image(width - iconWidth - 10, height - bottomHeight, 'icons', 'twitter.png').setScale(0.75).setOrigin(1, 1).setInteractive({ cursor: 'pointer' }).setDepth(1001);
+    scene.spotifyButton = scene.add.image(width - 2 * iconWidth - 10, height - bottomHeight, 'icons', 'spotify.png').setScale(0.75).setOrigin(1, 1).setInteractive({ cursor: 'pointer' }).setDepth(1001);
 
     scene.instagramButton.on('pointerdown', () => {
       this.openExternalLink('https://www.instagram.com/inflightmovie_music/');

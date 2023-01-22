@@ -173,6 +173,7 @@
         </struct>
         <key>individualSpriteSettings</key>
         <map type="IndividualSpriteSettingsMap">
+            <key type="filename">axe.png</key>
             <key type="filename">graveyardArm.png</key>
             <key type="filename">graveyardLeg.png</key>
             <key type="filename">lantern.png</key>
@@ -202,6 +203,7 @@
             <filename>shovel.png</filename>
             <filename>graveyardArm.png</filename>
             <filename>graveyardLeg.png</filename>
+            <filename>axe.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

@@ -21,7 +21,7 @@
 	"introCont1": {
 		"story": [
 			{
-				"storyText": "hand a list?",
+				"storyText": "",
 				"speechBubble": {"text": "But first I need you to aquire some special components", "image": "doctor.png"},
 				"options":[
 					{"text": "\"Wow\"", "response": "introCont2"},
@@ -40,7 +40,7 @@
 	"introCont2": {
 		"story": [
 			{
-				"storyText": "hand a list?",
+				"storyText": "",
 				"speechBubble": {"text": "Just a few arms and legs ... various organs, oh and a brain", "image": "doctor.png"},
 				"options":[
 					{"text": "\"Huh?\"", "response": "introSearch"},
@@ -100,10 +100,10 @@
 			{"storyText": "Where to?"}
 		],
 		"options":[
-			{"text": "Graveyard", "response": "graveyardStart"},
-			{"text": "Zoo", "response": "zooStart"},
-			{"text": "Forest", "response": "forestStart"},
-			{"text": "Caves", "response": "cavesStart"}
+			{"text": "Graveyard", "response": "graveyardGate"},
+			{"text": "Zoo", "response": "zooGate"},
+			{"text": "Forest", "response": "forestEdge"},
+			{"text": "Caves", "response": "cavesEntrance"}
 		],
 		"duration": 8,
 		"mapButton": false,
@@ -111,11 +111,14 @@
 			"background": "outskirts_background.jpg"
 		}
 	},
-	"graveyardStart": {
-		"story": [
+	"graveyardGate": {
+		"text": [
 			{
-				"storyText": "As you enter the graveyard, you see a mysterious figure holding a shovel", 
-				"requirements": [{"time": [0, 43]}],
+				"story": "You go into graveyard"
+			},
+			{
+				"story": ". In the distance you see a mysterious figure holding a shovel",
+				"requirements": [{"time": [0, 43]}, {"cond": "not", "event": "helpBilly"}, {"cond": "not", "event": "killBill"}, {"cond": "not", "event": "attackBill"}],
 				"options":[
 					{"text": "Offer Assistance", "response": "graveyardGrave", "events": ["helpBilly"]},
 					{"text": "Attack", "response": "graveyardAttack"},
@@ -123,10 +126,11 @@
 				]
 			},
 			{
-				"storyText": "A creepy graveyard, lovely",
-				"options":[
-					{"text": "Head North", "response": "graveyardCrypt"},
-					{"text": "Head East", "response": "graveyardGrave"},
+				"story": ". So much to explore!",
+				"requirements": [{"time": [43, 200]}, {"event": "helpBilly", "op": "OR"}, {"event": "killBill", "op": "OR"}, {"event": "attackBill", "op": "OR"}],
+				"options": [
+					{"text": "Head North", "response": "graveyardGrave"},
+					{"text": "Head East", "response": "graveyardCrypt"},
 					{"text": "Head West", "response": "cavesStart"}
 				]
 			}
@@ -139,42 +143,38 @@
 		}
 	},
 	"graveyardGrave": {
-		"story": [
+		"text": [
 			{
-				"storyText": "You dig it, where to next", 
+				"story": "A fresh grave",
+				"requirements": [{"cond": "not", "event": "graveSearch"}]
+			},
+			{
+				"story": "An open grave", 
+				"requirements": [{"event": "graveSearch"}]
+			},
+			{
+				"story": ". You do some diggin together", 
 				"speechBubble": {"text": "Thanks for your help. Take anything you want", "image": "doctor.png"},
-				"requirements": [{"time": [0, 50]}, {"event": "helpBilly"}, {"notEvent": "graveSearch"}], 
+				"requirements": [{"time": [0, 50]}, {"event": "helpBilly"}, {"cond": "not", "event": "graveSearch"}],
 				"items": ["graveyardArm"],
-				"events": ["graveSearch"],
-				"options": [
-					{"text": "Stay here", "response": "graveyardGrave"},
-					{"text": "Start digging", "response": "graveyardGrave", "requirements": [{"item": "shovel"}, {"notEvent": "graveSearch"}]},
-					{"text": "Head North", "response": "graveyardCrypt"},
-					{"text": "Head West", "response": "cavesStart"}
-				]
+				"events": ["graveSearch"]
 			},
 			{
-				"storyText": "An open grave, there's nothing useful. Where to next?", 
-				"requirements": [{"event": "graveSearch"}],
-				"options": [
-					{"text": "Stay here", "response": "graveyardGrave"},
-					{"text": "Head North", "response": "graveyardCrypt"},
-					{"text": "Head West", "response": "cavesStart"}
-				]
+				"story": ". A decapitated body lies nearby", 
+				"requirements": [{"event": "killBill"}]
 			},
 			{
-				"storyText": "Looks fresh, you do some diggin",
-				"requirements": [{"notEvent": "graveSearch"}],
+				"story": ", a shovel would be useful",
+				"requirements": [{"cond": "not", "event": "graveSearch"}, {"cond": "not", "event": "helpBilly"}, {"cond": "not", "item": "shovel"}]
+			},
+			{
+				"story": ", you do some diggin",
+				"requirements": [{"cond": "not", "event": "graveSearch"}, {"cond": "not", "event": "helpBilly"}, {"item": "shovel"}],
 				"items": ["graveyardArm"],
-				"events": ["graveSearch"],
-				"options": [
-					{"text": "Stay here", "response": "graveyardGrave"},
-					{"text": "Head North", "response": "graveyardCrypt"},
-					{"text": "Head West", "response": "cavesStart"}
-				]
+				"events": ["graveSearch"]
 			},
 			{
-				"storyText": "Looks fresh, a shovel would be useful",
+				"story": ". Where to next?",
 				"options": [
 					{"text": "Stay here", "response": "graveyardGrave"},
 					{"text": "Head North", "response": "graveyardCrypt"},
@@ -188,41 +188,92 @@
 		}
 	},
 	"graveyardAttack": {
-		"story": [
+		"text": [
 			{
-				"storyText": "Your shovel slices throuh the air and cleanly decapitates the grave rober", 
-				"requirements": [{"item": "shovel"}], "items": ["billyLeg", "billyBrain"], 
-				"events": ["killBill"],
+				"story": "You charge towards the grave rober"
+			},
+			{
+				"story": ", your shovel slices throuh the air and cleanly decapitates them",
+				"requirements": [{"item": "shovel"}],
+				"items": ["billyBrain"],
+				"events": ["killBill"]
+			},
+			{
+				"story": ", they flee as you attack dropping their lantern",
+				"requirements": [{"cond": "not", "item": "shovel"}],
+				"items": ["lantern"],
+				"events": ["attackBill"]
+			},
+			{
+				"story": ". What next?",
 				"options": [
 					{"text": "Stay here", "response": "graveyardGrave"},
 					{"text": "Head North", "response": "graveyardCrypt"},
-					{"text": "Head West", "response": "cavesStart"}
+					{"text": "Head West", "response": "cavesEntrance"}
 				]
-			},
-			{"storyText": "The mysterious figure flees as you attack dropping their lantern", "item": "lantern", "event": "attackBill"}
+			}
 		],
-		"options":[
-			{"text": "Pick up torch", "response": "graveyardEnd", "item": "torch"}
-		],
-		"duration": 8
+		"duration": 8,
+		"backgrounds": {
+			"background": "graveyard_help_background.jpg"
+		}
 	},
 	"graveyardCrypt": {
-		"storyText": "You find something cool",
-		"options":[
-			{"text": "???", "response": "graveyardEnd"}
+		"text": [
+			{
+				"story": "A scary old crypt"
+			},
+			{
+				"story": ". You slip inside, not much good to find",
+				"requirements": [{"cond": "not", "item": "cryptLeg"}],
+				"items": ["cryptLeg"]
+			},
+			{
+				"options": [
+					{"text": "Stay here", "response": "graveyardCrypt"},
+					{"text": "Head South", "response": "graveyardGrave"},
+					{"text": "Head West", "response": "forestAltar"}
+				]
+			}
 		],
 		"duration": 8,
 		"backgrounds": {
 			"background": "crypt_background.jpg"
 		}
-	},
-	"graveyardEnd": {
-		"storyText": "Where to next?",
-		"options":[
-			{"text": "Zoo", "response": "zooStart"},
-			{"text": "Cave", "response": "cavesStart"}
+	},	
+	"cavesEntrance": {
+		"text": [
+			{
+				"story": "Some caves"
+			},
+			{
+				"story": ". It look's very dark in there!",
+				"requirements": [{"cond": "not", "item": "lantern"}],
+				"options":[
+					{"text": "Feel Your Way", "response": "cavesFeel"}
+				]
+			},
+			{
+				"story": ". Your lantern illuminates the way",
+				"requirements": [{"item": "lantern"}],
+				"options": [
+					{"text": "Large Tunnel", "response": "forestAltar"},
+					{"text": "West Tunnel", "response": "forestAltar"},
+					{"text": "Dank Passageway", "response": "forestAltar"}
+				]
+			},
+			{
+				"options": [
+					{"text": "Stay here", "response": "cavesEntrance"},
+					{"text": "Head North", "response": "forestEdge"},
+					{"text": "Head East", "response": "graveyardGrave"}
+				]
+			}
 		],
-		"duration": 8
+		"duration": 8,
+		"backgrounds": {
+			"background": "cave_background.jpg"
+		}
 	},
 	"cavesStart": {
 		"story": [
@@ -266,10 +317,28 @@
 		"duration": 8
 	},
 	"cavesFeel": {
-		"storyText": "walls all slmiy and stuff",
-		"options":[
-			{"text": "Arm", "response": "cavesEnd", "item": "cavesArm"},
-			{"text": "Leg", "response": "cavesEnd", "item": "cavesLeg"}
+		"text": [
+			{
+				"story": "Feel way along wall, something smell bad, come to junction",
+				"options":[
+					{"text": "Go Left", "response": "cavesFeelLeft"},
+					{"text": "Go Right", "response": "cavesStart"},
+					{"text": "Go Back", "response": "cavesEntrance"}
+				]
+			}
+		],
+		"duration": 8
+	},
+	"cavesFeelLeft": {
+		"text": [
+			{
+				"story": "The bad smeel gets worse, you heer something growlong. sense thing leap",
+				"options":[
+					{"text": "Attack", "response": "zooStart"},
+					{"text": "Do Nothing", "response": "zooStart"},
+					{"text": "Run", "response": "cavesStart"}
+				]
+			}
 		],
 		"duration": 8
 	},
@@ -296,6 +365,297 @@
 			{"text": "Forest", "response": "forestStart"}
 		],
 		"duration": 8
+	},
+	"zooGate": {
+		"text": [
+			{ 
+				"story": "You run back the way you came and end up back at the gate",
+				"requirements": [{"state": "zooRun"}]
+			},
+			{
+				"story": "Aparently the zoo is closed at night",
+				"requirements": [{"cond": "not", "state": "zooRun"}]
+			},
+			{
+				"story": ". The gate is open",
+				"requirements": [{"event": "zooBribe"}],
+				"options":[
+					{"text": "Head North", "response": "zooShed"},
+					{"text": "Head West", "response": "zooCage"}
+				]
+			},
+			{
+				"speechBubble": {"text": "Try not to touch anything", "image": "guard.png"},
+				"requirements": [{"time": [0, 55]}, {"event": "zooBribe"}, {"cond": "not", "event": "guardAttack"}, {"cond": "not", "event": "killGuard"}],
+				"options":[
+					{"text": "Attack", "response": "zooAttack", "events": ["guardAttack"]}
+				]
+			},
+			{
+				"story": ". A watchman is hanging around the gate",
+				"speechBubble": {"text": "What are you doing here?!", "image": "guard.png"},
+				"requirements": [{"time": [0, 55]}, {"cond": "not", "event": "zooBribe"}, {"cond": "not", "event": "guardAttack"}, {"cond": "not", "event": "killGuard"}],
+				"options":[
+					{"text": "Bribe", "response": "zooGate", "requirements": [{"item": "money"}], "events": ["zooBribe"], "cost": ["money"]},
+					{"text": "Attack", "response": "zooAttack", "events": ["guardAttack"]},
+					{"text": "Show Medallion", "response": "zooMedallion", "requirements": [{"item": "medallion"}], "events": ["zooMedallion"]}
+				]
+			},
+			{
+				"speechBubble": {"text": "Go away", "image": "guard.png"},
+				"requirements": [{"event": "guardAttack"}, {"cond": "not", "event": "killGuard"}]
+			},
+			{
+				"story": ". There was recently a body here, something has dragged it away...",
+				"requirements": [{"event": "killGuard"}, {"event": "releaseLion"}]
+			},
+			{
+				"options":[
+					{"text": "Snoop Around", "response": "zooLion"},
+					{"text": "Head East", "response": "cavesEntrance"}
+				]
+			}
+		],
+		"duration": 8,
+		"backgrounds": {
+			"background": "zoo_background.jpg"
+		}
+	},
+	"zooGateNorth": {
+		"text": [
+			{ 
+				"story": "You run back the way you came and end up back at the gate",
+				"requirements": [{"event": "zooRun"}]
+			},
+			{
+				"story": "Aparently the zoo is closed at night",
+				"requirements": [{"cond": "not", "event": "zooRun"}]
+			},
+			{
+				"story": ". The side gate is open",
+				"requirements": [{"event": "zooBribe"}],
+				"options":[
+					{"text": "Head North", "response": "zooShed"},
+					{"text": "Head West", "response": "zooLion"}
+				]
+			},
+			{
+				"speechBubble": {"text": "Try not to touch anything", "image": "doctor.png"},
+				"requirements": [{"time": [0, 55]}, {"event": "zooBribe"}, {"cond": "not", "event": "guardAttack"}, {"cond": "not", "event": "killGuard"}],
+				"options":[
+					{"text": "Attack", "response": "zooAttack", "events": ["guardAttack"]},
+					{"text": "Sneak Past", "response": "graveyardCrypt"}
+				]
+			},
+			{
+				"speechBubble": {"text": "What are you doing here?!", "image": "doctor.png"},
+				"requirements": [{"time": [0, 55]}, {"cond": "not", "event": "zooBribe"}, {"cond": "not", "event": "guardAttack"}, {"cond": "not", "event": "killGuard"}],
+				"options":[
+					{"text": "Bribe", "response": "zooGate", "requirements": [{"item": "money"}], "events": ["zooBribe"], "cost": ["money"]},
+					{"text": "Attack", "response": "zooAttack", "events": ["guardAttack"]},
+					{"text": "Sneak Past", "response": "graveyardCrypt"}
+				]
+			},
+			{
+				"speechBubble": {"text": "Go away", "image": "doctor.png"},
+				"requirements": [{"event": "guardAttack"}, {"cond": "not", "event": "killGuard"}]
+			}
+		],
+		"duration": 8,
+		"backgrounds": {
+			"background": "zoo_background.jpg"
+		}
+	},
+	"zooMedallion": {
+		"text": [
+			{
+				"story": "The guard hands you a package",
+				"speechBubble": {"text": "Oh, you're one of them", "image": "guard.png"},
+				"items": ["zooOrgans"],
+				"options":[
+					{"text": "Bribe", "response": "zooGate", "requirements": [{"item": "money"}], "events": ["zooBribe"], "cost": ["money"]},
+					{"text": "Attack", "response": "zooAttack", "events": ["guardAttack"]}
+				]
+			},
+			{
+				"options":[
+					{"text": "Snoop Around", "response": "zooLion"},
+					{"text": "Head East", "response": "cavesEntrance"}
+				]
+			}
+		],
+		"duration": 8,
+		"backgrounds": {
+			"background": "zoo_background.jpg"
+		}
+	},
+	"zooShed": {
+		"text": [
+			{
+				"story": "A shed containing an assortment of tools",
+				"options":[
+					{"text": "Take Shovel", "response": "zooShed", "requirements": [{"cond": "not", "item": "shovel"}], "items": ["shovel"]},
+					{"text": "Head West", "response": "zooCage"},
+					{"text": "Head South", "response": "zooGate"}
+				]
+			},
+			{
+				"story": ". You don't find anything useful",
+				"requirements": [{"item": "shovel"}]
+			}
+		],
+		"duration": 8,
+		"backgrounds": {
+			"background": "zoo_background.jpg"
+		}
+	},
+	"zooLion": {
+		"text": [
+			{
+				"story": "You find a gap in the fence and climb over"
+			},
+			{
+				"story": ", as land find face to face with lion!",
+				"requirements": [{"cond": "not", "event": "releaseLion"}],
+				"speechBubble": {"text": "ROAR!!", "image": "lion.png"},
+				"options":[
+					{"text": "Attack", "response": "zooLionAttack", "requirements": [{"state": "hasWeapon"}]},
+					{"text": "Run", "response": "zooGate", "states": ["zooRun"]},
+					{"text": "Feed", "response": "zooGate", "requirements": [{"itemType": "limb"}], "cost": ["limb"]},
+					{"text": "Call for Help", "response": "zooGate", "requirements": [{"time": [55, 100]}, {"cond": "not", "event": "guardAttack"}, {"cond": "not", "event": "killGuard"}]}
+				]
+			},
+			{
+				"story": ". You make your way whereever",
+				"requirements": [{"event": "releaseLion"}], 
+				"options":[
+					{"text": "Head East", "response": "zooShed"},
+					{"text": "Head South", "response": "zooGate"}
+				]
+			}
+		],
+		"duration": 8,
+		"backgrounds": {
+			"background": "zoo_background.jpg"
+		}
+	},
+	"zooHelp": {
+		"text": [
+			{
+				"story": "The guard resque and take back to gate and then lock ",
+				"options":[
+					{"text": "Bribe", "response": "zooGate", "requirements": [{"item": "money"}], "events": ["zooBribe"], "cost": ["money"]},
+					{"text": "Attack", "response": "zooAttack", "events": ["guardAttack"]},
+					{"text": "Show Medallion", "response": "zooMedallion", "requirements": [{"item": "medallion"}], "events": ["zooMedallion"]}
+				]
+			},
+			{
+				"speechBubble": {"text": "grr", "image": "guard.png"}
+			}
+		],
+		"duration": 8,
+		"backgrounds": {
+			"background": "zoo_background.jpg"
+		}
+	},
+	"zooLionAttack": {
+		"text": [
+			{
+				"story": "You hit the lion on the nose with your shovel, it retreats into the shadows. Find way to gate, open",
+				"requirements": [{"item": "shovel"}],
+				"events": ["releaseLion"]
+			},
+			{
+				"options":[
+					{"text": "Head East", "response": "zooShed"},
+					{"text": "Head South", "response": "zooGate"}
+				]
+			}
+		],
+		"duration": 8,
+		"backgrounds": {
+			"background": "zoo_background.jpg"
+		}
+	},
+	"zooCage": {
+		"text": [
+			{
+				"story": "It looks like a lion enclosure",
+				"options":[
+					{"text": "Head East", "response": "zooShed"},
+					{"text": "Head South", "response": "zooGate"}
+				]
+			},
+			{
+				"story": ". It's locked",
+				"requirements": [{"cond": "not", "event": "releaseLion"}],
+				"options":[
+					{"text": "Open it", "response": "zooCage", "events": ["releaseLion"]}
+				]
+			},
+			{
+				"story": ". It's open",
+				"requirements": [{"event": "releaseLion"}]
+			},
+			{
+				"story": ". You find some components", 
+				"items": ["zooLeg"],
+				"requirements": [{"event": "releaseLion"}, {"cond": "not", "item": "zooLeg"}]
+			},
+			{
+				"options":[
+					{"text": "Stay here", "response": "zooCage"}
+				]
+			}
+		],
+		"duration": 8,
+		"backgrounds": {
+			"background": "zoo_background.jpg"
+		}
+	},
+	"zooAttack": {
+		"text": [
+			{
+				"story": "You wildly swing your axe, cutting down the innocent guard ",
+				"requirements": [{"item": "axe"}],
+				"events": ["killGuard"],
+				"items": ["guardLeg"],
+				"options":[
+					{"text": "Head North", "response": "zooShed"},
+					{"text": "Head West", "response": "zooCage"}
+				]
+			},
+			{
+				"story": "You bash him on the head with your shovel, etc",
+				"requirements": [{"item": "shovel"}, {"cond": "not", "item": "axe"}],
+				"events": ["killGuard"],
+				"items": ["guardArm"],
+				"options":[
+					{"text": "Head North", "response": "zooShed"},
+					{"text": "Head West", "response": "zooCage"}
+				]
+			},
+			{
+				"story": ", unlock gate ",
+				"events": ["zooGateOpen"],
+				"requirements": [{"item": "shovel"}, {"item": "axe", "op": "OR"}, {"cond": "not", "event": "zooGateOpen"}]
+			},
+			{
+				"story": "The securty guard sensed your ill itention and locks the gate behind him as you launch your attcak",
+				"speechBubble": {"text": "Go away!", "image": "doctor.png"},
+				"requirements": [{"cond": "not", "item": "axe"}]
+			}, 
+			{
+				"options":[
+					{"text": "Snoop Around", "response": "zooLion"},
+					{"text": "Head East", "response": "cavesEntrance"}
+				]
+			}
+		],
+		"duration": 8,
+		"backgrounds": {
+			"background": "zoo_background.jpg"
+		}
 	},
 	"zooStart":{
 		"story": [
@@ -409,6 +769,36 @@
 			"background": "hospital_background.jpg"
 		}
 	},
+	"forestEdge": {
+		"text": [
+			{
+				"story": "A spooky forest"
+			},
+			{
+				"story": ". A mysterious stranger approaches",
+				"speechBubble": {"text": "Are you here for the ceremony?", "image": "occultist.png"},
+				"requirements": [{"time": [40, 60]}, {"cond": "not", "event": "attackOccultist"}],
+				"options":[
+					{"text": "\"...Yes?\"", "response": "forestAltar", "event": "ceremony"},
+					{"text": "Attack", "response": "forestAttack", "event": "attackOccultist"},
+					{"text": "Run away", "response": "forestCabin"}
+				]
+			},
+			{
+				"requirements": [{"cond": "not", "time": [40, 60]}, {"event": "ceremony", "op": "OR"}, {"event": "attackOccultist", "op": "OR"}],
+				"options":[
+					{"text": "Wait Here", "response": "forestEdge"},
+					{"text": "Head North", "response": "forestCabin"},
+					{"text": "Head East", "response": "forestAltar"},
+					{"text": "Head South", "response": "cavesEntrance"}
+				]
+			}
+		],
+		"duration": 8,
+		"backgrounds": {
+			"background": "forest_background.jpg"
+		}
+	},
 	"forestStart":{
 		"story": [
 			{
@@ -483,18 +873,42 @@
 		}
 	},
 	"forestCabin":{
-		"story": [
-			{"storyText": "You stumble upon an abandoned cabin. There is an axe outside, could be useful", "items": ["axe"]}
-		],
-		"options":[
-			{"text": "Look inside", "response": "forestCabinCellar"}
+		"text": [
+			{
+				"story": "You stumble upon an old cabin",
+				"options":[
+					{"text": "Look inside", "response": "forestCabinCellar"}
+				]
+			},
+			{
+				"story": ". There is an axe outside, could be useful",
+				"items": ["axe"],
+				"requirements": [{"cond": "not", "item": "axe"}]
+			},
+			{
+				"options": [
+					{"text": "Hang around", "response": "forestCabin"},
+					{"text": "Head North", "response": "graveyardCrypt"},
+					{"text": "Head West", "response": "cavesStart"}
+				]
+			}
 		],
 		"duration": 8,
 		"backgrounds": {
-			"background": "forest_background.jpg"
+			"background": "cabin_background.jpg"
 		}
 	},
 	"forestCabinCellar":{
+		"text": [
+			{
+				"story": "There is a locked door, you have no way of opening it. there's nothing else",
+				"options": [
+					{"text": "Hang around", "response": "forestCabinCellar"},
+					{"text": "Head North", "response": "graveyardCrypt"},
+					{"text": "Head West", "response": "cavesStart"}
+				]
+			}
+		],
 		"story": [
 			{
 				"storyText": "You wake up here, that was a bad idea", 
