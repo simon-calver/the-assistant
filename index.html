@@ -15,17 +15,7 @@
   <script src="https://code.jquery.com/jquery-3.5.0.js"></script> <!-- Need this to use ajax -->
 
   <script type="text/javascript" src="js/database.js"></script>
-
-
 </head>
-<!-- <header style="color:red">
-  <h1>A heading here</h1>
-  <p>Posted by John Doe</p>
-  <p>Some additional information here</p>
-</header> -->
-
-<!-- https://www.w3schools.com/howto/howto_css_menu_icon.asp -->
-
 
 <body onload="checkForUser()">
   <div style="height: 100%;width:100%;display: flex;flex-direction: column;">
@@ -38,7 +28,6 @@
           <!-- dynamic menu button -->
           <li>
             <div class="menu" onclick="displayMenu(this)">
-              <!-- </div> onload="displayMenu(this)"> -->
               <div class="bar1"></div>
               <div class="bar2"></div>
               <div class="bar3"></div>
@@ -73,72 +62,14 @@
               <a href="#about">About</a>
             </div>
           </li> -->
-
-
-
-          <!-- <li><button class="instuctions-button"></button></li> -->
-
-          <!-- <div class="dropdown-content">
-            <a href="#">Link 1</a>
-            <a href="#">Link 2</a>
-            <a href="#">Link 3</a> -->
-          <!-- </div>
-            </div> -->
-          <!-- </div> -->
-
-          <!-- <div class="dropdown-content">
-              <div class="dropdown">
-                <button class="dropbtn">More
-                  <i class="fa fa-caret-down"></i>
-                </button>
-
-              </div>
-            </div> -->
-          <!-- <a href="#">sfgfg </a>
-              <a href="#">rytj lkfdj</a>
-              <a href="#">ey yeju tyy</a> -->
-          <!-- <ul>
-              <li><a href="#">Service 1</a></li>
-              <li><a href="#">Service 2</a></li>
-              <li><a href="#">Service 3</a></li>
-            </ul> -->
-
-          <!-- <li>
-            <select id="menuDropdown">
-              <option value="services">Services</option>
-              <option value="products">Products</option>
-              <option value="contact">Contact</option>
-            </select>
-          </li> -->
-
-          <!-- <button class="dropbtn" onclick="myFunction()">Dropdown
-            <i class="fa fa-caret-down"></i>
-          </button> -->
-
         </ul>
       </nav>
-
     </div>
 
     <div id="phaser-app" style="flex:1; overflow: hidden;">
       <script type="module" src="js/game.js"></script>
     </div>
-
   </div>
-  <!-- sdy dyt dyt duyt sa -->
-  <!-- <iframe id="page" src="" frameborder="0"></iframe> -->
-
-  <!-- <iframe id="new" src="" frameborder="0"></iframe> -->
-
-  <!-- <script type="text/javascript">
-    document.getElementById('games').addEventListener('click', function () {
-
-      document.getElementById("menu-subitems").style.display = "none" //.classList.toggle("show");
-      console.log("AAAAAAAAAAAAAA");
-    }
-    )
-
-  </script> -->
 
   <script type="text/javascript">
     // Close the dropdown if the user clicks outside of it
@@ -178,14 +109,6 @@
       document.getElementById("desktop-games-submenu").style.display = "none";
 
       menu.classList.toggle("change");
-
-
-      // function myFunction() {
-      //   document.getElementById("myDropdown").classList.toggle("show");
-      // }
-
-
-
     }
 
     function displaySubMenu(menu, submenuId) {
@@ -197,46 +120,8 @@
         x.style.display = "block";
         menu.innerHTML = menu.innerHTML.split(" ").slice(0, -1).join(" ") + " &#9650";
       }
-      // change text in menu button to submenu name
-
-      // menu.innerHTML = menu.innerHTML.split(" ")[0] + " &#9650";
     }
-
-
-    // document.getElementById("instructions").addEventListener("click", function () {
-    //   document.getElementById("new").src = "assets/text/instructions.html";
-    // });
-
-    // document.getElementById("leaderboard").addEventListener("click", function () {
-    //   document.getElementById("new").src = "assets/text/high-scores.html";
-    // });
-
-    // document.getElementById("instructions").addEventListener("click", function () {
-    //   window.open("assets/text/instructions.htmll", "Popup", "height=300,width=400");
-    // });
   </script>
-  <!-- <nav>
-    <ul>
-      <li><a href="#">Home</a></li>
-      <li><a href="#">About</a></li>
-      <li><a href="#">Contact</a></li>
-    </ul>
-  </nav> -->
-  <!-- <img src="assets/sprites/display/items/key.png" style="width:26px;height:26px;"> -->
-  <!-- <ul id="navlist">
-    <li id="question"></li>
-    <li id="leaderboards"></li>
-    <li id="question"></li>
-  </ul> -->
-  <!-- <li id="question"></li> -->
-  <!-- <div id="question"></div> -->
-  <!-- <p>
-    Connect four or more shapes with the same face colour to score points.
-  </p> -->
-  <!-- <img id="question" src="assets/images/icons/icons.png">
-  <img id="leaderboards" src="assets/images/icons/icons.png"> -->
-
-
 </body>
 
 </html>
