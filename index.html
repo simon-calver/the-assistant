@@ -26,7 +26,7 @@
           <li><a href="#" class="leaderboard" id="leaderboard"></a></li>
           <!-- dynamic menu button -->
           <li>
-            <div class="menu" onclick="displayMenu(this)">
+            <div class="menu" id="menu" onclick="displayMenu(this)">
               <div class="bar1"></div>
               <div class="bar2"></div>
               <div class="bar3"></div>
@@ -41,13 +41,14 @@
               <!-- <span style="color: rgb(204, 204, 204)">&#9660</span> -->
               <div class="submenu-items" id="music-games-submenu">
                 <a href="../promises">Promises</a>
+                <a href="../the-assistant">The Assistant</a>
               </div>
-              <a href="#" onclick="displaySubMenu(this, 'desktop-games-submenu')" id="desktop-games">Desktop Games
+              <!-- <a href="#" onclick="displaySubMenu(this, 'desktop-games-submenu')" id="desktop-games">Desktop Games
                 &#9660</a>
               <div class="submenu-items" id="desktop-games-submenu">
                 <a href="#contact">OO</a>
                 <a href="#about">AA</a>
-              </div>
+              </div> -->
             </div>
           </li>
           <!-- static menu button -->
@@ -101,11 +102,11 @@
       // This is a dumb way to do it, but it works
       document.getElementById("word-games").innerHTML = "Word Games &#9660";
       document.getElementById("music-games").innerHTML = "Music-Video-Games &#9660";
-      document.getElementById("desktop-games").innerHTML = "Desktop Games &#9660";
+      // document.getElementById("desktop-games").innerHTML = "Desktop Games &#9660";
 
       document.getElementById("word-games-submenu").style.display = "none";
       document.getElementById("music-games-submenu").style.display = "none";
-      document.getElementById("desktop-games-submenu").style.display = "none";
+      // document.getElementById("desktop-games-submenu").style.display = "none";
 
       menu.classList.toggle("change");
     }

@@ -24,7 +24,7 @@ export default class MenuScene extends Phaser.Scene {
     backgroundBottom.flipY = true;
 
     // Button to return to game
-    let cancelButton = this.add.image(width - 4, 4, 'icons', 'cross.png').setOrigin(1, 0).setScale(0.4).setInteractive();
+    let cancelButton = this.add.image(width - 4, 4, 'icons', 'cross.png').setOrigin(1, 0).setScale(0.4).setInteractive({ cursor: 'pointer' });
     cancelButton.on('pointerdown', () => {
       data.playerScene.scene.resume('MainScene');
       data.playerScene.unBlurScreen();

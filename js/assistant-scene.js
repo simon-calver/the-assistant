@@ -42,8 +42,6 @@ export default class AssistantScene extends Phaser.Scene {
   }
 
   create(params = { 'pauseAtStart': true, 'muteSong': false, 'firstGame': false }) {
-    // this.input.setDefaultCursor('url(assets/cursors/hand.cur), pointer');
-
     // I don't want the canvas to fill the screen on desktop, so set default size. This should only affect the 
     // aspect ratio since it is using scale.FIT
     if (this.sys.game.device.os.desktop) {
@@ -53,6 +51,7 @@ export default class AssistantScene extends Phaser.Scene {
     let { width, height } = this.sys.game.canvas;
 
     this.backgroundOrigin = new Phaser.Math.Vector2(width / 2, height - 30);
+    this.characterOrigin = new Phaser.Math.Vector2(width / 2 + 80, height + 40);
     this.origin = new Phaser.Math.Vector2(width / 2, height / 2);
     this.addDefaultBackgrounds();
 
@@ -79,7 +78,6 @@ export default class AssistantScene extends Phaser.Scene {
     this.playerCollectibles = [];
     this.playerEvents = []; // Make these sets?
     this.playerStates = [];
-    this.setScene('outskirts'); //intro');
 
 
     this.displayItems = [];
@@ -97,12 +95,15 @@ export default class AssistantScene extends Phaser.Scene {
 
 
     // Hard code this for now, maybe add to json?
-    this.events = { "sceneName": { "start": 99, "triggered": false } };
+    this.events = {
+      "sceneName": { "start": 99, "triggered": false },
+      "frankensteinStart": { "start": 33, "triggered": false }
+    };
 
-    this.addItem('axe');
-    this.addItem('money');
-    this.addItem('shovel');
-    this.addItem('medallion');
+    // this.addItem('axe');
+    // this.addItem('money');
+    // this.addItem('shovel');
+    // this.addItem('medallion');
 
     // this.addItem('item');
     // this.addItem('item');
@@ -208,8 +209,28 @@ export default class AssistantScene extends Phaser.Scene {
       this.playerScene.endGame();
     }, this);
 
-    this.song.play();
-    // this.song.seek = 50;
+    this.song.play(); // this.song.seek = 50;
+
+    this.fadeIn('barn');
+  }
+
+  fadeIn(sceneName) {
+    const fadeInTime = 3000;
+    this.cameras.main.fadeIn(fadeInTime, 0, 0, 0);
+    this.setScene(sceneName);
+    this.pauseButtonTimer();
+    this.time.addEvent({
+      delay: fadeInTime / 2,
+      callback: () => { this.resumeButtonTimer() },
+    }, this);
+  }
+
+  pauseButtonTimer() {
+    this.buttonTween.pause();
+  }
+
+  resumeButtonTimer() {
+    this.buttonTween.resume();
   }
 
   handleOrientation(e) {
@@ -431,36 +452,36 @@ export default class AssistantScene extends Phaser.Scene {
     }
   }
 
-  checkRequirementsOLD(reqs) {
-    if (reqs) {
-      let valid = true;
-      // Require all conditions to be true
-      for (var req of reqs) {
-        if ('item' in req) {
-          valid = valid & this.playerItems.includes(req['item']);
-        } else if ('notItem' in req) {
-          valid = valid & !this.playerItems.includes(req['notItem']);
-        } else if ('event' in req) {
-          valid = valid & this.playerEvents.includes(req['event']);
-        } else if ('notEvent' in req) {
-          valid = valid & !this.playerEvents.includes(req['notEvent']);
-        } else if ('time' in req) {
-          // This check is probably only neccesary for testing
-          if (this.song) {
-            valid = valid & this.song.seek >= req['time'][0] & this.song.seek < req['time'][1];
-          }
-        } else if ('notTime' in req) {
-          // This check is probably only neccesary for testing
-          if (this.song) {
-            valid = valid & !(this.song.seek >= req['notTime'][0] & this.song.seek < req['notTime'][1]);
-          }
-        }
-      }
-      return valid;
-    } else {
-      return true;
-    }
-  }
+  // checkRequirementsOLD(reqs) {
+  //   if (reqs) {
+  //     let valid = true;
+  //     // Require all conditions to be true
+  //     for (var req of reqs) {
+  //       if ('item' in req) {
+  //         valid = valid & this.playerItems.includes(req['item']);
+  //       } else if ('notItem' in req) {
+  //         valid = valid & !this.playerItems.includes(req['notItem']);
+  //       } else if ('event' in req) {
+  //         valid = valid & this.playerEvents.includes(req['event']);
+  //       } else if ('notEvent' in req) {
+  //         valid = valid & !this.playerEvents.includes(req['notEvent']);
+  //       } else if ('time' in req) {
+  //         // If the this.song is not defined, the time is taken to be zero
+  //         if (this.song) {
+  //           valid = valid & this.song.seek >= req['time'][0] & this.song.seek < req['time'][1];
+  //         }
+  //       } else if ('notTime' in req) {
+  //         // This check is probably only neccesary for testing
+  //         if (this.song) {
+  //           valid = valid & !(this.song.seek >= req['notTime'][0] & this.song.seek < req['notTime'][1]);
+  //         }
+  //       }
+  //     }
+  //     return valid;
+  //   } else {
+  //     return true;
+  //   }
+  // }
 
   checkRequirement(req) {
     let valid = false;
@@ -469,10 +490,13 @@ export default class AssistantScene extends Phaser.Scene {
     } else if ('event' in req) {
       valid = this.playerEvents.includes(req['event']);
     } else if ('time' in req) {
-      // This check is probably only neccesary for testing
+      // If the this.song is not defined, the time is taken to be zero
       if (this.song) {
         // console.log(this.song.seek)
         valid = Boolean(this.song.seek >= req['time'][0] & this.song.seek < req['time'][1]);
+      } else {
+        const songSeek = 0;
+        valid = Boolean(songSeek >= req['time'][0] & songSeek < req['time'][1]);
       }
     } else if ('state' in req) {
       valid = this.playerStates.includes(req['state']);
@@ -619,6 +643,16 @@ export default class AssistantScene extends Phaser.Scene {
 
   }
 
+  setCharacter(character) {
+    this.character = character;
+  }
+
+  destroyCharacter() {
+    if (this.character) {
+      this.character.destroy();
+    }
+  }
+
   moveBackground() {
     const angle = Phaser.Math.Angle.BetweenPoints(this.input.mousePointer.position, this.origin);
     const distance = Phaser.Math.Distance.BetweenPoints(this.input.mousePointer.position, this.origin);
@@ -633,6 +667,10 @@ export default class AssistantScene extends Phaser.Scene {
       background.y = this.backgroundOrigin.y + (i + 1) * direction.y;
     }, this);
 
+    if (this.character) {
+      this.character.x = this.characterOrigin.x + 0.5 * direction.x;
+      this.character.y = this.characterOrigin.y + 0.5 * direction.y;
+    }
     // const distance = Phaser.Math.Distance.BetweenPoints(
     //   new Phaser.Math.Vector2(width / 2 + target.x, height - 40 + target.y),
     //   new Phaser.Math.Vector2(this.backgrounds[0].x, this.backgrounds[0].y)
@@ -969,7 +1007,12 @@ export default class AssistantScene extends Phaser.Scene {
       this.setScene('frankensteinMiddle');
       // console.log("WWWWWWWWWWWWWWWWW");
     }
-
+    if (this.song.seek > 33 & !this.events['frankensteinStart']['triggered']) {
+      this.events['frankensteinStart']['triggered'] = true;
+      this.stopCurrentScene()
+      this.setScene('frankensteinStart');
+      // console.log("WWWWWWWWWWWWWWWWW");
+    }
   }
 
 }
@@ -978,6 +1021,8 @@ class SpeechBubble {//} extends Phaser.GameObjects.Container {
   constructor(scene, data) {
     let { width, height } = scene.sys.game.canvas;
     const maxWidth = width / 2;
+
+    this.scene = scene;
 
     const xPos = width / 2 - maxWidth / 2 + 20;
     const yPos = height / 2 - 100;
@@ -1002,25 +1047,28 @@ class SpeechBubble {//} extends Phaser.GameObjects.Container {
     let { width, height } = scene.sys.game.canvas;
     const characterHeight = 3 * height / 4;
 
-    this.character = scene.add.image(width / 2 + 80, height + 40).setOrigin(0.5, 1);
+    let character = scene.add.image(scene.characterOrigin.x, scene.characterOrigin.y).setOrigin(0.5, 1);
 
     if (scene.textures.exists(texture)) {
-      this.character.setTexture(texture);
-      this.character.setScale(characterHeight / this.character.displayHeight);
+      character.setTexture(texture);
+      character.setScale(characterHeight / character.displayHeight);
     } else {
       scene.load.image(texture, `assets/images/characters/${texture}`);
       scene.load.start();
       scene.load.once(Phaser.Loader.Events.COMPLETE, () => {
-        this.character.setTexture(texture);
-        this.character.setScale(characterHeight / this.character.displayHeight);
+        character.setTexture(texture);
+        character.setScale(characterHeight / character.displayHeight);
       });
     }
+
+    scene.setCharacter(character)
   }
 
   destroy() {
     this.background.destroy();
     this.bitmapText.destroy();
-    this.character.destroy();
+    this.scene.destroyCharacter();
+    // character.destroy();
   }
 
 
