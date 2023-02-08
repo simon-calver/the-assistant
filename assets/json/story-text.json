@@ -1,4 +1,201 @@
 {
+	"barn": {
+		"text": [
+			{
+				"story": "You come to in a dark musty room",
+				"requirements": [{"time": [0, 6]}]
+			},
+			{
+				"story": "You are still in a dark musty room",
+				"requirements": [{"time": [7, 300]}]
+			},		
+      {
+        "speechBubble": {"text": "...", "image": "villager.png"},
+        "requirements": [{"event": "barnTalk"}]
+      },
+			{
+				"story": ". There is a body sprawled on the floor",
+				"requirements": [{"event": "barnAttack"}],
+				"options":[
+					{"text": "Search the body", "response": "barn", "requirements": [{"cond": "not", "item": "money"}], "items": ["money"]}
+				]
+			},
+			{
+				"story": ". What do you want to do?",
+				"options":[
+					{"text": "Find a weapon", "response": "barnWeapon", "items": ["shovel"], "requirements": [{"cond": "not", "item": "shovel"}]},
+					{"text": "Try side door", "response": "barnSideRoom", "requirements": [{"cond": "not", "item": "medallion"}], "items": ["medallion"]},
+					{"text": "Try main door", "response": "barnMainDoor"},
+					{"text": "Shout", "response": "barnShout"},
+					{"text": "Do nothing", "response": "barn"}
+				]
+			}
+		],
+		"duration": 8,
+		"mapButton": false,
+		"backgrounds": {
+			"background": "barn_background.jpg"
+		}
+	},
+	"barnSideRoom": {
+		"text": [
+			{
+				"story": "It opens into small store room. You find a mysterious medallion, there's nothing else that can help you.",
+				"options":[
+					{"text": "Find a weapon", "response": "barnWeapon", "items": ["shovel"], "requirements": [{"cond": "not", "item": "shovel"}]},
+					{"text": "Try main door", "response": "barnMainDoor"},
+					{"text": "Shout", "response": "barnShout"},
+					{"text": "Do nothing", "response": "barn"}
+				]
+			}
+		],
+		"duration": 8,
+		"mapButton": false,
+		"backgrounds": {
+			"background": "barn_background.jpg"
+		}
+	},
+	"barnMainDoor": {
+		"text": [
+			{
+				"story": "The door swings open and big person there",
+        "speechBubble": {"text": "...", "image": "villager.png"},
+				"options":[
+					{"text": "Attack", "response": "barn", "requirements": [{"item": "shovel"}], "events": ["barnAttack"]},
+					{"text": "Do nothing", "response": "barnTalk", "events": ["barnTalk"]},
+					{"text": "Run past them", "response": "barnRun"}
+				]
+			}
+		],
+		"duration": 8,
+		"mapButton": false,
+		"backgrounds": {
+			"background": "barn_background.jpg"
+		}
+	},
+	"barnAttack": {
+		"text": [
+			{
+				"story": "You hit them on the head with your shovel",
+				"options":[
+					{"text": "Attack", "response": "barn", "requirements": [{"item": "shovel"}]},
+					{"text": "Do nothing", "response": "barnTalk", "events": ["barnTalk"]},
+					{"text": "Run past them", "response": "barnRun"}
+				]
+			}
+		],
+		"duration": 8,
+		"mapButton": false,
+		"backgrounds": {
+			"background": "barn_background.jpg"
+		}
+	},
+	"barnShout": {
+		"text": [
+			{
+				"story": "The door swings open and big person there",
+        "speechBubble": {"text": "...", "image": "villager.png"},
+				"options":[
+					{"text": "Attack", "response": "barn", "requirements": [{"item": "shovel"}], "events": ["barnAttack"]},
+					{"text": "Do nothing", "response": "barnTalk", "events": ["barnTalk"]},
+					{"text": "Run past them", "response": "barnRun"}
+				]
+			}
+		],
+		"duration": 8,
+		"mapButton": false,
+		"backgrounds": {
+			"background": "barn_background.jpg"
+		}
+	},
+	"barnWeapon": {
+		"text": [
+			{
+				"story": "There is a shovel leaning against the wall, that'll do.",
+				"options":[
+					{"text": "Try side door", "response": "barnSideRoom", "requirements": [{"cond": "not", "item": "medallion"}], "items": ["medallion"]},
+					{"text": "Try main door", "response": "barnMainDoor"},
+					{"text": "Shout", "response": "barnShout"},
+					{"text": "Do nothing", "response": "barn"}
+				]
+			}
+		],
+		"duration": 8,
+		"mapButton": false,
+		"backgrounds": {
+			"background": "barn_background.jpg"
+		}
+	},
+	"barnSearch": {
+		"text": [
+			{
+				"story": "You find some money, nice!",				
+				"options":[
+					{"text": "Find a weapon", "response": "barnWeapon", "items": ["shovel"], "requirements": [{"cond": "not", "item": "shovel"}]},
+					{"text": "Try side door", "response": "barnSideRoom", "requirements": [{"cond": "not", "item": "medallion"}], "items": ["medallion"]},
+					{"text": "Try main door", "response": "barnMainDoor"},
+					{"text": "Shout", "response": "barnShout"},
+					{"text": "Do nothing", "response": "barn"}
+				]
+			}
+		],
+		"duration": 8,
+		"mapButton": false,
+		"backgrounds": {
+			"background": "barn_background.jpg"
+		}
+	},
+	"barnRun": {
+		"text": [
+			{
+				"story": "You run down a dark corridor",
+				"options":[
+					{"text": "Attack", "response": "barn", "requirements": [{"item": "shovel"}], "events": ["barnAttack"]},
+					{"text": "Talk", "response": "graveyardAttack"},
+					{"text": "Run past them", "response": "barn"}
+				]
+			}
+		],
+		"duration": 8,
+		"mapButton": false,
+		"backgrounds": {
+			"background": "barn_background.jpg"
+		}
+	},
+	"barnTalk": {
+		"text": [
+			{
+				"story": "They look all apologetic 'n' stuff",		
+        "speechBubble": {"text": "So sorry for the misunderstaning, your friend will be here soon", "image": "villager.png"},		
+				"options":[
+					{"text": "Find a weapon", "response": "barnWeapon", "items": ["shovel"], "requirements": [{"cond": "not", "item": "shovel"}]},
+					{"text": "Try side door", "response": "barnSideRoom", "requirements": [{"cond": "not", "item": "medallion"}], "items": ["medallion"]},
+					{"text": "Do nothing", "response": "barn"}
+				]
+			}
+		],
+		"duration": 8,
+		"mapButton": false,
+		"backgrounds": {
+			"background": "barn_background.jpg"
+		}
+	},
+	"frankensteinStart": {
+		"text": [
+			{
+				"story": "As you are doing whatever, the doctor bursts in",		
+        "speechBubble": {"text": "Our plans are nearly ruined! You'll need to aquire some more \"components\". Quickly!", "image": "doctor.png"},		
+				"options":[
+					{"text": "\"OK\"", "response": "outskirts"}
+				]
+			}
+		],
+		"duration": 8,
+		"mapButton": false,
+		"backgrounds": {
+			"background": "barn_background.jpg"
+		}
+	},
 	"intro": {
 		"story": [
 			{
